@@ -1,0 +1,110 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2604.08999v1/fig-001.webp",
+      "caption": "Table 13: Case Study on Arithmetic Aggregation. Comparison of failure modes on long-sequence numerical queries. Baselines correctly retrieve data but suffer from arithmetic hallucination or primitive execution errors, proving the inadequacy of textual processing. Our method ensures verifiable precision via code execution, fulfilling Symbolic Compatibility.",
+      "page": 25,
+      "index": 1,
+      "width": 954,
+      "height": 592
+    },
+    {
+      "url": "assets/figures/arxiv/2604.08999v1/fig-002.webp",
+      "caption": "Table 12: Case Study on Null Value Aggregation. Comparison of failure modes: GraphOTTER suffers from retrieval miss on empty values (poor Representation Alignment); ST-Raptor correctly plans but fails in execution (returning total count); EEDP suffers from hallucination during manual enumeration. Our method ensures correctness via symbolic code generation.",
+      "page": 25,
+      "index": 2,
+      "width": 954,
+      "height": 592
+    },
+    {
+      "url": "assets/figures/arxiv/2604.08999v1/fig-003.webp",
+      "caption": "Figure 1: Key desiderata for robust table serialization and their instantiation in AdaSTR.",
+      "page": 2,
+      "index": 3,
+      "width": 429,
+      "height": 612
+    },
+    {
+      "url": "assets/figures/arxiv/2604.08999v1/fig-004.webp",
+      "caption": "Table 4: Ablation analysis of DuTR (Deepseek-V3). We report Accuracy (%) and performance change (∆) vs. full configuration per mode. Bottom evaluates representational benefits of the tree structure.",
+      "page": 7,
+      "index": 4,
+      "width": 458,
+      "height": 319
+    },
+    {
+      "url": "assets/figures/arxiv/2604.08999v1/fig-005.webp",
+      "caption": "Table 2: Accuracy (%) on AIT-QA, SST-QA, and HiTab. Bold denotes best, underlined denotes second best. † indicates results cited from prior literature. Oracle represents the theoretical upper bound via ideal selection between Textual and Symbolic reasoning.",
+      "page": 7,
+      "index": 5,
+      "width": 461,
+      "height": 569
+    },
+    {
+      "url": "assets/figures/arxiv/2604.08999v1/fig-006.webp",
+      "caption": "Table 8: Distribution of error types across N = 60 sampled failure cases.",
+      "page": 22,
+      "index": 6,
+      "width": 817,
+      "height": 340
+    },
+    {
+      "url": "assets/figures/arxiv/2604.08999v1/fig-007.webp",
+      "caption": "Figure 8: Statistics of error categories by reasoning failure mode.",
+      "page": 23,
+      "index": 7,
+      "width": 950,
+      "height": 592
+    },
+    {
+      "url": "assets/figures/arxiv/2604.08999v1/fig-008.webp",
+      "caption": "Figure 5: A representative case study involving sibling branches and irregular children. ASTRA utilizes precise dictionary traversal to correctly enumerate all items.",
+      "page": 8,
+      "index": 8,
+      "width": 458,
+      "height": 631
+    },
+    {
+      "url": "assets/figures/arxiv/2604.08999v1/fig-009.webp",
+      "caption": "Figure 2: Overview of the Adaptive Semantic Tree Reconstruction process.",
+      "page": 4,
+      "index": 9,
+      "width": 895,
+      "height": 489
+    },
+    {
+      "url": "assets/figures/arxiv/2604.08999v1/fig-010.webp",
+      "caption": "Table 11: Ablation analysis of DuTR (Qwen3-8B). We report the Accuracy (%) and the performance change (∆) compared to the full configuration within each mode.",
+      "page": 24,
+      "index": 10,
+      "width": 461,
+      "height": 350
+    },
+    {
+      "url": "assets/figures/arxiv/2604.08999v1/fig-011.webp",
+      "caption": "Figure 7: Relationship between evaluation metric scores (information coverage and structure integrity) and downstream QA accuracy across score bins.",
+      "page": 20,
+      "index": 11,
+      "width": 461,
+      "height": 275
+    },
+    {
+      "url": "assets/figures/arxiv/2604.08999v1/fig-012.webp",
+      "caption": "Figure 3: Overview of the Dual-Mode Tree Reasoning process.",
+      "page": 5,
+      "index": 12,
+      "width": 835,
+      "height": 440
+    },
+    {
+      "url": "assets/figures/arxiv/2604.08999v1/fig-013.webp",
+      "caption": "Figure 6: Visualization of the Operating Expenses Analysis table.",
+      "page": 16,
+      "index": 13,
+      "width": 761,
+      "height": 429
+    }
+  ]
+}

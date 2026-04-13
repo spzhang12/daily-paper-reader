@@ -1,0 +1,86 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2603.26784v1/fig-001.webp",
+      "caption": "Fig. 5: Perception-task accuracy under counterfactual variants. Rows correspond to Bold Presence, Underline Presence, and Highlight Presence.",
+      "page": 11,
+      "index": 1,
+      "width": 725,
+      "height": 256
+    },
+    {
+      "url": "assets/figures/arxiv/2603.26784v1/fig-002.webp",
+      "caption": "Fig. 8: Per-subtask performance heatmap across models on HighlightBench. Rows denote models and columns denote the 21 subtasks. Color indicates average exact-match accuracy on the full benchmark.",
+      "page": 21,
+      "index": 2,
+      "width": 725,
+      "height": 312
+    },
+    {
+      "url": "assets/figures/arxiv/2603.26784v1/fig-003.webp",
+      "caption": "Fig. 3: Representative examples of the five task families in HighlightBench. Each card shows the core capability tested by a task family, together with a typical question format and its expected structured output.",
+      "page": 7,
+      "index": 3,
+      "width": 652,
+      "height": 642
+    },
+    {
+      "url": "assets/figures/arxiv/2603.26784v1/fig-004.webp",
+      "caption": "Table 3: Notation used in HighlightBench and the reference pipeline.",
+      "page": 22,
+      "index": 4,
+      "width": 716,
+      "height": 886
+    },
+    {
+      "url": "assets/figures/arxiv/2603.26784v1/fig-005.webp",
+      "caption": "Fig. 1: Overview of HighlightBench. The benchmark contains five complementary task families with question counts. This design gives transparent coverage of markupconditioned reasoning.",
+      "page": 3,
+      "index": 5,
+      "width": 725,
+      "height": 340
+    },
+    {
+      "url": "assets/figures/arxiv/2603.26784v1/fig-006.webp",
+      "caption": "Fig. 7: Shared table image for the qualitative failure cases.",
+      "page": 18,
+      "index": 6,
+      "width": 625,
+      "height": 406
+    },
+    {
+      "url": "assets/figures/arxiv/2603.26784v1/fig-007.webp",
+      "caption": "Table 4: List of the 21 subtasks grouped by the five task families.",
+      "page": 23,
+      "index": 7,
+      "width": 716,
+      "height": 335
+    },
+    {
+      "url": "assets/figures/arxiv/2603.26784v1/fig-008.webp",
+      "caption": "Fig. 2: Pipeline overview. The reference pipeline converts the input image into a unified docgraph, uses two-stage routing to determine the solving path, and executes the routed result as a DSL plan on the docgraph to produce the final structured output and its intermediate trace.",
+      "page": 4,
+      "index": 8,
+      "width": 725,
+      "height": 387
+    },
+    {
+      "url": "assets/figures/arxiv/2603.26784v1/fig-009.webp",
+      "caption": "Fig. 6: Mechanism probes under counterfactual variants. (a) Marker-hit rate versus value-correct rate across variants. (b) Error attribution of failed cases based on observable outcomes.",
+      "page": 12,
+      "index": 9,
+      "width": 723,
+      "height": 429
+    },
+    {
+      "url": "assets/figures/arxiv/2603.26784v1/fig-010.webp",
+      "caption": "Table 1: Main results on HighlightBench. We report exact-match accuracy (%) for each task family and the overall score on two subsets: Synthetic and Real-world.",
+      "page": 9,
+      "index": 10,
+      "width": 583,
+      "height": 609
+    }
+  ]
+}
