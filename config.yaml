@@ -73,6 +73,42 @@ subscriptions:
           source: manual
           note: ''
       updated_at: '2026-04-13T16:15:17.177Z'
+    - tag: 银行流水综述
+      description: 银行流水系统及交易记录分析综述论文检索
+      enabled: true
+      paper_sources:
+        - arxiv
+        - biorxiv
+      keywords:
+        - keyword: bank statement system
+          keyword_cn: 银行流水系统
+          query: comprehensive review of bank statement processing systems
+        - keyword: transaction record analysis
+          keyword_cn: 交易记录分析
+          query: survey on banking transaction record analysis and management
+        - keyword: transaction monitoring system
+          keyword_cn: 交易监控系统
+          query: literature review on automated transaction monitoring systems
+        - keyword: data extraction banking
+          keyword_cn: 银行数据提取
+          query: survey on information extraction from bank statements
+      intent_queries:
+        - query: survey paper on bank statement analysis and management systems
+          query_cn: 银行流水分析与管理系统综述论文
+          enabled: true
+          source: manual
+          note: ''
+        - query: review of technologies for banking transaction data processing
+          query_cn: 银行交易数据处理技术综述
+          enabled: true
+          source: manual
+          note: ''
+        - query: recent advances in bank transaction monitoring and reporting systems
+          query_cn: 银行交易监控与报告系统的最新进展
+          enabled: true
+          source: manual
+          note: ''
+      updated_at: '2026-04-13T16:25:57.074Z'
 source_backends:
   arxiv:
     papers_table: arxiv_papers
