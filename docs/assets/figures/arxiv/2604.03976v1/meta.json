@@ -1,0 +1,126 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2604.03976v1/fig-001.webp",
+      "caption": "Figure 4: Principal Track in the transaction phase: When execution involves user funds (principal), additional financial risk is introduced. ARS therefore introduces an underwriter to provide protection. If the requestor agrees to pay the premium and the business agent locks the required collateral, the underwriter guarantees compensation to the user according to the protection policy in case the task fails.",
+      "page": 11,
+      "index": 1,
+      "width": 711,
+      "height": 1190
+    },
+    {
+      "url": "assets/figures/arxiv/2604.03976v1/fig-002.webp",
+      "caption": "Table 7: Principal-track transaction states for fund-involving jobs. Underwriting protection is enabled only when the requestor adopts coverage (e.g., by paying premium); otherwise, continuation requires explicit human override acknowledging full pre-execution risk.",
+      "page": 15,
+      "index": 2,
+      "width": 887,
+      "height": 421
+    },
+    {
+      "url": "assets/figures/arxiv/2604.03976v1/fig-003.webp",
+      "caption": "Figure 1: ARS is a transaction-layer assurance standard for agentic services that converts stochastic, outcome-level risk into explicit settlement rules. Without ARS, users must prepay agents (and in fundmoving tasks, also hand over execution capital), exposing them to non-delivery, misexecution, and downstream harms. With ARS, service fees are locked in an escrow vault and released only upon successful evaluation; for fund-moving tasks, users can optionally purchase underwriting coverage while the service provider posts collateral before principal is released. This shifts trust from model-internal reliability to auditable, enforceable guarantees over product-level outcomes.",
+      "page": 2,
+      "index": 3,
+      "width": 806,
+      "height": 481
+    },
+    {
+      "url": "assets/figures/arxiv/2604.03976v1/fig-004.webp",
+      "caption": "Table 3: ARS actions for the fee track (escrowed service compensation).",
+      "page": 10,
+      "index": 4,
+      "width": 895,
+      "height": 192
+    },
+    {
+      "url": "assets/figures/arxiv/2604.03976v1/fig-005.webp",
+      "caption": "Table 5: ARS actions for evaluation, collateral settlement, and claims.",
+      "page": 14,
+      "index": 5,
+      "width": 895,
+      "height": 300
+    },
+    {
+      "url": "assets/figures/arxiv/2604.03976v1/fig-006.webp",
+      "caption": "Table 1: Risk protection mechanisms across industries. High-stakes services rarely rely on trust alone. Instead, industries introduce financial mechanisms that allocate risk across participants. ARS applies the same principle to AI agents by combining escrow settlement, collateralization, and optional underwriting to provide outcome-level guarantees.",
+      "page": 3,
+      "index": 6,
+      "width": 950,
+      "height": 398
+    },
+    {
+      "url": "assets/figures/arxiv/2604.03976v1/fig-007.webp",
+      "caption": "Figure 8: FP/FN sweep: adoption rate, loss reduction rate, failure reduction rate, and underwriter wallet final as functions of false-negative rate (x-axis) and false-positive rate (y-axis).",
+      "page": 23,
+      "index": 7,
+      "width": 939,
+      "height": 218
+    },
+    {
+      "url": "assets/figures/arxiv/2604.03976v1/fig-008.webp",
+      "caption": "Figure 7: Loading factor sweep: adoption rate, loss reduction rate, failure reduction rate, and underwriter wallet final as a function of λ.",
+      "page": 23,
+      "index": 8,
+      "width": 942,
+      "height": 188
+    },
+    {
+      "url": "assets/figures/arxiv/2604.03976v1/fig-009.webp",
+      "caption": "Table 4: ARS actions for the principal track in fund-moving jobs.",
+      "page": 13,
+      "index": 9,
+      "width": 906,
+      "height": 638
+    },
+    {
+      "url": "assets/figures/arxiv/2604.03976v1/fig-010.webp",
+      "caption": "Figure 2: The requestor first sends a task specification to the business agent. Both parties may then enter a negotiation loop to refine the agreement. Once consensus is reached, the finalized agreement is recorded and a hash code is generated for future reference.",
+      "page": 8,
+      "index": 10,
+      "width": 806,
+      "height": 573
+    },
+    {
+      "url": "assets/figures/arxiv/2604.03976v1/fig-011.webp",
+      "caption": "Figure 6: VI+ARS: VI governs privacy-preserving authorization through layered credentials and selective disclosure; ARS governs settlement and compensation over the authorized transaction.",
+      "page": 19,
+      "index": 11,
+      "width": 446,
+      "height": 1416
+    },
+    {
+      "url": "assets/figures/arxiv/2604.03976v1/fig-012.webp",
+      "caption": "Figure 5: AP2+ARS. AP2 provides authorization evidence and bounded delegation, and ARS adds settlement semantics over the authorized transaction.",
+      "page": 17,
+      "index": 12,
+      "width": 489,
+      "height": 1416
+    },
+    {
+      "url": "assets/figures/arxiv/2604.03976v1/fig-013.webp",
+      "caption": "Figure 9: Sigmoid collateral sweep: adoption rate, loss reduction rate, failure reduction rate, and wallet final as functions of sigmoid midpoint (y-axis) and steepness (x-axis).",
+      "page": 24,
+      "index": 13,
+      "width": 940,
+      "height": 189
+    },
+    {
+      "url": "assets/figures/arxiv/2604.03976v1/fig-014.webp",
+      "caption": "Table 2: ARS actions for job creation and agreement binding.",
+      "page": 9,
+      "index": 14,
+      "width": 895,
+      "height": 246
+    },
+    {
+      "url": "assets/figures/arxiv/2604.03976v1/fig-015.webp",
+      "caption": "Figure 3: Fee track in the transaction phase: The requestor locks the service fee in an escrow vault before execution. After the business agent submits the execution evidence, an evaluator checks its validity. If the evidence passes evaluation, the escrowed fee is released to the business agent; otherwise, the funds are refunded to the requestor.",
+      "page": 9,
+      "index": 15,
+      "width": 761,
+      "height": 510
+    }
+  ]
+}

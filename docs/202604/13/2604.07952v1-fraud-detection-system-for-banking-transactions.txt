@@ -1,0 +1,179 @@
+Title: Fraud Detection System for Banking Transactions
+
+URL Source: https://arxiv.org/pdf/2604.07952v1
+
+Published Time: Fri, 10 Apr 2026 01:10:32 GMT
+
+Number of Pages: 10
+
+Markdown Content:
+# Fraud Detection System for Banking Transactions 
+
+## Ranya Batsyas 1 and Ritesh Yaduwanshi 2
+
+> 1
+
+Department of AI DS, IGDTUW, Delhi, India. 
+
+> 2
+
+Department of AI DS, IGDTUW, Delhi, India. Contributing authors: ranyabatsyas@gmail.com; riteshyaduwanshi@igdtuw.ac.in; 
+
+Abstract 
+
+The expansion of digital payment systems has heightened both the scale and intricacy of online financial transactions, thereby increasing vulnerability to fraudulent activities. Detecting fraud effectively is complicated by the changing nature of attack strategies and the significant disparity between genuine and fraudulent transactions. This research introduces a machine learning-based fraud detection framework utilizing the PaySim synthetic financial transaction dataset. Following the CRISP-DM methodology, the study includes hypothesis-driven exploratory analysis, feature refinement, and a comparative assessment of baseline models such as Logistic Regression and tree-based classifiers like Random Forest, XGBoost, and Decision Tree. To tackle class imbalance, SMOTE is employed, and model performance is enhanced through hyperparameter tuning with GridSearchCV. The proposed framework provides a robust and scalable solution to enhance fraud prevention capabilities in FinTech transaction systems.  
+
+> Keywords: fraud detection, imbalanced data, HPO, SMOTE
+
+# 1 Introduction 
+
+## 1.1 Background 
+
+The rapid proliferation of digital payment systems and e-commerce platforms has significantly trans-formed the global financial landscape, facilitating millions of transactions daily while concurrently heightening susceptibility to financial fraud. As transaction volumes increase, fraudulent activities have become more prevalent and sophisticated, posing substantial risks to consumers, merchants, and FinTech companies. In 2023, global losses from online payment and e-commerce fraud were esti-mated at US $48 billion with payment-card fraud alone accounting for about US $33.8 billion. It is further estimated that nearly 3–4% of all digital transactions worldwide may be fraudulent, under-scoring the magnitude of the issue. Traditional rule-based fraud detection systems struggle to adapt to evolving fraud strategies and are further constrained by the highly imbalanced nature of financial transaction data, where fraudulent cases are infrequent. This imbalance often results in suboptimal detection performance and elevated false-positive rates. To address these challenges, this project proposes a machine learning–based fraud detection framework utilizing the PaySim synthetic transaction dataset and adhering to the CRISP-DM (Cross-Industry Standard Process for Data Mining) methodology . Multiple classification models—including Logistic Regression, Decision Tree, Random Forest, and XGBoost—are evaluated, with SMOTE applied to enhance minority-class representation. Model performance is primarily assessed using the F1 score, and the best-performing model is further optimized using GridSearchCV to develop a robust and scalable fraud detection system suitable for FinTech environments. 
+
+> arXiv:2604.07952v1 [cs.LG] 9 Apr 2026
+
+## 1.2 Literature Review 
+
+The detection of financial fraud has evolved from static, rule-based systems to data-driven machine learning methodologies. This shift addresses the increasing complexity, adaptability, and data imbal-ance characteristic of fraudulent activities, with behavioral modeling playing a pivotal role in contemporary approaches. Kumar et al. (2022) illustrate that integrating behavioral features—such as transaction frequency, timing, and spending deviations—greatly enhances detection accuracy by identifying subtle anomalies in user behavior. Major challenges in fraud detection, such as class imbalance, feature sparsity, and concept drift, stressing the need for preprocessing strategies like resampling, cost-sensitive learning, and adaptive model updates to ensure robustness in operational settings. A significant body of research identifies ensemble learning as a leading method for fraud detection in imbalanced datasets. Further empha-sizing the importance of temporal and relational data,Cochrane et al. (2021) analyze transaction streams to extract structured and hypothesis-driven features. Their research underscores the added value of contextual information—for example, sequences of transactions and relational links between entities—that help anticipate fraudulent actions earlier than conventional methods. Fan and Boonen (2025) and kumar et al. (2020) demonstrate that tree-based ensemble models, including Random Forests and XGBoost, consistently outperform linear and kernel-based classifiers, especially when used with SMOTE-based oversampling techniques. These findings are supported by Bhattacharyya et al. (2011) , whose comparative study underscores the superior predictive capability of ensemble methods for credit card fraud detection. Makki et al. (2019) and Achary and Shelke (2023) further confirm that imbalance-aware learning strategies improve minority class recognition while reducing false positives. Boosting and cost-sensitive frameworks have gained traction due to their ability to explicitly prioritize fraudulent instances during training. Bala et al. (2024) show the effectiveness of XGBoost for online fraud detection, while Randhawa et al. (2018) propose cost-sensitive boosting algorithms that adaptively reweight misclassification costs to enhance fraud recall. These approaches build on the foundational work of Sun et al. (2007), who established cost-sensitive boosting as a principled solution for imbalanced classification problems. Varmedja et al. (2019) add to these insights with their comprehensive survey that categorizes ML approaches into supervised, unsupervised, and hybrid methods, emphasizing the ongoing relevance of SMOTE and ensemble classifiers, particularly random forests. Recent research extends fraud detection beyond static tabular modeling by incorporating temporal and relational dependencies. Zhang et al. (2025) introduce graph neural network-based methods that capture complex user interactions and fraud communities, enabling the detection of coordinated and organized fraud schemes. Maniraj et al. (2019) focus on ensemble designs aimed at maximizing fraud recall, while V. and R. (2012) demonstrate that classical classifiers such as SVMs remain effective when enhanced with behavior-driven feature engineering. From 2024 onward, the literature increasingly emphasizes deep learning and hybrid architectures to address temporal dynamics and concept drift. Feng (2025) proposes a BiLSTM–Transformer frame-work that significantly improves fraud recall in mobile banking environments. Btoush et al. (2025) show that stacking deep feature extractors with gradient boosting and explainability mechanisms enhances minority class precision on highly imbalanced datasets. Similarly, Tsai (2025) , R and P (2024), and Khosravi et al. (2023) demonstrate that attention-enhanced and sequence-aware models outperform traditional ML approaches in detecting low-frequency and evolving fraud patterns. 
+
+# 2 Methodology 
+
+This study employs the CRISP-DM framework to analyze and model fraudulent financial transactions through its six stages: Business Understanding, Data Understanding, Data Preparation, Modeling, Evaluation, and Deployment. This structured methodology ensures alignment with industry best practices. The primary aim is to develop a robust fraud detection system that achieves high recall with acceptable precision, learns behavioral patterns of fraudulent activity, addresses class imbalance and noisy data, and provides interpretable insights to support risk analysis. 
+
+## 2.1 Data Collection 
+
+We have used the Kaggle dataset “Synthetic Financial Datasets For Fraud Detection” generated by the PaySim mobile money simulator. The dataset includes a wide range of features such as transaction Fig. 1 : Methodology Flowchart amount, transaction type, time of transaction, sender and receiver’s bank account details, etc. This dataset has 10 parameters and nearly 600,000 transactions. The outcome variable is a binary label indicating whether a transaction is fraudulent (1) or legitimate (0). The primary challenge is the significant class imbalance: only 8,213 fraudulent cases (0.129%) exist among 6,362,620 legitimate transactions. 2.2 Data Understanding 
+
+2.2.1 Hypothesis Creation 
+
+Domain specific hypotheses guide the exploratory analysis: 
+
+• H1 - High-Value Transactions: The transaction amount is positively correlated with the like-lihood of fraud. Fraudsters exploit high-value transfers to maximize the monetary gain before detection. 
+
+• H2 - Transaction Type Risk: Fraud is concentrated in TRANSFER and CASHOUT transaction types. These types allow for quick fund movement and conversion to cash, facilitating illegal liquidity extraction. 
+
+• H3 - Mule Account Networks: Recipient accounts that frequently appear in fraudulent transactions suggest “mule” accounts—intermediaries for channeling illicit funds through fraud networks. 
+
+2.2.2 Extrapolatory Data Analysis 
+
+Univariate analysis indicated that fraudulent activities were solely found in the TRANSFER 49.86% and CASHOUT (50.14%) categories, with no instances of fraud in other transaction types, thus supporting Hypothesis 2 and suggesting a sequential fraud pattern where funds are transferred and then withdrawn. 
+
+Fig. 2 : Bar plot showing transaction counts by type, with fraud appearing only in TRANSFER and CASHOUT. 
+
+Fig. 3 : Horizontal bar plot showing the nearly equal split of all fraud cases between TRANSFER (49.86%) and CASHOUT (50.14%) transactions. The analysis of class distribution highlighted a significant imbalance, with fraudulent transactions making up just 0.129% of the total (a ratio of 1:775). Fig. 4 : Horizontal bar plot demonstrating extreme class imbalance. Additionally, correlation analysis revealed a positive link between the amount of the transaction and the likelihood of fraud, which supports Hypothesis 1. 
+
+Fig. 5 : Correlation matrix demonstrating relationships between variables. 
+
+## 2.3 Data Preparation 
+
+2.3.1 Feature Engineering 
+
+After evaluating their empirical variance and predictive value, four features were removed: step, nameOrig, nameDest, and isFlaggedFraud. In the PaySim dataset, the step feature acts as a mono-tonically increasing temporal index that systematically cycles through all transactions, showing no significant separation between classes. Fraudulent and non-fraudulent transactions are almost evenly distributed across its range, with nearly identical class-wise means and standard deviations. Similarly, isFlaggedFraud remains nearly constant ( ≈ 0 for most records), leading to almost zero variance and offering no additional information beyond the target label, making it redundant and potentially problematic due to multicollinearity and noise. On the other hand, nameOrig and nameDest are raw account identifiers that would need aggre-gation or graph-based transformations to be informative, as they do not inherently encode stable behavioral patterns. As a result, the final feature set retained six predictors: type (categorical transaction category), amount (numeric transaction value), oldbalanceOrg and newbalanceOrig (sender’s balances before and after the transaction), and oldbalanceDest and newbalanceDest (recipient’s balances before and after the transaction). 
+
+2.3.2 Categorical Encoding 
+
+Categorical encoding was applied using scikit-learn’s LabelEncoder, converting transaction types into integer values (CASH-IN → 0, CASH-OUT → 1, DEBIT → 2, PAYMENT → 3, TRANSFER → 4). 2.4 Predictive Modelling 
+
+2.4.1 Train-Test Split 
+
+The dataset was then divided using stratified random sampling with a 90:10 train-test split. This stratification produced an X train of shape (5,726,358, 6) with Y train having 5,718,966 non-fraud (0) and 7,392 fraud (1) samples, and an X test of shape (636,262, 6) with Y test containing 635,441 non-fraud (0) and 821 fraud (1) samples, preserving the original fraud prevalence rate of 0.12%. 
+
+2.4.2 Model Development and Training 
+
+To establish performance benchmarks and identify the best candidate for hyperparameter tuning, four baseline classification algorithms were assessed on the imbalanced training dataset: 
+
+• Logistic Regression was applied using L-BFGS optimization (max iter=1000) to create a linear baseline and define interpretable decision boundaries. 
+
+• Decision Tree Classifier (max depth=None, random state=42) was used to capture non-linear feature interactions and establish interpretable decision rules. 
+
+• Random Forest (n estimators=15, random state=42) was evaluated to utilize ensemble bagging for variance reduction and better generalization. 
+
+• XGBoost (max depth=3, learning rate=0.1, random state=42) was configured with native class weighting capability via scale pos weight to address the imbalance. 
+
+2.4.3 SMOTE (Synthetic Minority Oversampling Technique) 
+
+In order to tackle the significant class imbalance, SMOTE was applied solely to the training dataset. This technique generated synthetic samples of the minority class through k-nearest neighbors inter-polation, effectively altering the original imbalance ratio of about 755:1 to a balanced 1:1. The Random Forest model was then trained on this SMOTE-adjusted data, utilizing 15 estimators, parallel processing, and a fixed random seed to ensure the results could be replicated. 
+
+2.4.4 Hyperparameter Optimization (HPO) 
+
+The Random Forest classifier underwent hyperparameter tuning via grid search, employing strati-fied 3-fold cross-validation on the SMOTE-adjusted training data. The search space encompassed crucial parameters such as : n estimators (50, 100), max depth (None, 10), min samples split (2), min samples leaf (1, 2), max features (‘sqrt’), and class weight (‘balanced’), resulting in 16 potential configurations. Class weight=’balanced’ specifically modified the penalty for misclassification costs to ensure that errors involving fraud cases are penalized more severely than those involving legitimate cases, even after SMOTE oversampling. The F1-score served as the optimization metric to balance precision and recall in the context of class imbalance. Stratification maintained class distribution across the folds, and the optimal model utilized class-weighted learning to enhance the SMOTE-based resampling before the final evaluation. 
+
+# 3 Results 
+
+## 3.1 Baseline Models 
+
+3.1.1 Logistic Regression 
+
+Logistic Regression achieved an accuracy of 99.91%; however, the model’s ability to detect fraud was limited, with a recall of just 0.43% and an F1-score of 0.57, indicating a significant bias towards the majority class despite the high overall accuracy. Table 1 : Logistic regression classification report                        
+
+> Precision Recall F1-score Support
+> Non-Fraud [0] 1.00 1.00 1.00 635441 Fraud [1] 0.85 0.43 0.57 821 Accuracy 1.00 636262 Macro avg 0.92 0.72 0.79 636262 Weighted avg 1.00 1.00 1.00 636262
+> Logistic regression model: [[635377, 64], [467, 354]]
+> Accuracy score on Test Data: 0.9991654381371197%
+
+3.1.2 Decision Tree Classifier 
+
+Decision Tree Classifier (max depth=None, random state=42) showed a marked improvement with a 97% fraud recall and an F1-score of 0.84, though the unrestricted tree depth raises concerns about overfitting on the large training set. 
+
+Table 2 : Decision tree classification report                        
+
+> Precision Recall F1-score Support
+> Non-Fraud [0] 1.00 1.00 1.00 635441 Fraud [1] 0.74 0.97 0.84 821 Accuracy 1.00 636262 Macro avg 0.87 0.99 0.92 636262 Weighted avg 1.00 1.00 1.00 636262
+> Decision Tree Classifier Model: [[635153, 288], [22, 799]]
+> Accuracy score on Test Data: 0.9995127793267553%
+
+3.1.3 Random Forest 
+
+Random Forest (n estimators=15, random state=42) achieved the highest F1-score of 0.87, along with outstanding fraud precision (97%) and a 79% recall, indicating an effective balance between precision and recall for the severe class imbalance issue. 
+
+Table 3 : Random forest classification report                        
+
+> Precision Recall F1-score Support
+> Non-Fraud [0] 1.00 1.00 1.00 635441 Fraud [1] 0.97 0.79 0.87 821 Accuracy 1.00 636262 Macro avg 0.98 0.90 0.94 636262 Weighted avg 1.00 1.00 1.00 636262
+> Random forest model: [[635421, 20], [169, 652]]
+> Accuracy score on Test Data: 0.9997029525572798%
+
+3.1.4 XGBoost 
+
+XGBoost (max depth=3, learning rate=0.1, random state=42) achieved a competitive ROC-AUC (0.96) and precision (98%); however, XGBoost showed lower recall (70%) and an F1-score of 0.82 compared to Random Forest. Table 4 : XGBoost classification report                        
+
+> Precision Recall F1-score Support
+> Non-Fraud [0] 1.00 1.00 1.00 635441 Fraud [1] 0.98 0.70 0.82 821 Accuracy 1.00 636262 Macro avg 0.99 0.85 0.91 636262 Weighted avg 1.00 1.00 1.00 636262
+> XGBoost model: [[635427, 14], [245, 576]]
+> Accuracy score on Test Data: 0.9995929349859021%
+
+## 3.2 Model Selection 
+
+Random Forest was selected as the champion baseline model with the highest F1-score of 0.87. 
+
+## 3.3 SMOTE Application 
+
+To achieve a roughly equal class distribution in the training data, SMOTE was employed, increasing the dataset from 5.7 million to 11.4 million samples by creating synthetic examples of the minority class. This approach ensured adequate representation of the minority class during model training and mitigated bias towards the majority class. 
+
+## 3.4 Hyperparameter Optimization Results 
+
+The findings revealed that the enhanced Random Forest model achieved an accuracy of 99.97%, a fraud precision of 92%, a fraud recall of 90%, and an F1-score of 0.91, significantly surpassing the baseline imbalanced model, demonstrating that the dual combination of SMOTE oversampling and hyperparameter optimization substantially enhanced fraud detection performance by addressing both data-level imbalance and algorithm-level bias. 
+
+Table 5 : Random Forest Model Performance                        
+
+> Precision Recall F1-score Support
+> Non-Fraud [0] 1.00 1.00 1.00 635441 Fraud [1] 0.92 0.90 0.91 821 Accuracy 1.00 636262 Macro avg 0.96 0.95 0.95 636262 Weighted avg 1.00 1.00 1.00 636262
+> Random forest model: [[635373, 68], [83, 738]]
+> Accuracy score on Test Data: 0.9997626763817421%
+
+# 4 Conclusion and Future Work 
+
+This study illustrates that combining Random Forest with SMOTE and hyperparameter optimization is highly effective in identifying fraud within significantly imbalanced financial datasets, achieving an impressive 99.97% accuracy and an F1-score of 0.91, which greatly exceeds the performance of baseline models. In operational FinTech settings, it is crucial that the model provides risk scores quickly to prevent delays in real-time transaction approvals. The Random Forest can be implemented as a scalable API microservice, capable of evaluating precomputed features such as type, amount, and balances in milliseconds, while managing peak demands through horizontal scaling. In adversarial situations such as fraud injection, where attackers test decision boundaries or alter patterns (such as dividing high-value transfers), the system needs ongoing drift monitoring, regular retraining, and hybrid protections that integrate machine learning with rule-based overrides to ensure robustness. Future research should explore temporal modeling (using LSTM/Transformers), multimodal fea-tures (like device and geolocation data), and causal inference to improve real-world performance. Additionally, hybrid ensembles that combine machine learning, rules, and domain expertise should be developed to balance fraud prevention with customer experience. Tools for explainability, such as SHAP or LIME, can further guarantee transparency, regulatory compliance, and expert validation of significant feature contributions. 
+
+# 5 Acknowledgements 
+
+I am deeply grateful to Indira Gandhi Delhi Technical University for Women for offering a supportive and encouraging atmosphere. I also wish to extend my thanks to Dr. Ritesh Yaduwanshi, whose guidance, expertise, and unwavering support were instrumental in the success of this research. 
+
+# References 
+
+Achary, R. and Shelke, C. J. (2023). Fraud detection in banking transactions using machine learn-ing. In 2023 International Conference on Intelligent and Innovative Technologies in Computing, Electrical and Electronics (IITCEE) , pages 221–226. IEEE. Bala, B. S., Yadav, P. P., and Reddy, M. R. (2024). An intelligent approach to detect and predict online fraud transaction using xgboost algorithm. Indonesian Journal of Electrical Engineering and Computer Science , 35:1491. Bhattacharyya, S., Jha, S., Tharakunnel, K., and Westland, J. C. (2011). Data mining for credit card fraud: A comparative study. Decision Support Systems , 50:602–613. Btoush, E. A. L. M., Zhou, X., Gururajan, R., Chan, K. C., and Alsodi, O. (2025). Enhancing credit card fraud detection with a stacking-based hybrid machine learning approach. PeerJ Computer Science , 11. Cochrane, N., Gomez, T., Warmerdam, J., Flores, M., Mccullough, P., Weinberger, V., and Pirouz, M. (2021). Pattern analysis for transaction fraud detection. In 2021 IEEE 11th Annual Computing and Communication Workshop and Conference (CCWC) , pages 0283–0289. IEEE. Fan, X. and Boonen, T. J. (2025). Machine learning algorithms for credit card fraud detection: Cost-sensitive and ensemble learning enhancements. Feng, P. (2025). Hybrid bilstm-transformer model for identifying fraudulent transactions in financial systems. Journal of Computer Science and Software Applications , 5(3). Khosravi, S., Kargari, M., Teimourpour, B., Talebi, M., and Eshghi, A. (2023). Fraud detection using temporal sequence embedding and cluster-weighted lstm models in card transactions. Technical report. Kumar, S., Ahmed, R., Bharany, S., Shuaib, M., Ahmad, T., Eldin, E. T., Rehman, A. U., and Shafiq, M. (2022). Exploitation of machine learning algorithms for detecting financial crimes based on customers’ behavior. Sustainability (Switzerland) , 14. kumar, Y., Saini, S., Payal, R., and Professor, A. (2020). Comparative analysis for fraud detection using logistic regression, random forest and support vector machine. International Journal of Research and Analytical Reviews , 7. Makki, S., Assaghir, Z., Taher, Y., Haque, R., Hacid, M. S., and Zeineddine, H. (2019). An exper-imental study with imbalanced classification approaches for credit card fraud detection. IEEE Access , 7:93010–93022. Maniraj, S., Saini, A., Ahmed, S., and Sarkar, S. (2019). Credit card fraud detection using machine learning and data science. International Journal of Engineering Research , 8(9):110–115. R, J. G. and P, A. I. (2024). Attention layer integrated bilstm for financial fraud prediction. 
+
+Multimedia Tools and Applications , 83:80613–80629. Randhawa, K., Loo, C. K., Seera, M., Lim, C. P., and Nandi, A. K. (2018). Credit card fraud detection using adaboost and majority voting. IEEE Access , 6:14277–14284. Sun, Y., Kamel, M. S., Wong, A. K., and Wang, Y. (2007). Cost-sensitive boosting for classification of imbalanced data. Pattern Recognition , 40:3358–3378. Tsai, W. (2025). Deep learning-based financial fraud detection with temporal and feature-level adaptation. Journal of Computing and Electronic Information Management , 18:19–25. V., D. and R., D. (2012). Behavior based credit card fraud detection using support vector machines. 
+
+ICTACT Journal on Soft Computing , 02:391–397. Varmedja, D., Karanovic, M., Sladojevic, S., Arsenovic, M., and Anderla, A. (2019). Credit card fraud detection - machine learning methods. In 2019 18th International Symposium INFOTEH-JAHORINA (INFOTEH) , pages 1–5. IEEE. Zhang, Z., Yin, H., Rao, S. X., Yan, X., Wang, Z., Liang, W., Zhao, Y., Shan, Y., Zhang, R., Lin, Y., and Jiang, J. (2025). Identifying e-commerce fraud through user behavior data: Observations and insights. Data Science and Engineering , 10:24–39.
