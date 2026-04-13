@@ -1,0 +1,54 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2604.02899v1/fig-001.webp",
+      "caption": "Table 2: Minority class F1 scores (%) of the money laundering detection task using the AML datasets and the phishing detection task using the ETH Phishing dataset. NA stands for not available. Standard deviations are calculated over 5 runs with different random seeds. We highlight the first and second best results. GFP and MultiGNN split the train/validation/test sets with the same ratios; while FraudGT use different ratios. We report our results using both versions of splitting.",
+      "page": 6,
+      "index": 1,
+      "width": 1044,
+      "height": 192
+    },
+    {
+      "url": "assets/figures/arxiv/2604.02899v1/fig-002.webp",
+      "caption": "Figure 5: Execution times for the distributed graph features generation, compared to the number of nodes in the data.",
+      "page": 7,
+      "index": 2,
+      "width": 506,
+      "height": 300
+    },
+    {
+      "url": "assets/figures/arxiv/2604.02899v1/fig-003.webp",
+      "caption": "Figure 6: Execution times for the flow-based features generation, compared to the number of aggregated edges in the data.",
+      "page": 7,
+      "index": 3,
+      "width": 506,
+      "height": 306
+    },
+    {
+      "url": "assets/figures/arxiv/2604.02899v1/fig-004.webp",
+      "caption": "Figure 7: Execution times for the temporal flow-based features generation, compared to the number of edges (or transactions) in the data.",
+      "page": 7,
+      "index": 4,
+      "width": 506,
+      "height": 298
+    },
+    {
+      "url": "assets/figures/arxiv/2604.02899v1/fig-005.webp",
+      "caption": "Figure 4: ExSTraQt in production.",
+      "page": 4,
+      "index": 5,
+      "width": 506,
+      "height": 314
+    },
+    {
+      "url": "assets/figures/arxiv/2604.02899v1/fig-006.webp",
+      "caption": "Figure 2: Overview of the framework.",
+      "page": 4,
+      "index": 6,
+      "width": 794,
+      "height": 463
+    }
+  ]
+}

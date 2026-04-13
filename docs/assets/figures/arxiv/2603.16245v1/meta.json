@@ -1,0 +1,70 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2603.16245v1/fig-001.webp",
+      "caption": "Figure 1: Pilot study on TCR. “Any-Correct” denotes the proportion of examples for which either the vision or text modality yields the correct answer.",
+      "page": 1,
+      "index": 1,
+      "width": 438,
+      "height": 420
+    },
+    {
+      "url": "assets/figures/arxiv/2603.16245v1/fig-002.webp",
+      "caption": "Table 2: Recovery rate on examples where both textonly and vision-only inputs fail.",
+      "page": 6,
+      "index": 2,
+      "width": 458,
+      "height": 265
+    },
+    {
+      "url": "assets/figures/arxiv/2603.16245v1/fig-003.webp",
+      "caption": "Figure 3: Prediction alignment barcode for the subset of examples where both unimodal settings fail. Each column represents a single example, and the color intensity indicates the number of correctly localized target coordinates. We categorize the comparison between DiVA-Former and the direct concat baseline into Win, Tie, and Loss groups. DiVA-Former successfully recovers substantially more of these difficult examples than direct concat, demonstrating that its performance gains stem from leveraging complementary cross-modal information to solve cases that unimodal approaches cannot.",
+      "page": 6,
+      "index": 3,
+      "width": 932,
+      "height": 294
+    },
+    {
+      "url": "assets/figures/arxiv/2603.16245v1/fig-004.webp",
+      "caption": "Table 4: Comparison between visual compression and direct text input on long-context benchmarks. Despite strong performance from the visual compression framework, direct text input remains better on most datasets, indicating that current soft-embedding methods still incur non-trivial information loss.",
+      "page": 13,
+      "index": 4,
+      "width": 454,
+      "height": 494
+    },
+    {
+      "url": "assets/figures/arxiv/2603.16245v1/fig-005.webp",
+      "caption": "Figure 4: Hyperparameter analysis of DiVA-Former. Left: training loss curves under different initial gate values g0. Middle: final average score across the 13 benchmarks under different initial gate values g0. Right: final average score under different numbers of DiVA-Former layers.",
+      "page": 8,
+      "index": 5,
+      "width": 917,
+      "height": 226
+    },
+    {
+      "url": "assets/figures/arxiv/2603.16245v1/fig-006.webp",
+      "caption": "Table 1: Main results on 13 table benchmarks. The best results are highlighted in bold, and the second-best results are underlined. Our model delivers the strongest performance on 12 of the 13 benchmarks and surpasses all baselines in overall average score.",
+      "page": 5,
+      "index": 6,
+      "width": 945,
+      "height": 259
+    },
+    {
+      "url": "assets/figures/arxiv/2603.16245v1/fig-007.webp",
+      "caption": "Figure 5: Full-set per-example prediction alignment analysis on TCR. The left region corresponds to examples where DiVA-Former outperforms direct concatenation, the middle region indicates ties, and the right region contains examples where DiVA-Former underperforms. Notably, many examples in the left region are cases that unimodal models and direct concatenation fail to solve at all, while even on some examples in the right region DiVA-Former still recovers a substantial number of coordinates.",
+      "page": 16,
+      "index": 7,
+      "width": 932,
+      "height": 345
+    },
+    {
+      "url": "assets/figures/arxiv/2603.16245v1/fig-008.webp",
+      "caption": "Table 5: Main results with different modality order. Rows with modality T+V are highlighted in red.",
+      "page": 16,
+      "index": 8,
+      "width": 941,
+      "height": 309
+    }
+  ]
+}

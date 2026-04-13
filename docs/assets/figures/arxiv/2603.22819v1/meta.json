@@ -1,0 +1,118 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2603.22819v1/fig-001.webp",
+      "caption": "Figure 1. Comparison of different table recognition paradigms. (a) Modular TR pipelines suffer from complex workflows and suboptimization. (b) End-to-end TR models underperform in datascarce scenarios due to weak detail perception. (c) Our “perceivethen-fuse” framework enhances structure and content awareness and unifies TR and cell localization for robust end-to-end TR.",
+      "page": 1,
+      "index": 1,
+      "width": 494,
+      "height": 379
+    },
+    {
+      "url": "assets/figures/arxiv/2603.22819v1/fig-002.webp",
+      "caption": "Table 3. Comparison with state-of-the-art methods on TabRecSet and iFLYTAB-full. “*” represents our reproduced results, which are obtained by training from scratch using open-source code and configurations. Bold denotes the first performances. “+” indicates that TR results are obtained by post-processing. “†” denotes results from a unified model without dataset-specific fine-tuning.",
+      "page": 6,
+      "index": 2,
+      "width": 414,
+      "height": 347
+    },
+    {
+      "url": "assets/figures/arxiv/2603.22819v1/fig-003.webp",
+      "caption": "Figure 5. Illustration of table content recognition tasks. These tasks leverage diverse document data to enable text recognition, text localization, and reading-order understanding.",
+      "page": 15,
+      "index": 3,
+      "width": 916,
+      "height": 377
+    },
+    {
+      "url": "assets/figures/arxiv/2603.22819v1/fig-004.webp",
+      "caption": "Figure 6. Illustration of table structure understanding tasks. These tasks equip the model with structure-awareness from both the cell level and the row/column level.",
+      "page": 15,
+      "index": 4,
+      "width": 922,
+      "height": 367
+    },
+    {
+      "url": "assets/figures/arxiv/2603.22819v1/fig-005.webp",
+      "caption": "Table 4. The comparison result on Pubtables-1M and PubTabNet. “*” represents our reproduced results, which are obtained by inference using the released weights and official code. Underline denotes the second-best performance. “-ft” denotes further finetuning of our unified model on the PubTabNet. “PDF” and “GT” denote table content extracted from the PDF source file and the ground-truth annotations, respectively.",
+      "page": 7,
+      "index": 5,
+      "width": 431,
+      "height": 518
+    },
+    {
+      "url": "assets/figures/arxiv/2603.22819v1/fig-006.webp",
+      "caption": "Figure 4. The pipeline of unified multi-source table data processing. The pipeline normalizes heterogeneous table annotations from various sources into a unified representation for model training.",
+      "page": 14,
+      "index": 6,
+      "width": 460,
+      "height": 503
+    },
+    {
+      "url": "assets/figures/arxiv/2603.22819v1/fig-007.webp",
+      "caption": "Figure 10. Visualization of table recognition results complex-structure tables. In each subfigure, the left shows the input original table image, and the right presents the HTML-rendered visualization of the corresponding recognition result.",
+      "page": 18,
+      "index": 7,
+      "width": 1036,
+      "height": 550
+    },
+    {
+      "url": "assets/figures/arxiv/2603.22819v1/fig-008.webp",
+      "caption": "Figure 3. The visualization of cell localization on challenging tables, including borderless (b,h), complex-structured (e,d), long (b), and low-quality images (a,g,h).",
+      "page": 8,
+      "index": 8,
+      "width": 494,
+      "height": 403
+    },
+    {
+      "url": "assets/figures/arxiv/2603.22819v1/fig-009.webp",
+      "caption": "Figure 2. (a) The architecture of the model. The model consists of a d vision encoder, a language decoder, and a structure-guided cell localization module, which aggregates cell representations based on TR priors refines cell boxes using multi-resolution visual features. (b) The perceive-then-fuse training strategy for end-to-end table recognition. In the table detail-aware learning phase, we design table structure understanding and content recognition tasks under a language modeling paradigm to enhance fine-grained perception. In the fusion phase, we fine-tune the model for table HTML parsing by aggregating the learned implicitly table details, while jointly training the cell localization module to strengthen cell-level visual alignment.",
+      "page": 4,
+      "index": 9,
+      "width": 1023,
+      "height": 418
+    },
+    {
+      "url": "assets/figures/arxiv/2603.22819v1/fig-010.webp",
+      "caption": "Figure 11. Qualitatively comparison of the cell localization.",
+      "page": 19,
+      "index": 10,
+      "width": 1022,
+      "height": 529
+    },
+    {
+      "url": "assets/figures/arxiv/2603.22819v1/fig-011.webp",
+      "caption": "Figure 8. Visualization of table recognition results on real-world tables. In each subfigure, the left shows the input original table image, and the right presents the HTML-rendered visualization of the corresponding recognition result.",
+      "page": 17,
+      "index": 11,
+      "width": 1014,
+      "height": 535
+    },
+    {
+      "url": "assets/figures/arxiv/2603.22819v1/fig-012.webp",
+      "caption": "Figure 9. Visualization of table recognition results on long tables. In each subfigure, the left shows the input original table image, and the right presents the HTML-rendered visualization of the corresponding recognition result.",
+      "page": 17,
+      "index": 12,
+      "width": 1010,
+      "height": 548
+    },
+    {
+      "url": "assets/figures/arxiv/2603.22819v1/fig-013.webp",
+      "caption": "Table 9. Summary of the training data configurations of the baseline methods. For each method, we report the paradigm, table training data, auxiliary data, whether table-specific fine-tuning is applied, and additional notes.",
+      "page": 16,
+      "index": 13,
+      "width": 1016,
+      "height": 728
+    },
+    {
+      "url": "assets/figures/arxiv/2603.22819v1/fig-014.webp",
+      "caption": "Figure 7. The architecture of the structure-guided cell localization module, illustrated with the row-based cell enhancement example.",
+      "page": 16,
+      "index": 14,
+      "width": 469,
+      "height": 383
+    }
+  ]
+}

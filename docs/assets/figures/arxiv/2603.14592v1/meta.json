@@ -1,0 +1,150 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2603.14592v1/fig-001.webp",
+      "caption": "Figure 4: STC-MixHop sensitivity to MixHop diffusion depth K on the PaySim corpus. Increasing K generally improves ROC-AUC and Precision, while Recall peaks at K = 2, suggesting that moderate topological propagation provides the best balance for identifying elevated-risk nodes.",
+      "page": 25,
+      "index": 1,
+      "width": 814,
+      "height": 246
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14592v1/fig-002.webp",
+      "caption": "Figure 5: STC-MixHop sensitivity to temporal attention dimensionality dk on the PaySim corpus. The performance metrics exhibit sensitivity to the attention size, with an optimal balance for ROC-AUC and Precision found around dk = 64, while Recall reaches its maximum at dk = 96.",
+      "page": 25,
+      "index": 2,
+      "width": 814,
+      "height": 244
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14592v1/fig-003.webp",
+      "caption": "Figure 6: Overall performance comparison on the Porto Seguro dataset across ROC-AUC, PR-AUC, Fβ , and Recall. Graph-based models do not consistently dominate tabular baselines, indicating that strong relational inductive bias is not guaranteed in real-world insurance data.",
+      "page": 26,
+      "index": 3,
+      "width": 814,
+      "height": 221
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14592v1/fig-004.webp",
+      "caption": "Table 6: Overall performance comparison on the FEMA NFIP dataset. All methods are evaluated under the same data split and threshold selection protocol. We report ROC-AUC together with PR-AUC and threshold-dependent metrics to reflect operational behavior under high class imbalance.",
+      "page": 30,
+      "index": 4,
+      "width": 808,
+      "height": 269
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14592v1/fig-005.webp",
+      "caption": "Figure 10: Overall performance comparison on the FEMA NFIP dataset across ROC-AUC, PR-AUC, Fβ , and Recall. The performance gap among methods is modest, highlighting that strong relational inductive bias is not guaranteed across domains and that metric choice (especially PR-AUC and thresholded measures) remains crucial.",
+      "page": 30,
+      "index": 5,
+      "width": 814,
+      "height": 221
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14592v1/fig-006.webp",
+      "caption": "Table 5: Ablation study of STC-MixHop components on the Porto Seguro dataset. Each variant removes one component while keeping all other settings unchanged. Results highlight the relative importance of structural diffusion, temporal modeling, and contrastive regularization.",
+      "page": 29,
+      "index": 6,
+      "width": 806,
+      "height": 182
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14592v1/fig-007.webp",
+      "caption": "Table 2: Complete performance comparison using the PaySim corpus. Thresholds are determined from the validation partition via probability-quantile enumeration and rounded for presentation.",
+      "page": 22,
+      "index": 7,
+      "width": 808,
+      "height": 277
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14592v1/fig-008.webp",
+      "caption": "Figure 2: Complete performance comparison using the PaySim corpus. The bar charts illustrate the performance of STC-MixHop (red) against tabular baselines and other GNN variants across ROC-AUC, PR-AUC, Fβ , and Recall. While tabular methods excel in several ranking metrics, STC-MixHop maintains strong recall characteristics that are valuable for high-recall fraud screening.",
+      "page": 22,
+      "index": 8,
+      "width": 814,
+      "height": 221
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14592v1/fig-009.webp",
+      "caption": "Figure 8: Sensitivity analysis with respect to attention dimension dk on the Porto Seguro dataset. Performance peaks at intermediate dimensions, suggesting diminishing returns from increasing attention capacity under sparse and noisy relational signals.",
+      "page": 28,
+      "index": 9,
+      "width": 814,
+      "height": 244
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14592v1/fig-010.webp",
+      "caption": "Figure 9: Visualization of component ablation results on the Porto Seguro dataset. Removing same-step structural diffusion leads to the most consistent degradation in thresholddependent metrics, while temporal and contrastive components mainly affect precision–recall trade-offs.",
+      "page": 28,
+      "index": 10,
+      "width": 814,
+      "height": 323
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14592v1/fig-011.webp",
+      "caption": "Figure 1: Complete architectural diagram of the STC-MixHop framework. The architecture comprises a multi-hop spatial diffusion encoder (MixHop) for capturing extended-range topological context, a temporal attention fusion module for synthesizing information across snapshots, and a two-stage training protocol involving self-supervised contrastive pretraining followed by supervised fine-tuning.",
+      "page": 13,
+      "index": 11,
+      "width": 814,
+      "height": 446
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14592v1/fig-012.webp",
+      "caption": "Figure 13: Component ablation results on the FEMA NFIP dataset. Removing individual temporal/contrastive components yields only minor changes, supporting the view that these modules mainly act as regularizers under this domain. Interestingly, excluding same-step structural modeling can slightly improve recall, suggesting potential noise from immediate neighborhood signals in this dataset.",
+      "page": 32,
+      "index": 12,
+      "width": 814,
+      "height": 325
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14592v1/fig-013.webp",
+      "caption": "Table 1: Summary of key symbols used throughout this manuscript.",
+      "page": 12,
+      "index": 13,
+      "width": 718,
+      "height": 496
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14592v1/fig-014.webp",
+      "caption": "Table 4: Overall performance comparison on the Porto Seguro auto insurance fraud dataset. All methods are evaluated under the same data split and threshold selection protocol. Besides ROC-AUC, we emphasize PR-AUC and threshold-dependent metrics to reflect operational performance under extreme class imbalance.",
+      "page": 27,
+      "index": 14,
+      "width": 808,
+      "height": 280
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14592v1/fig-015.webp",
+      "caption": "Figure 7: Sensitivity analysis with respect to MixHop depth K on the Porto Seguro dataset. Moderate multi-hop aggregation achieves the best trade-off, while deeper diffusion introduces noise propagation and performance degradation.",
+      "page": 27,
+      "index": 15,
+      "width": 814,
+      "height": 244
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14592v1/fig-016.webp",
+      "caption": "Figure 3: Component ablation study on the PaySim corpus. The results highlight the critical role of multi-resolution spatial diffusion (same-step structure) in maintaining ROCAUC, while also showing the condition-dependent impact of contrastive learning and temporal attention on the model’s overall discriminative power.",
+      "page": 24,
+      "index": 16,
+      "width": 814,
+      "height": 325
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14592v1/fig-017.webp",
+      "caption": "Figure 12: Sensitivity analysis with respect to attention dimension dk on the FEMA NFIP dataset. Results are relatively stable across a wide range of dk, suggesting diminishing returns from increasing attention capacity in this setting.",
+      "page": 31,
+      "index": 17,
+      "width": 814,
+      "height": 241
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14592v1/fig-018.webp",
+      "caption": "Figure 11: Sensitivity analysis with respect to MixHop depth K on the FEMA NFIP dataset. Performance varies mildly across K, indicating that deeper diffusion provides limited marginal benefit under this domain and that moderate multi-hop aggregation is sufficient.",
+      "page": 31,
+      "index": 18,
+      "width": 814,
+      "height": 242
+    }
+  ]
+}

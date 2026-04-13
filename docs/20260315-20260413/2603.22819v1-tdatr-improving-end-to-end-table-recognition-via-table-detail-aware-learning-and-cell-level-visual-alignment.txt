@@ -1,0 +1,590 @@
+Title: TDATR: Improving End-to-End Table Recognition via Table Detail-Aware Learning and Cell-Level Visual Alignment
+
+URL Source: https://arxiv.org/pdf/2603.22819v1
+
+Published Time: Wed, 25 Mar 2026 00:39:42 GMT
+
+Number of Pages: 19
+
+Markdown Content:
+# TDATR: Improving End-to-End Table Recognition via Table Detail-Aware Learning and Cell-Level Visual Alignment 
+
+## Chunxia Qin 1* Chenyu Liu 1,2* Pengcheng Xia 2 Jun Du 1† Baocai Yin 2 Bing Yin 2 Cong Liu 21University of Science and Technology of China 2iFLYTEK Research 
+
+cxqin@mail.ustc.edu.cn Project Page: github.com/Chunchunwumu/TDATR.git 
+
+## Abstract 
+
+Tables are pervasive in diverse documents, making table recognition (TR) a fundamental task in document analy-sis. Existing modular TR pipelines separately model ta-ble structure and content, leading to suboptimal integration and complex workflows. End-to-end approaches rely heav-ily on large-scale TR data and struggle in data-constrained scenarios. To address these issues, we propose TDATR (Ta-ble Detail-Aware Table Recognition) improves end-to-end TR through table detail-aware learning and cell-level visual alignment. TDATR adopts a “perceive-then-fuse” strat-egy. The model first performs table detail-aware learning to jointly perceive table structure and content through mul-tiple structure understanding and content recognition tasks designed under a language modeling paradigm. These tasks can naturally leverage document data from diverse scenar-ios to enhance model robustness. The model then inte-grates implicit table details to generate structured HTML outputs, enabling more efficient TR modeling when trained with limited data. Furthermore, we design a structure-guided cell localization module integrated into the end-to-end TR framework, which efficiently locates cell and strengthens vision–language alignment. It enhances the in-terpretability and accuracy of TR. We achieve state-of-the-art or highly competitive performance on seven benchmarks without dataset-specific fine-tuning. 
+
+## 1. Introduction 
+
+Tables convey structured data that bridges visual layouts and semantic information [5]. Tables are pervasive across diverse domains such as scientific publications [7, 68], in-voices [26], and financial reports [67]. Table recognition (TR) converts table images into machine-readable formats (e.g., HTML, LaTeX). Accurate TR facilitates downstream applications such as retrieval augmented generation [62], 
+
+> *Equal contribution
+> †Corresponding author, jundu@ustc.edu.cn
+
+(a) Modular  Dataset Specific TR  
+
+> TSR TCR
+> Post -processing
+> Data Limited
+> Interpretability
+> Complex Workflow
+> Sub -optimization
+> VL Model
+
+(b) End -to -End   
+
+> Multi -Source Data for
+> Table Detail -Aware Learning
+> VL Model
+> Dataset Unified End -to -End TR
+> TR Data for
+> Table Detail Fusion Training
+> Cell Localization Module
+
+(c) Ours 
+
+> Dataset Specific Training
+> Robustness
+> Fine -grained Alignment
+> Visual
+> Alignment
+
+Figure 1. Comparison of different table recognition paradigms. (a) Modular TR pipelines suffer from complex workflows and sub-optimization. (b) End-to-end TR models underperform in data-scarce scenarios due to weak detail perception. (c) Our “perceive-then-fuse” framework enhances structure and content awareness and unifies TR and cell localization for robust end-to-end TR. 
+
+document understanding and document digitization [3, 28]. Most existing TR systems follow a modular design, de-composing TR into two subtasks: table structure recogni-tion (TSR) [5] and table content recognition (TCR) [44]. Each component is trained independently, and the final TR result is obtained through post-processing [1], as shown in 1(a). However, this separation overlooks the inherent inter-dependence between structure and content, resulting in sub-optimal integration and error accumulation. Specifically, table structures provide strong priors for constraining con-tent boundaries, which guide the localization of text lines and prevent confusion between column separators and inter-character spacing. Semantic continuity of cell content [65] helps distinguish visually adjacent cells, providing cues for structure recognition. Recent studies [10, 48, 68] attempt to unify TSR and 
+
+> arXiv:2603.22819v1 [cs.CV] 24 Mar 2026
+
+TCR into a single vision–language model that directly gen-erates structured outputs. While simplifying the pipeline, this paradigm relies heavily on large-scale annotated TR. Real world TR data are scarce due to the high cost of label-ing both table structure and content [6]. Consequently, end-to-end TR [10, 66, 68] models often struggle to generalize robustly to diverse real-world tables. Moreover, most exist-ing approaches only predict TR result without explicit spa-tial correspondence (e.g., cell locations) [10, 66, 68], limit-ing the interpretability and applicability of TR results. Cur-rent end-to-end TR models typically rely on generic doc-ument [10, 27] or vision pre-training [38], neglecting the fine-grained perception of table structure and content that is essential for precise table recognition. To address these limitations, we propose TDATR (Ta-ble Detail-Aware Table Recognition), a framework that en-hances end-to-end TR through detail-aware learning and cell-level visual alignment. TDATR follows a “perceive-then-fuse” strategy. In the perception stage, the model performs table detail-aware learning through our unified structure understanding and content recognition tasks un-der a language modeling paradigm. This equips model with strong table-detail perception and allows effective pre-training on large-scale and multi-domain data. In the fu-sion stage, the model integrates the implicitly learned ta-ble details to generate structured HTML outputs using only limited TR data. This paradigm effectively decouples TR capability learning and alleviates the difficulty of model-ing TR sequences from scratch. Furthermore, we introduce a structure-guided cell localization module that efficiently localizes cell positions and strengthens vision–language alignment through structure priors and multi-level visual features, improving both interpretability and accuracy. Ex-perimental results on seven public benchmarks across dif-ferent scenarios demonstrate the effectiveness and robust-ness of our method. Additionally, ablation studies further validate the efficacy of our key designs. Our main contributions are summarized as follows. 1. We propose a “perceive-then-fuse” strategy that reduces reliance on large-scale labeled TR data and simplifies the end-to-end sequence modeling of TR. 2. We design table detail-aware learning that unifies struc-ture understanding and content recognition through a set of pretraining tasks under a language modeling paradigm, enabling effective utilization of diverse doc-ument data to enhance model robustness. 3. We develop a structure-guided cell localization module that refines cell boxes via structure priors and multi-level visual features, enhancing visual alignment and TR ac-curacy. 4. We evaluate our unified model on seven public bench-marks without dataset-specific fine-tuning, demonstrat-ing strong performance and robustness across diverse ta-ble styles and scenarios. 
+
+## 2. Related Work 
+
+Modular table recognition methods employ two sepa-rate models for table structure recognition (TSR) and ta-ble content recognition (TCR). The TSR model aims to ac-quire the physical and logical coordinates of cells. TSR models [2, 31, 32, 51, 63, 64] under the split-and-merge paradigm recover the grid structure of tables by detecting row and column separators, then merge grids into cells to generate TSR results. However, this approach assumes con-tinuous boundaries for cells in the same row or column, making it difficult to handle misaligned tables. Detect-based TSR models [21, 22, 55] obtain table structures by first detecting table cells and then recognizing their log-ical coordinates, but they are limited by ambiguous cell boundary definitions in borderless tables. Image-to-markup based TSR methods [15, 65] represent table structures as markup sequences (e.g., HTML, LaTeX). However, they require large-scale training data. The TCR models local-ize and recognize text lines in tables using existing OCR models [9, 24, 37, 44, 61]. Text lines are assigned to cells via IoU-based [1] or logical-based [38] post-processing to produce final results. However, since TSR and TCR are trained independently, their inter-dependencies cannot be exploited, leading to suboptimal performance and inevitable error accumulation in fusion. 
+
+End-to-end table recognition methods integrate TSR and TCR into a unified framework, and can be broadly classified into multi-decoder and single-decoder paradigms. Multi-decoder methods adopt separate decoders for struc-ture and content generation to decouple the modeling com-plexity of long TR sequences. EDD [68] uses two de-coders to decode structure tokens and cell content sepa-rately. Nam Tuan Ly et al. [29] propose an image encoder with three decoders, which generate table structure tokens, cell content, and cell boxes respectively. OmniParser [48] first generates a Structured Points Sequence to represent ta-ble structures and cell center coordinates, then uses these points as prompts to parse cell content. Single-decoder methods utilize a unified decoder to decode table markup sequences. Dolphin [10] models TR as HTML sequence. To improve efficiency and eliminate redundancy in HTML representations, mPLUG-DocOwl1.5 [13] adopts a concise Markdown-like format, while SmolDocling [34], Miner-U2.5 [35] and PaddleOCR-VL [8] represent tables using OTSL [30]. Due to the inherent difficulty of TR, acceptable end-to-end TR performance in practice is often achieved by integrating expert OCR VLMs [8, 35, 42, 48, 54] that rely heavily on large-scale document pre-training and extensive table-specific fine-tuning. However, these models largely overlook explicit perception of table structures, resulting in suboptimal utilization of structural cues and limited overall recognition quality. 
+
+Cell localization is a fundamental step that bridges vi-sual table layouts and structured representations. Early ap-proaches employ general object detection architectures [4, 43, 69] to detect individual cells [45] within modular sys-tems. However, their performance degrades in dense or borderless tables due to ambiguous cell boundaries and ex-treme aspect ratios. Subsequent works embed cell localiza-tion within end-to-end TR frameworks by leveraging hid-den states of table representation tokens to regress [29] or generate [65] cell boxes. Nevertheless, [15, 29] essentially predicts bounding boxes for cell contents, neglecting empty cells. Coordinate generation methods [13, 28, 66] represent cell positions with discrete tokens and generate them se-quentially, which results in low efficiency for large tables. To address these limitations, we design a structure-guided cell localization module, which fully exploits multi-level image features and structural priors to refine cell boundaries in parallel, achieving both higher accuracy and efficiency. 
+
+## 3. Methodology 
+
+As illustrated in Fig. 2(a), our model consists of a visual en-coder, a multi-modal language decoder, and the structure-guided cell localization module. Our method follows a “perceive-then-fuse” strategy to achieve accurate and robust end-to-end TR, as shown in Fig. 2(b). In the perception stage, we perform table detail-aware learning. The model is pretrained to capture fine-grained table structure and con-tent, under a unified language modeling paradigm. In the fusion stage, the model generates the final structured table outputs from the visual and textual features learned during the perception stage. The following sections elaborate on the model architecture and training strategy. 
+
+3.1. Model Architecture 
+
+Our vision-language model extracts multi-scale visual fea-tures and generates task-specific answer. 
+
+Vision Encoder . Inspired by works such as Donut [16] and Dolphin [10], we adopt Swin Transformer [25] as our visual encoder. It encodes the input image into a feature pyramid P = {Pi ∈ Rdi× H   
+
+> 2i×W
+> 2i
+
+| i = 3 , 4, 5}, correspond-ing to down-sampling rates of 8×, 16 ×, and 32 ×, respec-tively. To enhance image features, we fuse adjacent resolu-tion features as follows: 
+
+P′ 
+
+> i
+
+= Conv i1(Pi) + Conv i2(Up 2×(Pi+1 )) , i = 3 , 4 (1) Here, Conv denotes a 2D convolution operation, and Up 2×
+
+denotes a 2× upsampling operation. The enhanced features 
+
+P′ 
+
+> i
+
+are fed into the structure-guided cell localization module to refine cell boundaries. For P′ 
+
+> 4
+
+, 2D learnable absolute po-sitional embeddings [56] are appended, and the result is flat-tened to obtain the visual tokens V, which are subsequently used to enrich textual representations within the language decoder. 
+
+Language Decoder . Inspired by works such as Donut [16], we construct a language decoder by stacking 
+
+ls causal self-attention blocks [47] and lc cross-attention blocks [19] to model cross-modal interactions. A text embedding module is employed to embed task-specific prompts into textual tokens T. In the cross-attention blocks, visual tokens V serve as keys and values, while textual to-kens act as queries. The textual decoder generates task-specific answers via next token prediction, following the textual tokens. 
+
+Structure-guided cell localization (SGCL) . The SGCL module leverages the hidden states of the language decoder to refine cell boxes. We first extract cell-level representa-tions from the hidden states hi of different layers and to-ken positions in the language decoder. Shallow layers cap-ture more visual cues, while deeper layers encode linguistic and structural information [50]. We aggregate these hidden states of different layers using learnable weights wi to ob-tain H. Next, for each cell, we perform average pooling over the range between between the “ <td ” and “ </td> ”tokens to obtain the initial cell representation C. To exploit spatial correlations among cells within the same row or col-umn, we project C into row and column feature spaces via linear layers. 
+
+Ck = Linear k(C), k = row , column (2) We compute adjacency matrices from pairwise inner prod-ucts of cell representations and derive structure masks Mk
+
+through thresholding. 
+
+Mkxy =
+
+(1, Sigmoid (⟨Ckx, Cky ⟩/dim (Ck)) > 00, Others (3) The obtained masks are then used to guide bidirectional contextual attention, enhancing C to obtain the enhanced representation C′, as illustrated in Fig. 2(a). A more de-tailed illustration of the row-based cell representation fea-ture enhancement is provided in Appendix E. We regress initial cell boxes Binit based on C′ using a simple MLP. To mitigate overlaps and positional offsets caused by the language decoder’s bias toward linguistic fea-tures, we further refine Binit with multi-resolution visual features P′ 
+
+> 3
+
+and P′ 
+
+> 4
+
+through ld DAB-DETR decoder lay-ers, yielding accurate cell boxes B. Unlike standard DAB-DETR [23], our anchors are initialized from the hidden states of TR cell representations, ensuring a one-to-one cor-respondence with TR outputs and eliminating the need for post-processing. We further remove the unstable bipartite matching process to stabilize training and accelerate con-vergence. Document Image                                            
+
+> Textual Decoder
+> Vision Encoder
+> 𝐓 2D Learnable
+> Position Embedding
+> Task -specific Answer
+> Structure -guided
+> Cell Localization
+> ……
+> …
+> 𝐏 𝟑
+> ′
+> 𝐏 𝟒
+> ′
+> …
+> table HTML parsing?
+> True
+> 𝐏 𝟒
+> ′&𝐏 𝟑
+> ′
+> Task -specific Prompt
+> Answer
+> Hidden States
+> ………<td> √<td> <td CS =2>TO </td> ...
+> Structure -Guided
+> Attention
+> Sim Cross Att
+> Row -based Att
+> Col -based Att
+> Self Att ×N
+> ML P
+> Refine -
+> ment
+> Column
+> Mask
+> 𝐂’
+> 𝐁 𝐢𝐧𝐢𝐭 𝐁
+> Answer Hidden States
+> (a) Model Architecture (b) Training Strategy
+> Row
+> Mask
+> Avg Pooling
+> 2. Table Detail Fusion
+> Vision Encoder &Textual Decoder
+> Vision Encoder &Textual Decoder
+> &Structure -guided Cell Localization Module
+> 1. Table Detail -Aware Learning
+> Structure Tasks Content Tasks
+> Structure parsing Markdown parsing
+> Table element detection Text spotting
+> 𝐕 Visual Tokens 𝐓 Textual Tokens
+> 𝐏 i′Image Feature 𝐁 𝐢𝐧𝐢𝐭 Cell Initial Boxes
+> 𝐂 ′Cell Location
+> Representation
+> ⊕Add Operation
+> Fusion Task
+> Table HTML P arsing
+> with Cell Localization
+
+TODO 
+
+Check  Submit 
+
+√ √
+
+# T
+
+# 9 
+
+> 𝐏 𝟒
+> ′&𝐏 𝟑
+> ′
+> 𝐕
+> 𝐕
+
+TODO 
+
+Check  Submit 
+
+√ √Figure 2. (a) The architecture of the model. The model consists of a d vision encoder, a language decoder, and a structure-guided cell localization module, which aggregates cell representations based on TR priors refines cell boxes using multi-resolution visual features. (b) The perceive-then-fuse training strategy for end-to-end table recognition. In the table detail-aware learning phase, we design table structure understanding and content recognition tasks under a language modeling paradigm to enhance fine-grained perception. In the fusion phase, we fine-tune the model for table HTML parsing by aggregating the learned implicitly table details, while jointly training the cell localization module to strengthen cell-level visual alignment. 
+
+3.2. Training Strategy 
+
+End-to-end table recognition requires three essential capa-bilities: table structure understanding, table content recog-nition, and table detail fusion [15, 65]. While previ-ous works often learn these abilities jointly from large-scale TR data, our approach follows a “perceive-then-fuse” paradigm. We first perform table detail-aware learning to establish structure and content perception. The model then learns table HTML parsing to aggregate implicitly learned table details, accomplishing table recognition with explicit cell localization. 
+
+3.2.1. Table Detail-Aware Learning 
+
+This stage aims to endow the model with both table struc-ture understanding and table content recognition capabili-ties under a unified language modeling framework. 
+
+Table content recognition. To develop content recog-nition, we design three multi-granularity OCR tasks in-spired by Kosmos 2.5 [28]. Leveraging large-scale rich-text corpora from diverse sources, these tasks equip the model with fundamental abilities in text recognition, text localiza-tion, and reading order comprehension. The use of diverse visual-text data enhances the model’s robustness to com-plex documents and reduces its reliance on specialized table datasets. 
+
+Spatially ordered text spotting . The model outputs text lines in their spatial reading order, with an optional coordinate-free variant focusing solely on content. This task builds basic text recognition and localization capabilities. 
+
+Text spotting with box query . Given a document region specified by a bounding box, the model performs spatially ordered text spotting to recognize and localize text lines. A coordinate-free variant focuses solely on textual extraction. This task enhances the localization capability of model. 
+
+Markdown parsing. The model converts document im-ages into Markdown format, reconstructing both textual content and layout, thereby developing document layout awareness. 
+
+Table structure understanding . To enhance table structure understanding, we designed table structure under-standing tasks. These tasks are divided into cell-level and row-column-level tasks, allowing the model to perceive ta-ble structures at multiple hierarchies. 
+
+Table element detection tasks . The table cell detection task outputs cell coordinates in logical order, enabling the model to perceive cell spatial extents. The span cell de-tection task predicts the coordinates of span cells together with their corresponding row and column ranges. Since span cells are a major challenge in table recognition, this specialized task is designed to enhance the model’s percep-tion of hierarchical table structures and spatial dependen-cies among span cells. The row and column detection task sequentially outputs row and column boundaries, followed by the corresponding cells within each. Modeling rows and columns encourages global structural perception, while their alignment with cell boundaries enhances the model’s understanding of span relationships. 
+
+Table structure parsing . This task outputs the structural representation of a table (in Markdown or HTML format), enabling the model and perceive the global logical organi-zation of table elements. In table detail-aware learning, all tasks adhere to the next-token prediction paradigm, and are supervised by cross-entropy loss Lce .
+
+3.2.2. Table Detail Fusion Fine-tuning 
+
+After detail-aware learning, the model gains strong aware-ness of structural and textual elements. We then conduct fusion fine-tuning to integrate these details for end-to-end table recognition. Specifically, the model is trained on an HTML-based table parsing task, where it directly generates HTML sequences that jointly encode table structure and content. Meanwhile, the cell localization module is opti-mized to predict precise cell coordinates, ensuring spatial consistency with textual outputs. In table detail fusion fine-tuning, the table HTML parsing task also conforms to the next-token prediction paradigm with cross-entropy loss Lce . For the SGCL mod-ule, we design three types of losses. A regression loss Lb
+
+and an IoU loss Liou [23] for cell regression. A mask align-ment loss Lm using a Mask-DINO [18]-style segmentation head to enhance the alignment between cell representation 
+
+C′ and image features P′
+
+> 4
+
+; A structure-guided loss Ls to op-timize the cell row–column relationship matrix using BCE loss. The final fine-tuning loss is denoted as Lf, where λi
+
+represents the weight corresponding to each loss. In practi-cal experiments, we adjust λi to balance the magnitudes of all losses. 
+
+Lf = λce ×Lce +λb×Lb+λiou ×Liou +λm×Lm+λs×Ls (4) 
+
+## 4. Data Preparation 
+
+The data used in our experiments can be categorized into two main groups, document data and table data. 
+
+4.1. Document Data 
+
+As table content recognition data primarily govern the model’s ability to understand textual content, spatial lay-outs, and robustness in real-world scenarios, we utilize a large and diverse collection of Chinese and English doc-ument datasets to ensure strong generalization across do-mains and scenarios. We collected a substantial amount of Chinese and English data for content recognition, shown in Table. 1. All data are used in spatially ordered text spotting task and text spotting with box query task. README files are used in Markdown parsing task. For data from different sources, we employed distinct processing workflows due to their varying formats [3, 28]. More details are provided in Appendix A.                                    
+
+> Table 1. The data are used for table content recognition tasks. “ZH” and “EN” denote Chinese and English datasets, respectively. “R” indicates real-world data. “D” represents digitally-born data.
+> Data Source Number Samping Rate Type Webpage ZH 2.1M, EN 12.3M 0.2 R,D Paper ZH 71M, EN 55.6 M 0.4 DWuKong [12] ZH 42.2M 0.1 RREADME 1.1M 0.1 R,D In-house 12M 0.2 R,D
+> Table 2. Table data statistics used in the table structure understand-ing tasks and table HTML parsing task. The amount of real-world table data is limited.
+> Real-World Tables Digitally-Born Tables Data Source Number Data Source Number iFLYTAB [64] ZH 12k PubTables-1M [45] EN 721k iFLYTAB-Aug ZH 82K PubTabNet [68] EN 489k WTW [26] 10K Table generation ZH 924k TabRecSet [57] 30.5K Re-render table ZH 184k
+
+4.2. Table Data 
+
+The table data are collected from both public datasets and synthetic corpora, as summarized in Table 2. We employ two complementary synthesis strategies: (1) table genera-tion, which produces tables with complex layouts, and (2) re-rendering web-crawled HTML tables to introduce realis-tic structures and diversify the data distribution. We fur-ther augment real-world table recognition data using an improved Identity Matrix-Based Augmentation [6], which crops table sub-regions for enrichment. Annotations from heterogeneous table datasets are unified into a consistent format to enable consistent data usage across all table-related tasks. All table data are used for table detail-aware learning. For table detail fusion fine-tuning, we sample data from five public datasets, including iFLYTAB-full [64], TabRecSet [57], PubTabNet, PubTables-1M [45], and FinTabNet [67], covering diverse table structures and languages. Additional implementation details are provided in Appendix B. To establish a challenging benchmark for Chinese table recognition, we manually completed the text annotations in the iFLYTAB [64] dataset, forming a new dataset termed 
+
+iFLYTAB-full . This dataset, which will be released pub-licly, contains a variety of wireless and camera-captured ta-bles with complex structures and degraded image quality, closely reflecting real-world scenarios. 
+
+## 5. Experiment 
+
+5.1. Implementation Details 
+
+We adopt the Donut Chinese model with a Swin-Transformer (300M) as the visual encoder, and aTransformer-based decoder (300M) as the language de-coder, consisting of Ls = 6 causal self-attention blocks and Lc = 3 cross-attention blocks. In the structure-guided cell localization (SGCL) module, the bidirectional enhance-ment branch includes 2 self-attention blocks and 1 cross-attention block. The number of DAB-DETR decoder layers 
+
+Ld is set to 3. Both the visual encoder and the language decoder are jointly optimized in both training stages, while the structure-guided cell localization module is trained only during the fine-tuning stage. After fine-tuning, we obtain a unified end-to-end table recognition model without per-forming any additional fine-tuning on individual datasets. Each stage is trained for 3 epochs using 16×64GB 910B NPUs. The maximum decoding length is set to 4096 tokens. Input images are resized so that both width and height are multiples of 256, and the longer side does not exceed 2048 pixels. All element locations are represented by rectangu-lar bounding boxes, defined by the top-left and bottom-right corner coordinates, which are normalized to the image size. In generative tasks, coordinates are discretized, while in the structure-guided cell localization module, they remain con-tinuous to support precise regression. We balance the train-ing objectives by weighting their losses with empirical co-efficients, λb = 0 .05 , λiou = 0 .03 , λm = 0 .03 , λs = 0 .05 ,and λce = 1 .0. Additional implementation details are pro-vided in Appendix C. 
+
+5.2. Evaluation Benchmarks and Metrics 
+
+We evaluate our method on seven table recognition bench-marks. These benchmarks together span diverse domains, languages, and scene conditions, enabling a thorough eval-uation of our model. The iFLYTAB-full [64] and TabRec-Set [57] datasets are derived from real-world Chinese and English scenarios, featuring challenging cases such as con-tain challenging cases such as borderless tables, table region deformations, and low image quality. PubTabNet [68] and PubTables-1M [45] consist of English digital tables sourced from the PMCOA corpus. Notably, tables in PubTables-1M exhibit higher structural consistency, effectively mitigating the over-segmentation ambiguity observed in PubTabNet. OmniDocBench 1.5 [36], CC-OCR [58], and OCRBench v2 [11], which are originally designed for evaluating the OCR performance of multimodal large models. We retain only samples related to table recognition. Additional de-tails about the evaluation benchmarks are provided in Ap-pendix F. We evaluate the effectiveness of table recognition using Tree-Edit-Distance-based Similarity (TEDS) [68]. For table structure recognition, we report TEDS-S(tructure). To mea-sure table content accuracy, we adopt TEDS-Delta, defined as: TEDS-Delta = TEDS − TEDS-S. For cell detection, we use the AP 50 metric [20], considering all table cells, in-cluding borderless and empty cells.                                      
+
+> Table 3. Comparison with state-of-the-art methods on TabRecSet and iFLYTAB-full. “*” represents our reproduced results, which are obtained by training from scratch using open-source code and configurations. Bold denotes the first performances. “+” indicates that TR results are obtained by post-processing. “ †” denotes re-sults from a unified model without dataset-specific fine-tuning.
+> TabRecSet Type Method TEDS-S ↑TEDS ↑
+> TSR TableMaster [60] 93.13 -LORE ∗[55] 96.82 -BGTR (PT) [14] 97.21 -E2E-TR EDD [68] 90.68 70.70 TDATR †97.27 92.70 iFLYTAB-full
+> TSR LORE ∗[55] 87.83 -UniTabNet [65] 94.00 -BGTR (PT) [14] 92.00 M-TR SEMv3 ∗
+> +PPOCR [40] 93.46 77.40 OCR-VLM MinerU2.5 †[49] 64.16 58.47 DeepSeek-OCR †[54] 77.44 84.36 PaddleOCR-VL †[8] 76.04 81.48 E2E-TR TDATR †96.59 93.22
+
+5.3. Table Recognition Results 
+
+We compare our method with expert TSR models, modu-lar TR systems (M-TR), end-to-end TR models (E2E-TR), and expert OCR VLMs across two dimensions, table recog-nition and table structure recognition. These comparisons comprehensively validate the effectiveness of our approach from both structural and content perspectives. Notably, a single unified model is evaluated on all benchmarks without any dataset-specific fine-tuning, demonstrating strong gen-eralization and robustness. We further provide qualitative HTML parsing results for various table types in Appendix I. 
+
+Results on real-world tables . As shown in Table 3, our method establishes new SOTA results on both iFLYTAB-full and TabRecSet. The TSR performance of our method outperforms existing expert TSR models. This result high-lights the beneficial impact of table content recognition on table structure recognition within end-to-end table recog-nition systems. Our method shows a significant perfor-mance gap compared to other TR approaches. Specifi-cally, on iFLYTAB-full, it outperforms the modular TR method SEMv3+PPOCR by 15.82% in TR performance. On TabRecSet, it surpasses the end-to-end TR method EDD by 6.59% in TR performance. More importantly, our method requires far less fine-tuning data yet still achieves SOTA performance, highlighting its robustness and effec-tiveness. 
+
+Results on digitally-born tables . In digital scenarios, our method achieves SOTA TR performance on PubTab-Net and PubTables-1M, as shown in Table 4. Additionally, compared to modular TR methods, our approach achieves better alignment between table structure and content, mit-Table 4. The comparison result on Pubtables-1M and PubTabNet. “*” represents our reproduced results, which are obtained by in-ference using the released weights and official code. Underline denotes the second-best performance. “-ft” denotes further fine-tuning of our unified model on the PubTabNet. “PDF” and “GT” denote table content extracted from the PDF source file and the ground-truth annotations, respectively.                                                                                    
+
+> PubTables-1M Type Method TEDS-S TEDS TEDS-D ↓
+> TSR UniTabNet [65] 98.73 --TabPedia †[66] 95.66 DETR
+> +PDF 97.65 --OCR-VLM GOT †[53] -36.84 -Dolphin †[10] 96.82 95.48 1.34 E2E-TR TDATR †98.39 97.97 0.42 PubTabNet-Val
+> TSR GTE [67] 93.01 --Davar-Lab [60] 96.36 --TabPedia †[66] 95.41 --LORE ∗[55] 94.55 --M-TR LGPMA
+> +R2AM [39] 96.70 94.60 2.10 TableFormer
+> +GT [33] 96.75 93.60 3.15 RapidTable [41] 96.43 86.57 9.86 OCR-VLM DocOwl1.5 †[27] 67.53 54.67 12.86 OmniParser †[48] 90.45 88.83 1.62 Dolphin †[10] 93.35 91.3 2.05 dots.ocr †[42] 93.76 90.65 3.11 MinerU 2.5 †[35] 93.11 89.07 4.04 PaddleOCR-VL ∗,†[8] 91.62 87.27 4.35 E2E-TR EDD [68] 89.9 88.3 1.6 TDATR †96.27 95.12 1.15 TDATR-ft 96.84 96.10 0.74
+
+igating error accumulation caused by post-processing. As demonstrated in Table 4, our method achieves SOTA per-formance in TEDS-D. Howere, our method slightly un-derperform the best TSR models. This gap mainly stems from two factors. First, our fine-tuning uses only 0.4× of PubTables-1M and 0.6× of PubTabNet training data, result-ing in a substantially limited data-fitting. In stark contrast to TableFormer [33], which relies on 24× more training data. Further fine-tuning for two more epochs on PubTab-Net (TDATR-ft) significantly improves both TSR and TR accuracy, confirming the benefit of additional data. Sec-ond, our method models complete TR sequences, which are about twice as long as TSR-only sequences, increasing gen-eration difficulty. Nevertheless, our method outperforms Dolphin (a method with the same modeling approach) by 2.5% in TEDS on both datasets, validating the effectiveness of our table detail aware learning. 
+
+Comparison with VLM on unseen domain . We compared TDATR with general-purpose MLLMs, includ-ing MiniCPM-V 4.5 [59], Qwen2.5-VL-72B [46], and QwenVL-2.5-72B [46], as well as expert OCR vision-language models (VLM), including dots.ocr [42], MinerU2-VLM [49], MinerU2.5 [35], and PaddleOCR-VL [8], for ta-ble recognition. As shown in Table 5, our method achieves 
+
+Table 5. The comparison of our method with various MLLMs and expert OCR VLM for table recognition.                                                         
+
+> Method OmniDocBench1.5 CC-OCR OCRBenchv2 TEDS-S TEDS TEDS-S TEDS TEDS-S TEDS MiniCPM-V 4.5 [59] --68.49 77.55 85.65 80.28 InternVL3.5-241B [52] --62.87 69.52 85.81 79.50 Qwen2.5-VL-72B [46] --86.48 81.22 86.58 81.33 dots.ocr [42] 84.42 81.94 81.65 75.42 86.27 82.04 MinerU2-VLM [49] 93.69 90.02 71.80 64.61 78.24 73.22 MinerU2.5 [35] 95.39 90.05 85.16 79.76 90.26 87.13 PaddleOCR-VL [8] 95.43 91.95 ----TDATR 93.01 87.96 88.53 84.19 92.60 87.36
+
+SOTA performance on CC-OCR and OCRBenchv2 among expert OCR-VLMs, and competitive performance com-pared to Gemini 2.5 Pro, while also performing strongly on OmniDocBench1.5. Notably, our model is substantially smaller and trained with far fewer resources. It requires only limited fine-tuning on publicly available datasets, whose scale and diversity are significantly lower than those used by other VLMs. These results demonstrate that TDATR generalizes effectively and exhibits strong robust-ness across diverse table scenarios. 
+
+5.4. Cell Localization Results 
+
+Table 6 compares different cell localization methods. Our method achieves SOTA performance across both real-world and digital table scenarios. Visual-based methods (SEMv3, LORE) lack global table structure information, leading to ambiguous boundaries and suboptimal localiza-tion. UniTabNet leverages implicit cell information with location token classification, but compressing 8-point cell coordinates into a single token increases training difficulty. ED Loc Gen autoregressively generates interleaved TR HTML and cell locations, but at the cost of 33% longer sequences and slower inference. We further visualize cell localization results on representative challenging tables, including borderless, complex-structured, long, and low-quality images (see Fig. 3). In contrast, TDATR employs structure-guided parallel cell localization: implicit cell rep-resentations provide coarse localization, multi-resolution image features refine boundaries, and structure cues further enhance the representations. This design achieves more ac-curate localization, faster convergence, and efficient infer-ence. Additional visual comparisons of cell localization are provided in Appendix J. 
+
+5.5. Ablation Studies 
+
+The effectiveness of table detail-aware learning . Table detail fusion achieves end-to-end table recognition through table HTML parsing. We use table detail fusion as the base-line, as shown in Table 7 T0. We explored the impact of able detail-aware learning on table recognition performance on the iFLYTAB-full and PubTabNet datasets, with results shown in the Table 7. Compared to the baseline T0, T1 and (a)    
+
+> (b) (c) (d)
+> (e)
+> (f) (g)
+> (h)
+
+Figure 3. The visualization of cell localization on challenging ta-bles, including borderless (b,h), complex-structured (e,d), long (b), and low-quality images (a,g,h). Table 6. Comparison of table cell localization results with differ-ent localization methods on iFLYTAB-full and PubTabNet. “ED Loc Gen” denotes the using TDATR’s encoder and decoder to au-toregressively generate interleaved sequences of table recognition HTML and discrete cell coordinates.                    
+
+> Model Cell Loc Method iFLYTAB-full PubTabNet AP50 AP50 SEMv3* Split-and-Merge 92.92 85.12 LORE* CornerNet [17] 91.87 -UniTabNet* Loc Token Parallel Clf 88.43 89.67 ED Loc Gen Loc Token Sequential Clf 93.52 90.26 TDATR Structure-guided Cell Loc 94.37 91.80
+
+T2 demonstrate the contributions of table structure under-standing tasks and table content recognition tasks to table recognition. T3 represents the complete two-stage training, demonstrating the effectiveness of table detail-aware learn-ing. Table content recognition tasks contribute more signif-icantly to table recognition, particularly on the iFLYTAB-full. We attribute this to two factors: first, the large-scale and diverse document data enhances the robustness of the model. Second, it simultaneously improves table cell con-tent recognition, improves text localization accuracy, and facilitates table structure restoration. 
+
+The effectiveness of structure-guided cell localization .As shown in Table 8, we demonstrate the structure-guided cell localization module. The C1-C4 designs can comple-ment the cell position information for T3, expanding the application scenarios of TR model. Furthermore, C1-C4 in-tegrate the HTML parsing task with cell positions, enhanc-ing alignment between vision and language and improving TR performance. Compared to C2, C3 introduces a struc-
+
+Table 7. A Ablation study about table detail-aware learning (TDAL) on iFLYTAB-full and PubTabNet. ”Content” denotes to table content tasks. And ”Structure” refers to table structure un-derstanding tasks. Table detail fusion (TDF) refers to the HTML parsing task conducted during the fine-tuning phase.                              
+
+> TDAL TDF iFLYTAB-full PubTabNet Content Structure TEDS-S TEDS TEDS-S TEDS T0 ✓89.29 82.63 90.75 89.19 T1 ✓✓94.82 90.44 94.30 92.45 T2 ✓✓95.02 91.57 94.79 93.39 T3 ✓✓✓96.11 92.50 95.58 94.38
+
+Table 8. Ablation study on the structure-guided cell localization (SGCL) using iFLYTAB-full and PubTabNet. “Init-Reg” refers to coordinate regression using cell representation features. “Enh” stands for the bidirectional attention cell enhancement. “Ref” in-dicates the cell coordinate refinement design.                                        
+
+> SGCL iFLYTAB-full PubTabNet Init-Reg Enh Struct-M Ref TEDS AP 50 TEDS AP 50
+> T3 91.88 -94.38 -C1 ✓93.42 87.44 94.78 89.63 C2 ✓✓93.51 89.21 94.83 90.02 C3 ✓✓✓93.41 89.22 94.87 90.26 C4 ✓✓✓✓93.52 94.37 94.80 91.81
+
+ture mask in the bidirectional attention cell feature enhance-ment process, enabling cells to focus more on information from cells in the same row and column, thus improving cell detection performance. C4 further incorporates multi-resolution image features to refine cell regression results, achieving more accurate cell detection results. 
+
+## 6. Conclusion 
+
+In this work, we propose TADTR, an end-to-end frame-work that improves end-to-end TR through table detail-aware learning and cell-level visual alignment. Through our “perceive-then-fuse” strategy, the model first acquires ro-bust structural and textual awareness via table detail-aware learning, and then effectively transfers these capabilities to end-to-end TR with only limited supervised data. The pro-posed structure-guided cell localization module further en-hances visual–structural alignment, enabling accurate cell-level spatial prediction while simultaneously improving the accuracy and interpretability of TR. Extensive experiments on seven benchmarks demonstrate the superiority and ro-bustness of our approach across diverse table types and layouts. Moreover, our framework is built upon the gen-eral VLM architecture, making its table detail-aware learn-ing paradigm readily transferable to other document under-standing and parsing VLMs. This provides a solution to improve the structural and textual perception of the table. Acknowledgement 
+
+This work was supported by the National Natural Sci-ence Foundation of China under Grant No. U25A20409. 
+
+## References 
+
+[1] Avinash Anand, Raj Jaiswal, Pijush Bhuyan, Mohit Gupta, Siddhesh Bangar, Md. Modassir Imam, Rajiv Ratn Shah, and Shin’ichi Satoh. Tc-ocr: Tablecraft ocr for efficient detection & recognition of table structure & content. In Proceedings of the 1st International Workshop on Deep Multimodal Learn-ing for Information Retrieval , 2023. 1, 2 [2] Youngmin Baek, Daehyun Nam, Jaeheung Surh, Seung Shin, and Seonghyeon Kim. Trace: Table reconstruction aligned to corner and edges. In Document Analysis and Recognition -ICDAR 2023: 17th International Conference , page 472–489, 2023. 2 [3] Lukas Blecher, Guillem Cucurull, Thomas Scialom, and Robert Stojnic. Nougat: Neural optical understanding for academic documents. arXiv preprint arXiv:2308.13418 ,2023. 1, 5, 13 [4] Nicolas Carion, Francisco Massa, Gabriel Synnaeve, Nicolas Usunier, Alexander Kirillov, and Sergey Zagoruyko. End-to-end object detection with transformers. In European confer-ence on computer vision , pages 213–229. Springer, 2020. 3 [5] S. Chandran and R. Kasturi. Structural recognition of tabu-lated data. In Proceedings of 2nd International Conference on Document Analysis and Recognition (ICDAR ’93) , pages 516–519, 1993. 1 [6] Bangdong Chen, Dezhi Peng, Jiaxin Zhang, Yujin Ren, and Lianwen Jin. Complex table structure recognition in the wild using transformer and identity matrix-based augmen-tation. In Frontiers in Handwriting Recognition: 18th Inter-national Conference, ICFHR 2022, Hyderabad, India, De-cember 4–7, 2022, Proceedings , page 545–561, Berlin, Hei-delberg, 2022. Springer-Verlag. 2, 5, 13 [7] Zewen Chi, Heyan Huang, Heng-Da Xu, Houjin Yu, Wanx-uan Yin, and Xian-Ling Mao. Complicated table structure recognition, 2019. 1 [8] Cheng Cui, Ting Sun, Suyin Liang, Tingquan Gao, Zelun Zhang, Jiaxuan Liu, Xueqing Wang, Changda Zhou, Hongen Liu, Manhui Lin, Yue Zhang, Yubo Zhang, Handong Zheng, Jing Zhang, Jun Zhang, Yi Liu, Dianhai Yu, and Yanjun Ma. PaddleOCR-VL: Boosting multilingual document pars-ing via a 0.9b ultra-compact vision-language model, 2025. 2, 6, 7 [9] Yongkun Du, Zhineng Chen, Caiyan Jia, Xiaoting Yin, Tian-lun Zheng, Chenxia Li, Yuning Du, and Yu-Gang Jiang. Svtr: Scene text recognition with a single visual model. arXiv preprint arXiv:2205.00159 , 2022. 2 [10] Hao Feng, Shu Wei, Xiang Fei, Wei Shi, Yingdong Han, Lei Liao, Jinghui Lu, Binghong Wu, Qi Liu, Chunhui Lin, Jingqun Tang, Hao Liu, and Can Huang. Dolphin: Doc-ument image parsing via heterogeneous anchor prompting, 2025. 1, 2, 3, 7 [11] Ling Fu, Biao Yang, Zhebin Kuang, Jiajun Song, Yuzhe Li, Linghao Zhu, Qidi Luo, Xinyu Wang, Hao Lu, Mingxin Huang, Zhang Li, Guozhi Tang, Bin Shan, Chunhui Lin, Qi Liu, Binghong Wu, Hao Feng, Hao Liu, Can Huang, Jingqun Tang, Wei Chen, Lianwen Jin, Yuliang Liu, and Xiang Bai. Ocrbench v2: An improved benchmark for evaluating large multimodal models on visual text localization and reasoning, 2024. 6 [12] Jiaxi Gu, Xiaojun Meng, Guansong Lu, Lu Hou, Minzhe Niu, Hang Xu, Xiaodan Liang, Wei Zhang, Xin Jiang, and Chunjing Xu. Wukong: 100 million large-scale chinese cross-modal pre-training dataset and a foundation frame-work, 2022. 5, 13 [13] Anwen Hu, Haiyang Xu, Jiabo Ye, Ming Yan, Liang Zhang, Bo Zhang, Chen Li, Ji Zhang, Qin Jin, Fei Huang, et al. mplug-docowl 1.5: Unified structure learning for ocr-free document understanding. arXiv preprint arXiv:2403.12895 ,2024. 2, 3 [14] Lei Hu and Shuangping Huang. Enhancing table structure recognition via bounding box guidance. In Pattern Recog-nition , pages 209–225. Springer Nature Switzerland, 2025. 6[15] Yongshuai Huang, Ning Lu, Dapeng Chen, Yibo Li, Zecheng Xie, Shenggao Zhu, Liangcai Gao, and Wei Peng. Improv-ing table structure recognition with visual-alignment sequen-tial coordinate modeling. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pages 11134–11143, 2023. 2, 3, 4 [16] Geewook Kim, Teakgyu Hong, Moonbin Yim, JeongYeon Nam, Jinyoung Park, Jinyeong Yim, Wonseok Hwang, Sang-doo Yun, Dongyoon Han, and Seunghyun Park. Ocr-free document understanding transformer. In European Confer-ence on Computer Vision (ECCV) , 2022. 3 [17] Hei Law and Jia Deng. Cornernet: Detecting objects as paired keypoints. International Journal of Computer Vision ,128:642 – 656, 2018. 8 [18] Feng Li, Hao Zhang, Huaizhe Xu, Shilong Liu, Lei Zhang, Lionel M. Ni, and Heung-Yeung Shum. Mask dino: Towards a unified transformer-based framework for object detection and segmentation. In Proceedings of the IEEE/CVF Confer-ence on Computer Vision and Pattern Recognition (CVPR) ,pages 3041–3050, 2023. 5 [19] Hezheng Lin, Xingyi Cheng, Xiangyu Wu, Fan Yang, Dong Shen, Zhongyuan Wang, Qing Song, and Wei Yuan. Cat: Cross attention in vision transformer. 2022 IEEE Interna-tional Conference on Multimedia and Expo (ICME) , pages 1–6, 2021. 3 [20] Tsung-Yi Lin, Michael Maire, Serge Belongie, James Hays, Pietro Perona, Deva Ramanan, Piotr Doll´ ar, and C. Lawrence Zitnick. Microsoft COCO: Common objects in context. In 
+
+Computer Vision – ECCV 2014 , pages 740–755. Springer In-ternational Publishing, 2014. 6 [21] Hao Liu, Xin Li, Bing Liu, Deqiang Jiang, Yinsong Liu, Bo Ren, and Rongrong Ji. Show, read and reason: Table struc-ture recognition with flexible context aggregator. In Proceed-ings of the 29th ACM International Conference on Multime-dia , pages 1084–1092, 2021. 2 [22] Hao Liu, Xin Li, Bing Liu, Deqiang Jiang, Yinsong Liu, and Bo Ren. Neural collaborative graph machines for table structure recognition. In Proceedings of the IEEE/CVF Con-ference on Computer Vision and Pattern Recognition , pages 4533–4542, 2022. 2 [23] Shilong Liu, Feng Li, Hao Zhang, Xiao Yang, Xianbiao Qi, Hang Su, Jun Zhu, and Lei Zhang. DAB-DETR: Dynamic anchor boxes are better queries for DETR. In International Conference on Learning Representations , 2022. 3, 5 [24] Yuliang Liu, Chunhua Shen, Lianwen Jin, Tong He, Peng Chen, Chongyu Liu, and Hao Chen. Abcnet v2: Adaptive bezier-curve network for real-time end-to-end text spotting. 
+
+IEEE Transactions on Pattern Analysis and Machine Intelli-gence , 44(11):8048–8064, 2021. 2 [25] Ze Liu, Yutong Lin, Yue Cao, Han Hu, Yixuan Wei, Zheng Zhang, Stephen Lin, and Baining Guo. Swin transformer: Hierarchical vision transformer using shifted windows. In 
+
+Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) , 2021. 3 [26] Rujiao Long, Wen Wang, Nan Xue, Feiyu Gao, Zhibo Yang, Yongpan Wang, and Gui-Song Xia. Parsing table structures in the wild. In Proceedings of the IEEE/CVF International Conference on Computer Vision , pages 944–952, 2021. 1, 5 [27] Chuwei Luo, Yufan Shen, Zhaoqing Zhu, Qi Zheng, Zhi Yu, and Cong Yao. Layoutllm: Layout instruction tuning with large language models for document understanding. In 
+
+2024 IEEE/CVF Conference on Computer Vision and Pat-tern Recognition (CVPR) , 2024. 2, 7 [28] Tengchao Lv, Yupan Huang, Jingye Chen, Yuzhong Zhao, Yilin Jia, Lei Cui, Shuming Ma, Yaoyao Chang, Shaohan Huang, Wenhui Wang, et al. Kosmos-2.5: A multimodal literate model. arXiv preprint arXiv:2309.11419 , 2023. 1, 3, 4, 5, 13 [29] Nam Tuan Ly and Atsuhiro Takasu. An end-to-end lo-cal attention based model for table recognition. In Docu-ment Analysis and Recognition - ICDAR 2023 , pages 20–36. Springer Nature Switzerland, 2023. 2, 3 [30] Maksym Lysak, Ahmed Nassar, Nikolaos Livathinos, Christoph Auer, and Peter Staar. Optimized table tokeniza-tion for table structure recognition, 2023. 2 [31] Pengyuan Lyu, Weihong Ma, Hongyi Wang, Yuechen Yu, Chengquan Zhang, Kun Yao, Yang Xue, and Jingdong Wang. Gridformer: Towards accurate table structure recognition via grid prediction. In Proceedings of the 31st ACM Interna-tional Conference on Multimedia , page 7747–7757, 2023. 2 [32] Chixiang Ma, Weihong Lin, Lei Sun, and Qiang Huo. Robust table detection and structure recognition from heterogeneous document images. Pattern Recognition , 133:109006, 2023. 2[33] Ahmed Nassar, Nikolaos Livathinos, Maksym Lysak, and Peter Staar. Tableformer: Table structure understanding with transformers. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pages 4614–4623, 2022. 7 [34] Ahmed Nassar, Matteo Omenetti, Maksym Lysak, Nikolaos Livathinos, Christoph Auer, Lucas Morin, Rafael Teixeira de Lima, Yusik Kim, A Said Gurbuz, Michele Dolfi, et al. Smol-docling: An ultra-compact vision-language model for end-to-end multi-modal document conversion. In Proceedings of the IEEE/CVF International Conference on Computer Vi-sion , pages 21972–21983, 2025. 2 [35] Junbo Niu, Zheng Liu, Zhuangcheng Gu, Bin Wang, Linke Ouyang, Zhiyuan Zhao, Tao Chu, Tianyao He, Fan Wu, Qin-tong Zhang, et al. Mineru2. 5: A decoupled vision-language model for efficient high-resolution document parsing. arXiv preprint arXiv:2509.22186 , 2025. 2, 7 [36] Linke Ouyang, Yuan Qu, Hongbin Zhou, Jiawei Zhu, Rui Zhang, Qunshu Lin, Bin Wang, Zhiyuan Zhao, Man Jiang, Xiaomeng Zhao, Jin Shi, Fan Wu, Pei Chu, Minghao Liu, Zhenxiang Li, Chao Xu, Bo Zhang, Botian Shi, Zhongying Tu, and Conghui He. Omnidocbench: Benchmarking diverse pdf document parsing with comprehensive annotations. In 
+
+Proceedings of the IEEE/CVF Conference on Computer Vi-sion and Pattern Recognition (CVPR) , pages 24838–24848, 2025. 6 [37] Dezhi Peng, Xinyu Wang, Yuliang Liu, Jiaxin Zhang, Mingxin Huang, Songxuan Lai, Shenggao Zhu, Jing Li, Dahua Lin, Chunhua Shen, Xiang Bai, and Lianwen Jin. Spts: Single-point text spotting. In Proceedings of the 30th ACM International Conference on Multimedia , 2022. 2 [38] ShengYun Peng, Seongmin Lee, Xiaojing Wang, Rajara-jeswari Balasubramaniyan, and Duen Horng Chau. Unitable: Towards a unified framework for table structure recog-nition via self-supervised pretraining. arXiv preprint arXiv:2403.04822 , 2024. 2 [39] Liang Qiao, Zaisheng Li, Zhanzhan Cheng, Peng Zhang, Shiliang Pu, Yi Niu, Wenqi Ren, Wenming Tan, and Fei Wu. Lgpma: Complicated table structure recognition with local and global pyramid mask alignment. In International confer-ence on document analysis and recognition , pages 99–114, 2021. 7 [40] Chunxia Qin, Zhenrong Zhang, Pengfei Hu, Chenyu Liu, Jiefeng Ma, and Jun Du. Semv3: A fast and robust ap-proach to table separation line detection. arXiv preprint arXiv:2405.11862 , 2024. 6 [41] RapidAI. Rapid table. https : / / github . com / RapidAI/RapidTable , 2024. Accessed: 2025-9-25. 7 [42] rednote. dots.ocr: Multilingual document layout parsing in a single vision-language model. https://github.com/ rednote-hilab/dots.ocr , 2025. Accessed:2025-09-25. 2, 7 [43] Shaoqing Ren, Kaiming He, Ross Girshick, and Jian Sun. Faster r-cnn: Towards real-time object detection with region proposal networks. IEEE Transactions on Pattern Analysis and Machine Intelligence , 39(6):1137–1149, 2017. 3 [44] Baoguang Shi, Xiang Bai, and Cong Yao. An end-to-end trainable neural network for image-based sequence recogni-tion and its application to scene text recognition. IEEE trans-actions on pattern analysis and machine intelligence , 2016. 1, 2 [45] Brandon Smock, Rohith Pesala, and Robin Abraham. Pubtables-1m: Towards comprehensive table extraction from unstructured documents. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pages 4634–4642, 2022. 3, 5, 6 [46] Qwen Team. Qwen2.5: A party of foundation models, 2024. 7[47] Ashish Vaswani, Noam M. Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N. Gomez, Lukasz Kaiser, and Illia Polosukhin. Attention is all you need. In Neural Infor-mation Processing Systems , 2017. 3 [48] Jianqiang Wan, Sibo Song, Wenwen Yu, Yuliang Liu, Wen-qing Cheng, Fei Huang, Xiang Bai, Cong Yao, and Zhibo Yang. Omniparser: A unified framework for text spotting key information extraction and table recognition. In Pro-ceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 15641–15653, 2024. 1, 2, 7 [49] Bin Wang, Chao Xu, Xiaomeng Zhao, Linke Ouyang, Fan Wu, Zhiyuan Zhao, Rui Xu, Kaiwen Liu, Yuan Qu, Fukai Shang, et al. Mineru: An open-source solution for precise document content extraction. arXiv preprint arXiv:2409.18839 , 2024. 6, 7 [50] Chenxi Wang, Xiang Chen, Ningyu Zhang, Bo Tian, Haom-ing Xu, Shumin Deng, and Huajun Chen. Mllm can see? dynamic correction decoding for hallucination mitigation. 
+
+ArXiv , abs/2410.11779, 2024. 3 [51] Jiawei Wang, Weihong Lin, Chixiang Ma, Mingze Li, Zheng Sun, Lei Sun, and Qiang Huo. Robust table structure recog-nition with dynamic queries enhanced detection transformer. 
+
+Pattern Recognition , 144:109817, 2023. 2 [52] Weiyun Wang, Zhangwei Gao, Lixin Gu, Hengjun Pu, Long Cui, Xingguang Wei, Zhaoyang Liu, Linglin Jing, Sheng-long Ye, Jie Shao, Zhaokai Wang, Zhe Chen, Hongjie Zhang, Ganlin Yang, Haomin Wang, Qi Wei, Jinhui Yin, Wen-hao Li, Erfei Cui, Guanzhou Chen, Zichen Ding, Changyao Tian, Zhenyu Wu, Jingjing Xie, Zehao Li, Bowen Yang, Yuchen Duan, Xuehui Wang, Haoran Hao, Songze Li, Xi-angyu Zhao, Haodong Duan, Nianchen Deng, Bin Fu, Yi-nan He, Yi Wang, Conghui He, Botian Shi, Junjun He, Ying Xiong, Han Lv, Lijun Wu, Wenqi Shao, Kai Zhang, Hui Deng, Biqing Qi, Jiaye Ge, Qipeng Guo, Wenwei Zhang, Yuzhe Gu, Wanli Ouyang, Limin Wang, Min Dou, Xizhou Zhu, Tong Lu, Dahua Lin, Jifeng Dai, Bowen Zhou, Weijie Su, Kaiming Chen, Yu Qiao, Wenhai Wang, and Gen Luo. Internvl3.5: Advancing open-source multimodal models in versatility, reasoning, and efficiency. ArXiv , abs/2508.18265, 2025. 7 [53] Haoran Wei, Chenglong Liu, Jinyue Chen, Jia Wang, Lingyu Kong, Yanming Xu, Zheng Ge, Liang Zhao, Jian-Yuan Sun, Yuang Peng, Chunrui Han, and Xiangyu Zhang. General ocr theory: Towards ocr-2.0 via a unified end-to-end model. 
+
+ArXiv , abs/2409.01704, 2024. 7 [54] Haoran Wei, Yaofeng Sun, and Yukun Li. Deepseek-ocr: Contexts optical compression. arXiv preprint arXiv:2510.18234 , 2025. 2, 6 [55] Hangdi Xing, Feiyu Gao, Rujiao Long, Jiajun Bu, Qi Zheng, Liangcheng Li, Cong Yao, and Zhi Yu. Lore: Logical lo-cation regression network for table structure recognition. In 
+
+Proceedings of the Thirty-Seventh AAAI Conference on Arti-ficial Intelligence and Thirty-Fifth Conference on Innovative Applications of Artificial Intelligence and Thirteenth Sym-posium on Educational Advances in Artificial Intelligence ,2023. 2, 6, 7 [56] Yang Xu, Yiheng Xu, Tengchao Lv, Lei Cui, Furu Wei, Guoxin Wang, Yijuan Lu, Dinei Florencio, Cha Zhang, Wanxiang Che, Min Zhang, and Lidong Zhou. Layoutlmv2: Multi-modal pre-training for visually-rich document under-standing. In Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics (ACL) 2021 ,2021. 3 [57] Fan Yang, Lei Hu, Xinwu Liu, Shuangping Huang, and Zhenghui Gu. A large-scale dataset for end-to-end table recognition in the wild. Scientific Data , 10, 2023. 5, 6, 13 [58] Zhibo Yang, Jun Tang, Zhaohai Li, Pengfei Wang, Jianqiang Wan, Humen Zhong, Xuejing Liu, Mingkun Yang, Peng Wang, Shuai Bai, LianWen Jin, and Junyang Lin. Cc-ocr: A comprehensive and challenging ocr benchmark for evalu-ating large multimodal models in literacy, 2024. 6 [59] Yuan Yao, Tianyu Yu, Ao Zhang, Chongyi Wang, Junbo Cui, Hongji Zhu, Tianchi Cai, Haoyu Li, Weilin Zhao, Zhihui He, Qi-An Chen, Huarong Zhou, Zhensheng Zou, Haoye Zhang, Shengding Hu, Zhi Zheng, Jie Zhou, Jie Cai, Xu Han, Guoyang Zeng, Dahai Li, Zhiyuan Liu, and Maosong Sun. Minicpm-v: A gpt-4v level mllm on your phone. ArXiv ,abs/2408.01800, 2024. 7 [60] Jiaquan Ye, Xianbiao Qi, Yelin He, Yihao Chen, Dengyi Gu, Peng Gao, and Rong Xiao. Pingan-vcgroup’s solution for icdar 2021 competition on scientific literature parsing task b: Table recognition to html. ArXiv , abs/2105.01848, 2021. 6, 7[61] Maoyuan Ye, Jing Zhang, Shanshan Zhao, Juhua Liu, Tongliang Liu, Bo Du, and Dacheng Tao. Deepsolo: Let transformer decoder with explicit points solo for text spot-ting. In Proceedings of the IEEE/CVF Conference on Com-puter Vision and Pattern Recognition , pages 19348–19357, 2023. 2 [62] Xiaohan Yu, Pu Jian, and Chong Chen. TableRAG: A re-trieval augmented generation framework for heterogeneous document reasoning. In Proceedings of the 2025 Confer-ence on Empirical Methods in Natural Language Processing ,pages 14074–14093. Association for Computational Lin-guistics, 2025. 1 [63] Zhenrong Zhang, Jianshu Zhang, Jun Du, and Fengren Wang. Split, embed and merge: An accurate table structure recognizer. Pattern Recognition , 126:108565, 2022. 2 [64] Zhenrong Zhang, Pengfei Hu, Jiefeng Ma, Jun Du, Jianshu Zhang, Baocai Yin, Bing Yin, and Cong Liu. Semv2: Ta-ble separation line detection based on instance segmentation. 
+
+Pattern Recognition , page 110279, 2024. 2, 5, 6, 13 [65] Zhenrong Zhang, Shuhang Liu, Pengfei Hu, Jiefeng Ma, Jun Du, Jianshu Zhang, and Yu Hu. UniTabNet: Bridging vision and language models for enhanced table structure recogni-tion. In Findings of the Association for Computational Lin-guistics: EMNLP 2024 , pages 6131–6143. Association for Computational Linguistics, 2024. 1, 2, 3, 4, 6, 7 [66] Weichao Zhao, Hao Feng, Qi Liu, Jingqun Tang, Shu Wei, Binghong Wu, Lei Liao, Yongjie Ye, Hao Liu, Houqiang Li, et al. Tabpedia: Towards comprehensive visual ta-ble understanding with concept synergy. arXiv preprint arXiv:2406.01326 , 2024. 2, 3, 7 [67] Xinyi Zheng, Douglas Burdick, Lucian Popa, Xu Zhong, and Nancy Xin Ru Wang. Global table extractor (gte): A frame-work for joint table identification and cell structure recogni-tion using visual context. In Proceedings of the IEEE/CVF winter conference on applications of computer vision , pages 697–706, 2021. 1, 5, 7 [68] Xu Zhong, Elaheh ShafieiBavani, and Antonio Ji-meno Yepes. Image-based table recognition: data, model, and evaluation. In European conference on computer vision ,pages 564–580, 2020. 1, 2, 5, 6, 7 [69] Xingyi Zhou, Dequan Wang, and Philipp Kr¨ ahenb¨ uhl. Ob-jects as points. In arXiv preprint arXiv:1904.07850 , 2019. 3TDATR: Improving End-to-End Table Recognition via Table Detail-Aware Learning and Cell-Level Visual Alignment 
+
+# Supplementary Material 
+
+## A. Document Data Processing 
+
+For data from different sources, we employed distinct pro-cessing workflows due to their varying formats [3, 28]. Chinese and English webpages: We render HTML file to image using khtmltopdf 1. Then we utilized a commer-cial OCR 2 engine to recognize text lines on the webpages, extracting both the textual content and their corresponding coordinates. Chinese and English papers: For papers with LaTeX source code, we first compile the LaTeX code into a PDF, and then use the PyMuPDF 3 parser to extract text lines and their coordinates from the compiled PDF. For papers avail-able only in PDF format, we utilize a commercial engine to extract text lines and coordinates. Specifically, for mathe-matical formulas in papers, we employ LatexOCR 4 tool. README files: We downloaded README files and their referenced content from various GitHub projects. First, we filter out invisible elements from the README files, such as web links, jump markers, and comments, to ensure consistency between the text and rendered images. We then used Pandoc 5 to convert the filtered README files into HTML. Finally, we utilized wkhtmltopdf to convert the HTML content into images. To limit the image size, we seg-mented the images and extracted the corresponding mark-down content as labels. WuKong dataset [12] and in-house data: We utilized a commercial OCR engine to recognize text lines on images. 
+
+## B. Table Data Processing 
+
+Real-world table refers to images captured through pho-tographing or scanning. Such images often contain geomet-ric distortions, background noise, and low resolution, mak-ing recognition considerably more challenging. Digitally-born table refers to images rendered directly from code or digital documents. These images have clean characters and well-aligned layouts. 
+
+B.1. Unified Multi-source Table Data Processing 
+
+To obtain labels for the table auxiliary tasks from various dataets, we designed a unified processing pipeline. In the first step, we unify the table label from different sources into a consistent format. In document images, we 
+
+> 1https://wkhtmltopdf.org/
+> 2https://www.xfyun.cn/services/common-ocr
+> 3https://github.com/pymupdf/PyMuPDF
+> 4https://github.com/lukas-blecher/LaTeX-OCR
+> 5https://pandoc.org/
+
+represent a table using table box, table cells, and table grids. The table box indicates the position of the table area within the document image. Table cells contain cell coordinates, logical coordinates, the text content within each cell and cell ID. Table grids represent the fine-grained structure of a table, showing the results after splitting merged cells. Each table grid includes the ID of the corresponding cell and its coordinates. In the second step, we conduct data cleaning to eliminate inconsistently labeled table data, ensuring high data quality. First, we remove table data with overlapping logical coor-dinates for cells. Next, we exclude entries with incomplete table grids, specifically those where grids have not been as-signed to their corresponding cells. Finally, we eliminate redundant table grids, which occur when adjacent grid rows and grid columns are identical. The last step is training data generation. We extract ta-ble images from document images by cropping based on the table box. Table cell information is used for label gen-eration in the table HTML parsing task, table cell detection task, and table cell spotting task. Table grid information is utilized for label generation in the table span cell detection task and the table row and column detection task. 
+
+B.2. Table Data Augmentation 
+
+High-quality labeled table data for photographic scenes is limited [57, 64]. We expanded the iFLYTAB [64] dataset inspired by an identity matrix-based augmentation method [6], resulting in the iFLYTAB-Aug dataset with 82.5k samples. We made the following modifications to the identity matrix-based augmentation to ensure the generation of complex and realistic table data. • We restrict the selected table regions to have more than 4 rows and columns. • We ensure that the selected table sub-region always con-tains at least one span cell, and all rows and columns con-taining the span cell are retained. This ensures that the table has a complex structure. • For wireless tables, the selected region always starts from the first row and the first column. Because the row and column headers provide essential information for distin-guishing between rows and columns. 
+
+## C. Implementation Details 
+
+In this section, we provide the detailed input–output designs of the table detail-aware learning tasks, as illustrated in the Document Image  Table Label Data from Different Source      
+
+> Parse Table Data to Unified Form
+> Table Image
+> Table Tasks -Special
+> Prompts and Answers
+> Box:[p1,p2,p3,p4]
+> Cell id: 0
+> Box:[p1,p2,p3,p4]
+> Logical coord: 0,0,0,1
+> Content: 路线名称 ;
+> Cell id:0
+> Training Data
+> Table box Table grids Table cells
+> Unified Table Description
+> Table Label Cleaning
+> Incomplete Table Grids Logical Overlapping Redundant Table Grids
+
+Figure 4. The pipeline of unified multi-source table data pro-cessing. The pipeline normalizes heterogeneous table annotations from various sources into a unified representation for model train-ing. 
+
+Fig. 5 and 6. 
+
+## D. Baseline Protocol 
+
+Thanks for pointing out the ambiguity in Tables. 3 and 4. Our compared baselines can be grouped into: (1) Dataset-specific setting: methods fine-tuned on each target dataset. (2) Unified setting (marked with “ †”): a single checkpoint evaluated across multiple datasets. Table 9 presents the training data configurations of all baseline methods used in this paper. 
+
+## E. Structure-guided Cell Localization Module 
+
+We leverage logical relationships between cells to perform bidirectional structure-guided enhancement. We take the row-based enhancement as an example to illustrate the com-putation process. We first project the cell representation 
+
+C′ into a row feature space using a linear layer to obtain row-level similarity features Crow , as shown in Eq. 2. We then compute pairwise similarity scores via inner product to estimate whether two cells belong to the same row. Af-ter thresholding, we obtain the row similarity matrix, i.e., a binary relationship matrix indicating which cell pairs share the same row, as defined in Eq. 3. As illustrated in Fig. 7, Cell 2 and Cell 3 are in the same row, thus M row  
+
+> 2,3
+
+= 1 . This matrix is subsequently used as a mask in self-attention to reinforce feature interactions among cells within the same row. 
+
+## F. Evaluation Benchmarks 
+
+iFLYTAB-full obtains 5,419 test samples. The samples come from diverse sources—including screenshots, scans, and camera-captured images—covering a wide range of im-age qualities that allow evaluation of model robustness. The dataset exhibits large variations in image resolution, test-ing the model’s capability to handle multi-resolution inputs. It also contains grid tables, bordered three-line tables, and borderless tables. The absence of visible cell boundaries in borderless tables introduces significant challenges for TR. 
+
+TabRecSet contains 7,548 validation samples, all cap-tured in real-world scenarios with strong perspective distor-tion and low image quality. Borderless and three-line tables are generated by erasing the ruling lines of grid tables, cre-ating a domain gap between these synthetic styles and real-world data. The dataset includes both Chinese and English tables. 
+
+PubTabNet consists of 9,015 validation samples and 9,064 test samples, with the validation set commonly used for benchmarking. Its annotations are produced by an automated pipeline, resulting in low-resolution images and inconsistent visual-HTML alignment (e.g., cell over-segmentation). Such inconsistencies lead to contradictory training signals and may underestimate performance dur-ing evaluation. Models often require dataset-specific fine-tuning to adapt to these inconsistencies. 
+
+PubTables-1M contains 93,834 test samples and is sourced from the same corpus as PubTabNet. It applies au-tomated consistency checks to correct the annotation incon-sistencies present in PubTabNet, resulting in significantly improved label reliability. 
+
+OmniDocBench v1.5 . Following PaddleOCR-VL, we crop 512 table samples from the benchmark. The dataset covers a wide spectrum of table types, including challeng-ing note-style tables where continuous content and back-ground ruling lines visually disrupt cell boundaries, of-ten causing over-segmentation. Successful recognition re-quires semantic understanding of cell content beyond visual boundary cues. 
+
+CC-OCR . The 300 table test samples in CC-OCR cover both Chinese and English, spanning real-world and digital-document scenarios. The dataset includes long tables, dense tables, and heavily rotated cases, posing significant chal-lenges for structure parsing and spatial reasoning. 
+
+OCRBench includes 700 table-related samples in both Chinese and English. Using the provided table boxes and our internal table detector, we crop table regions for recog-nition. Many samples come from financial reports, whose formatting introduces unique difficulties, e.g., large spac-ing between “$” and numbers is easily mistaken for column separators. Output all text lines with 
+
+bounding box by 
+
+spatial order. 
+
+Output all text lines with bounding box by Spatial 
+
+order in [95, 740, 140, 220] .
+
+负责世界和平与安全 [93, 660, 133, 49]  <i_ret> 发
+
+表强制性决议  [78, 739, 103, 49] <i_ret> 决定维和、 
+
+禁运等 [86, 817, 118, 49]  <i_ret> 
+
+Ask the Chatbot [105, 107, 89, 21] <i_ret>Games & 
+
+Quizzes [214, 107, 91, 21]  <i_ret> ... <i_ret>visited 
+
+sites on the Internet [193, 959, 187, 26]  <i_ret> 
+
+## Installation< i_ret >< i_ret >### With pip <i_ret >
+
+<i_ret >This repository is tested on Python 3.8+, 
+
+Flax 0.4.1+, PyTorch 1.11+, and TensorFlow 
+
+2.6+.< i_ret >< i_ret >You should install ...install the 
+
+library from source. 
+
+Convert the document into Markdown format. 
+
+Markdown Parsing 
+
+Spatially  Ordered  Text  Spotting 
+
+Text Spotting with Box Query 
+
+Vision -Language 
+
+Model 
+
+Task Prompts  Task Answers Figure 5. Illustration of table content recognition tasks. These tasks leverage diverse document data to enable text recognition, text localization, and reading-order understanding. Vision -Language 
+
+Model                        
+
+> Output all table cell boxes.
+> Output all table rows and columns, then predict table cell
+> in rows and columns.
+> Output table span cell boxes.
+> [x1,𝑦 1,𝑤 1,ℎ1] [ x2,𝑦 2,𝑤 2,ℎ2]…
+> Table contains of 9 rows and 9 columns ，9table rows
+> [x1,𝑦 1,𝑤 1,ℎ1] … 9 table columns
+> [x10,𝑦 10 ,𝑤 10 ,ℎ10 ]…row [ x1,𝑦 1,𝑤 1,ℎ1]including 3
+> cells [ x11 ,𝑦 11 ,𝑤 11 ,ℎ11 ]… the column…
+> [x1,𝑦 1,𝑤 1,ℎ1]colspan =9
+
+Task Prompts  Task Answers           
+
+> Convert the table into HTML Format.
+> Convert the table into Markdown Format. |Score |Score | Score | Score | Score | Score | Score |
+> Score | Score |< i_ret >| ---|…| 43.0 |
+> </t able >< tbody >< tr ><td colspan =9 >Score </td> <td>
+> N<sup>o</sup></td> …<td>43.0</td></tr> </table >
+
+Table Element Detection Tasks 
+
+Table Structure Parsing Tasks 
+
+Vision -Language 
+
+Model 
+
+Table Image  
+
+> Row and Column Detection
+> Span Cell Detection
+> Cell Detection
+> Table Markdown Parsing
+> Table HTML Parsing
+
+Figure 6. Illustration of table structure understanding tasks. These tasks equip the model with structure-awareness from both the cell level and the row/column level. 
+
+## G. Single-dataset Training Variant 
+
+We conduct a single-dataset comparison by perform-ing only-PubTabNet table detail fusion fine-tuning start-ing from our table detail-aware pretrained model. On PubTabNet-val, we achieve TEDS-S 96.78 / TEDS 96.10, outperforming the second-best TR dataset-specific base-line, TableFormer (96.75 / 93.60). This supports the effec-tiveness of our “perceive-then-fuse” paradigm in a single-dataset setting. 
+
+## H. SGCL Inference Efficiency 
+
+TDATR leverages SGCL to localize cells in parallel, con-ditioned on the generated cell tokens. Since TR baselines such as Dolphin or EDD do not output cell boxes, a direct efficiency comparison is not applicable. For a fair compar-ison, we implement a matched baseline, “ED Loc Gen” in Table. 6, that autoregressively generates discretized coordi-nates after the cell tokens. We evaluate 40 randomly sam-pled PubTabNet images (max side length 1024), with an av-erage of 26.75 cells and 190.38 TR tokens. Measured on an NPU with batch size 1, TDATR achieves 9.7s end-to-end latency, compared to 15.7s for the baseline (1.6 × faster). Importantly, SGCL contributes only 0.28s to the end-to-end latency, confirming that parallel refinement keeps localiza-tion overhead low. TDATR and the baselines have compa-rable max reserved memory (15.77 GiB vs. 15.36 GiB). Table 9. Summary of the training data configurations of the baseline methods. For each method, we report the paradigm, table training data, auxiliary data, whether table-specific fine-tuning is applied, and additional notes. 
+
+Method Paradigm Table training data Extra data Dataset specific Notes TableMaster TSR PubTabNet – Yes –LORE TSR PubTabNet, TabRecSet, and iFLYTAB – Yes 20k images were randomly sampled from PubTabNet for training. TabRecSet and iFLYTAB were reproduced by us based on the released code. BGTR (PT) TSR TabRecSet, iFLYTAB, PubTabNet, FinTabNet and SynthTabNet – Yes –UniTabNet TSR iFLYTAB, PubTables-1M, and PubTabNet. Pre-training: a synthetic dataset comprising 1.4 million Chinese and English samples from SynthDog, and PubTables-1M Yes –EDD E2E-TR PubTabNet – Yes –SEMv3 + PPOCR M-TR PubTabNet and iFLYTAB PPOCR relies on general text recognition data Yes “+PPOCR” indicates that the cell content is obtained from the PPOCR model. GTE TSR PubTabNet and FinTabNet – Yes The model is pre-trained on PubTabNet and fine-tuned on multiple datasets. Davar-Lab TSR PubTabNet – Yes –LGPMA + R2AM M-TR PubTabNet Additional data required by R2AM Yes “+R2AM” indicates that the cell content is obtained from the R2AM model. TableFormer + GT M-TR PubTabNet, FinTabNet, and SynthTabNet – Yes “+GT” indicates that the ground-truth cell content. RapidTable M-TR – – – –OmniParser OCR-VLM PubTabNet and FinTabNet Large-scale document parsing data Yes –DocOwl1.5 OCR-VLM TURL and PubTabNet Unified structure-learning data from documents, webpages, charts, and natural images No –Dolphin OCR-VLM PubTabNet and PubTab1M Large-scale document parsing data Yes –MinerU2.5 OCR-VLM In-house Large-scale document parsing data No –DeepSeek-OCR OCR-VLM In-house Large-scale document parsing data No –PaddleOCR-VL OCR-VLM In-house Large-scale document parsing data No –dots.ocr OCR-VLM In-house Large-scale document parsing data No –GOT OCR-VLM In-house Large-scale document parsing data No –TabPedia TSR PubTabNet and PubTab1M – No –DETR + PDF M-TR PubTables-1M – Yes “+PDF” indicates that the cell content is obtained from the source PDF files. Table Image 
+
+> Cell Hidden States
+
+Embedding Modules 
+
+> �’
+
+FFN   
+
+> ①
+> ②③
+> ④⑤
+
+1 2 3 4 5
+
+1
+
+2
+
+3
+
+4
+
+5   
+
+> Row Mask
+> ④⑤①②③
+
+Masked Self Att    
+
+> Row-based Enhanced
+> Cell Hidden States
+> ④⑤①②③
+
+Row Sim 
+
+Figure 7. The architecture of the structure-guided cell localization module, illustrated with the row-based cell enhancement example. 
+
+## I. Visualization of Table Recognition 
+
+We visualize several challenging table samples. Real-world tables (Fig. 8) contain background noise, perspective distor-tion, and uneven illumination. Long tables (Fig. 9) feature lengthy sequences, numerous cells, and long text contents. Complex-structure tables (Fig. 10) include extensive row or column spanning. Our method performs robustly across all these cases, demonstrating strong generalization and effec-tiveness. Figure 8. Visualization of table recognition results on real-world tables. In each subfigure, the left shows the input original table image, and the right presents the HTML-rendered visualization of the corresponding recognition result. 
+
+Figure 9. Visualization of table recognition results on long tables. In each subfigure, the left shows the input original table image, and the right presents the HTML-rendered visualization of the corresponding recognition result. Figure 10. Visualization of table recognition results complex-structure tables. In each subfigure, the left shows the input original table image, and the right presents the HTML-rendered visualization of the corresponding recognition result. 
+
+## J. Visualization of Cell Localization 
+
+We qualitatively compare the cell localization results of sev-eral SOTA models,as shown in Fig. 11. SEMv3, which fol-lows a “split-and-merge” strategy by detecting row/column separators to form table grids, is prone to confusing sep-arators with inter-word gaps. LORE employs CornerNet for cell localization and relies solely on visual cues, mak-ing it unreliable for empty cells. UniTabNet predicts cell boxes through a single cell token, but compressing spatial information into one token limits its performance on dense tables. “ED Loc Gen” generates cell coordinates sequen-tially, resulting in excessively long answer sequences that are easily truncated on long tables. 
+
+## K. Failure Cases Analysis 
+
+We observed that these hard cases on iFLYTAB-full are mainly fall into three main error types: (1) Boundary con-fusion: In borderless tables containing multi-line text the model struggles to distinguish text line spacing from cell delimiters. (2) Span number errors: For cells with large row/column spans ( more than 15), the model occasion-ally predicts the error number. (3) Localization instabil-ity: Dense and empty borderless cells lack explicit visual cues causing instability visual-based regression in SGCL. We plan to enhance the decoder’s semantic reasoning to re-solve these visual ambiguities. Table Image SEMv3 LORE UniTabNet ED Loc Gen TDATR Figure 11. Qualitatively comparison of the cell localization.

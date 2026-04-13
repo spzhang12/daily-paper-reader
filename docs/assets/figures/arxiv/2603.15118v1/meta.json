@@ -1,0 +1,118 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2603.15118v1/fig-001.webp",
+      "caption": "Figure 1. VAREX benchmark overview. A government form (a) is paired with a per-document JSON schema (b) that defines the extraction target, including nested structures via $ref. Forms are programmatically filled with realistic data, and ground truth (c) is derived directly from the fill values. The benchmark spans 1,777 documents with 1,771 unique schemas.",
+      "page": 1,
+      "index": 1,
+      "width": 496,
+      "height": 464
+    },
+    {
+      "url": "assets/figures/arxiv/2603.15118v1/fig-002.webp",
+      "caption": "Figure 4. Output compliance failures in small models (Image V). Dark bars: actual EM; hatched bars: EM on compliant documents. Failures include schema reproduction (dominant in InternVL3.5 1B) and schema-wrapped extraction (dominant in Qwen3-VL 2B). Qwen3-VL 2B drops from 91.5% to 34.2%; InternVL3.5 1B from 72.7% to 28.2%. NuExtract and h2oVL show no gap.",
+      "page": 6,
+      "index": 2,
+      "width": 486,
+      "height": 289
+    },
+    {
+      "url": "assets/figures/arxiv/2603.15118v1/fig-003.webp",
+      "caption": "Table 3. Modality comparison for selected models (EM%). Best modality per model in bold. Text-only baselines in italics.",
+      "page": 6,
+      "index": 3,
+      "width": 421,
+      "height": 288
+    },
+    {
+      "url": "assets/figures/arxiv/2603.15118v1/fig-004.webp",
+      "caption": "Figure 5. Example VAREX document (Nested category). The schema uses $defs/$ref to define reusable nested object types (HousingProvider, IndividualInCharge, HousingFacilityMailingAddress). Only the English-language fields contain fillable widgets; the Spanish translation serves as static context.",
+      "page": 11,
+      "index": 4,
+      "width": 832,
+      "height": 1070
+    },
+    {
+      "url": "assets/figures/arxiv/2603.15118v1/fig-005.webp",
+      "caption": "Figure 7. Input document for the schema echo comparison. A laboratory certification form with both flat fields and array-of-objects structures (test_volumes, other_tests) defined via $defs/$ref. Three models receive this document with the schema below; their outputs illustrate the compliance failure spectrum described in Sec. 4.4.",
+      "page": 15,
+      "index": 5,
+      "width": 832,
+      "height": 1071
+    },
+    {
+      "url": "assets/figures/arxiv/2603.15118v1/fig-006.webp",
+      "caption": "Figure 11. Spatial Text (S) representation of the same ALJ form. Whitespace characters preserve column alignment, allowing the model to associate values within the same table row (e.g., 01/15/2005, 06/15/2023, Administrativ, Departmen on the same line). Compare with the Plain Text in Fig. 10, where these values are serialized in separate column runs. This spatial structure accounts for the +3–18 pp accuracy gain reported in Sec. 4.3.",
+      "page": 21,
+      "index": 6,
+      "width": 848,
+      "height": 896
+    },
+    {
+      "url": "assets/figures/arxiv/2603.15118v1/fig-007.webp",
+      "caption": "Figure 2. The Reverse Annotation pipeline. Stage 1: Fillable PDF templates are filled with deterministic placeholders (TXT_001, TXT_002, . . . ). Stage 2: An LLM discovers a semantic schema by mapping placeholders to field names. Stage 3: Realistic synthetic values replace placeholders and are injected into form widgets. Stage 4: Each filled document is exported in four modalities.",
+      "page": 2,
+      "index": 7,
+      "width": 1036,
+      "height": 286
+    },
+    {
+      "url": "assets/figures/arxiv/2603.15118v1/fig-008.webp",
+      "caption": "Figure 8. VAREX document at standard resolution (200 DPI). A Table-category bond loss application with 11 array rows. All top models achieve 100% EM at this resolution.",
+      "page": 18,
+      "index": 8,
+      "width": 968,
+      "height": 1246
+    },
+    {
+      "url": "assets/figures/arxiv/2603.15118v1/fig-009.webp",
+      "caption": "Figure 6. Example VAREX document (Table category). The schema contains both nested objects (Address) and arrays of objects (alj_experience, licensure_states). Ground-truth values are trimmed to match the visible rendered text when PDF widget bounding boxes truncate the content (e.g., Departmen rather than Department), ensuring models are evaluated against what is actually readable.",
+      "page": 13,
+      "index": 9,
+      "width": 832,
+      "height": 1071
+    },
+    {
+      "url": "assets/figures/arxiv/2603.15118v1/fig-010.webp",
+      "caption": "Figure 9. Same document at reduced resolution (50 DPI). Serial numbers, dates, and small text become visually ambiguous. Open models in the 8–17B range lose 13–35 pp; Gemini models remain at 100%.",
+      "page": 19,
+      "index": 10,
+      "width": 968,
+      "height": 1246
+    },
+    {
+      "url": "assets/figures/arxiv/2603.15118v1/fig-011.webp",
+      "caption": "Table 5. Representative extraction errors at 50 DPI on the document in Figs. 8 and 9. All models shown score 100% at 200 DPI. Error types at 50 DPI: digit confusion, character substitution, and missed fields.",
+      "page": 17,
+      "index": 11,
+      "width": 664,
+      "height": 285
+    },
+    {
+      "url": "assets/figures/arxiv/2603.15118v1/fig-012.webp",
+      "caption": "Figure 10. Plain Text (P) representation of the ALJ form (Fig. 6), produced by PyMuPDF get_text() in reading order. The form header is cropped for space. Note that table columns are serialized vertically—all “From” dates appear in sequence, then all “To” dates, then all titles. Large models can resolve this ordering, but smaller models struggle: the P → S gain ranges from +3 pp for frontier models to +18 pp at smaller scales (Tab. 3).",
+      "page": 20,
+      "index": 12,
+      "width": 848,
+      "height": 919
+    },
+    {
+      "url": "assets/figures/arxiv/2603.15118v1/fig-013.webp",
+      "caption": "Table 2. VAREX Image (V) results. All = EM% (ANLS%). Perf. = perfect-document rate. Bold = best per column. †Fine-tuned for extraction (base: 9.7%). ‡Schema echo dominates (Sec. 4.4).",
+      "page": 5,
+      "index": 13,
+      "width": 466,
+      "height": 512
+    },
+    {
+      "url": "assets/figures/arxiv/2603.15118v1/fig-014.webp",
+      "caption": "Figure 3. Dataset and evaluation overview. (a) Distribution of extraction fields per document (median 11). (b) Field-level EM% by semantic category for four representative models on Image (V); fields are grouped into nine categories by keyword matching (e.g., Name includes applicant_name, witness_name, etc.), covering 74% of 21,084 fields; email and monetary values show the widest cross-scale gaps (15–17 pp). (c) Number of vision models (out of 18) achieving perfect extraction per document; 91 documents (5%) receive imperfect scores from all models, largely attributable to residual annotation noise (see Sec. 4.1).",
+      "page": 5,
+      "index": 14,
+      "width": 1019,
+      "height": 250
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2604.04948v1/fig-001.webp",
+      "caption": "Table 4. Benchmark results for all 19 pipeline configurations. Results represent the average accuracy (%) across 10 runs using LLM-as-judge evaluation.",
+      "page": 11,
+      "index": 1,
+      "width": 1096,
+      "height": 678
+    },
+    {
+      "url": "assets/figures/arxiv/2604.04948v1/fig-002.webp",
+      "caption": "Table 1. Corpus overview and descriptive statistics.",
+      "page": 7,
+      "index": 2,
+      "width": 634,
+      "height": 543
+    },
+    {
+      "url": "assets/figures/arxiv/2604.04948v1/fig-003.webp",
+      "caption": "Figure 2. Web-based chatbot interface of the LOSS-J RAG system. The user asks (in Portuguese): \"Which unit is responsible for the initial training of Sergeants for all functional areas, and where is it located?\" The system responds: \"The unit responsible for the initial training of Sergeants for all functional areas is the Army Sergeants School, located in Caldas da Rainha,\" and lists the source documents used to generate the answer.",
+      "page": 7,
+      "index": 3,
+      "width": 1093,
+      "height": 629
+    },
+    {
+      "url": "assets/figures/arxiv/2604.04948v1/fig-004.webp",
+      "caption": "Figure 3. Knowledge graph data model. TextChunk nodes store text content with source metadata and embedding vectors. Entity nodes store a unique identifier, name, and semantic type. MENTIONS relationships link text chunks to the entities extracted from them. RELATED relationships capture semantic connections between entities.",
+      "page": 10,
+      "index": 4,
+      "width": 889,
+      "height": 338
+    },
+    {
+      "url": "assets/figures/arxiv/2604.04948v1/fig-005.webp",
+      "caption": "Figure 4. Visualization of the knowledge graph after entity deduplication using 3d-force-graph. (a) Overview showing 17,494 entity nodes, 25,674 edges, and 1,408 clusters; the dense central region and sparse periphery reflect the uneven distribution of entity connections. (b) Detail view showing a selected entity node (\"31 de dezembro de 2025\", typed as Date, cluster 275), illustrating the entitylevel metadata available on hover.",
+      "page": 14,
+      "index": 5,
+      "width": 1081,
+      "height": 372
+    },
+    {
+      "url": "assets/figures/arxiv/2604.04948v1/fig-006.webp",
+      "caption": "Table 3. Evaluated converter frameworks: strengths and limitations observed.",
+      "page": 8,
+      "index": 6,
+      "width": 1104,
+      "height": 721
+    },
+    {
+      "url": "assets/figures/arxiv/2604.04948v1/fig-007.webp",
+      "caption": "Table 2. Document distribution by category.",
+      "page": 8,
+      "index": 7,
+      "width": 829,
+      "height": 352
+    }
+  ]
+}

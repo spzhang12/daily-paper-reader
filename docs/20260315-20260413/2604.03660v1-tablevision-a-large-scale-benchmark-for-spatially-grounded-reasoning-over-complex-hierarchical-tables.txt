@@ -1,0 +1,488 @@
+Title: TableVision: A Large-Scale Benchmark for Spatially Grounded Reasoning over Complex Hierarchical Tables
+
+URL Source: https://arxiv.org/pdf/2604.03660v1
+
+Published Time: Tue, 07 Apr 2026 00:33:14 GMT
+
+Number of Pages: 20
+
+Markdown Content:
+# TableVision: A Large-Scale Benchmark for Spatially Grounded Reasoning over Complex Hierarchical Tables 
+
+Xiaoyu Chen 1⋆, Lu Dai 1,2⋆, Hanqing Wang 1, Zhuoyu Li 3, Wenbin Dai 4,Yanzong Zheng 1, Zhenggang Xia 1, Junyong Lin 1, and Hui Xiong 1,2⋆⋆ 
+
+1 The Hong Kong University of Science and Technology (Guangzhou) 
+
+2 The Hong Kong University of Science and Technology 
+
+3 The Chinese University of Hong Kong 
+
+4 Shanghai Jiao Tong University 
+
+xchen786@connect.hkust-gz.edu.cn, xionghui@ust.hk Image              
+
+> LLMs
+> TableVision Dataset
+> Answer Question
+> Wrong Grounding
+> Wrong Reasoning
+> Entangled Reasoning
+> Grounding Reasoning
+> Grounding
+> Chain of Thought
+> Training
+> Answer Input
+> Grounding
+> Thinking
+> QA pairs
+> Bbox
+> CoT
+> Q1Qn
+> B1
+> C1
+> Bn
+> Cn
+> We need to look at <bbox >
+> (497,121)(580,985) …… </ bbox >
+> <think> We need to calculate A
+> and B, then we compare C and
+> D…… </think>
+> Inference
+> Inference without training Training on our dataset
+> Perception
+> Error
+> ...
+> ...
+> ...
+> I ) Motivation II ) TableVision Dataset
+
+Fig. 1: The Motivation and Insight of TableVision. (I) Motivation: Traditional MLLMs often suffer from perception errors due to entangled grounding and reasoning (top left). Our decoupled approach (bottom left) leverages the TableVision dataset to physically anchor the reasoning chain via explicit spatial constraints. (II) Dataset Insight: (a) The Bottleneck Insight reveals that as task complexity increases (L1 →
+
+L3). (b) Structural Complexity highlights the diverse distribution of table sizes and header depths in our dataset. 
+
+Abstract. Structured tables are essential for conveying high-density in-formation in professional domains such as finance, healthcare, and scien-tific research. Despite the progress in Multimodal Large Language Mod-els (MLLMs), reasoning performance remains limited for infographics, especially images of complex tables with hierarchical layouts. In this pa-per, we identify a critical Perception Bottleneck through quantitative analysis. We find that as task complexity scales, the number of involved discrete visual regions increases disproportionately. This processing den-sity leads to an internal “Perceptual Overload", where MLLMs strug-gle to maintain accurate spatial attention during implicit generation. To address this bottleneck, we introduce TableVision , a large-scale, trajectory-aware benchmark designed for spatially grounded reasoning. 
+
+⋆ Equal contribution 
+
+⋆⋆ Corresponding author       
+
+> arXiv:2604.03660v1 [cs.AI] 4 Apr 2026 2X. Chen, L. Dai, et al. TableVision stratifies tabular tasks into three cognitive levels ( Percep-tion, Reasoning, and Analysis ) across 13 sub-categories. By utilizing a rendering-based deterministic grounding pipeline, the dataset explicitly couples multi-step logical deductions with pixel-perfect spatial ground truths, comprising 6,799 high-fidelity reasoning trajectories. Our em-pirical results, supported by diagnostic probing, demonstrate that ex-plicit spatial constraints significantly recover the reasoning potential of MLLMs. Furthermore, our two-stage decoupled framework achieves a ro-bust 12.3% overall accuracy improvement on the test set. TableVi-sion provides a rigorous testbed and a fresh perspective on the interplay between perception and logic in document understanding.
+> Keywords: Table Reasoning ·Vision-Language Models
+
+1 Introduction 
+
+In domains such as finance, healthcare, and scientific research, high-density in-formation is predominantly presented in structured tables. Traditional data pro-cessing paradigms typically rely on external OCR tools to serialize these tables into one-dimensional text (e.g., Markdown) [29]. However, this modality trans-formation is not only limited by the recognition ability of external tools, but also destroys the inherent 2D physical topological structure and spatial alignment of complex tables, especially those with hierarchical headers [41,50]. Recently, with the rapid development of Multimodal Large Language Models (MLLMs) [1,3,15], the research community has begun to explore unified and end-to-end methods for image-based table reasoning, which aims to preserve and leverage these 2D layouts within the native image space [4]. Despite the advantage of preserving structural information, current end-to-end MLLMs still struggle to deal with dense, complex tables [17]. Complex tab-ular reasoning requires the model to simultaneously process dense intra-table vi-sual information and execute multi-step logical computation during the implicit generation process. Through a quantitative characterization of task complex-ity, we identify a distinct decoupling in model requirements: while the reasoning depth remains consistent across levels, the perceptual demand scales significantly as task complexity increases. This pattern suggests that the primary bottleneck in complex table understanding is not necessarily logical depth, but the per-ceptual overload induced by multi-anchor grounding. This intensified density of visual information processing leads to an internal "Perceptual Overload": the model struggles to maintain accurate spatial attention when implicitly aligning massive visual elements, easily losing focus within the dense and topological grid [41]. Consequently, the absence of explicit 2D spatial grounding guidance constitutes the Perception Bottleneck that restricts the complex reasoning ca-pabilities of current MLLMs [11, 25, 26]. Existing tabular datasets mostly provide only final answers, lacking trajec-tory annotations that explicitly bind reasoning steps to underlying information pieces [8, 9, 13, 21, 22, 55]. To investigate and mitigate the perception bottleneck, TableVision: A Large-Scale Benchmark for Table Reasoning 3Single  
+
+> Head
+
+QA Pairs 
+
+> Hierarchal
+> Head
+> High Information
+> Density
+> Low Information
+> Density
+
+TableVision Dataset      
+
+> Q: Among immigrant women , how many percent of
+> black immigrant women worked in the health care
+> and social assistance sector was higher than other
+> immigrant women? Your task is to locate the
+> relevant cells in the table by providing bounding box
+> coordinates.
+
+Step 1: Find Information        
+
+> (124,739 ),( 993,791 )
+> (248,78 ),( 341,990 )(248,739 ),( 341,791 )
+> (621,78 ),( 714,990 )(621,739 ),( 714,791 )
+> bounding box coordinates Q: Among immigrant women , how many percent of
+> black immigrant women worked in the health care
+> and social assistance sector was higher than other
+> immigrant women? The relevant regions in the table
+> are: [row] [column] [cell] .
+
+Step 2: Generate CoT 
+
+> Context
+> Answer Reasoning
+
+Step 3: Prediction 
+
+TableVision Fine -tuning step   
+
+> Context Answer
+> Bounding
+> box
+> Perception
+> Reasoning
+> Analysis
+> Grounding
+> Reasoning
+> Bounding
+> Box
+> Chain of
+> Thought
+> Task Level
+
+Dataset Construction                                         
+
+> CoT :we first identify the percentage for black
+> immigrant women in this sector, which is 36 .6%.
+> Next, we identify the percentage for other
+> immigrant women in the same sector, which is 19 .0%.
+> We then calculate the difference :36 .6%-19 .0%=
+> 17 .6%.
+> A:The answer is 17 .6.
+> LLM
+> Bounding Box
+> QA Generate
+> Add
+> Human Check
+> Fine -tuned
+> Model
+> Reasoning
+> step
+> Input
+> Output
+
+Fig. 2: Overview of the TableVision benchmark and the proposed grounding-enhanced reasoning framework. Our TableVision dataset encompasses diverse mul-timodal reasoning tasks across complex tables with varying structural densities (e.g., hierarchical headers). To mitigate structural entanglement , we introduce a decoupled fine-tuning paradigm. Rather than predicting the final answer end-to-end, the model explicitly performs question-aware structural localization (Step 1) to identify relevant cell coordinates. These spatial anchors are then integrated to condition the multi-step logical calculation (Step 2 & 3), enabling highly reliable and grounded table reasoning. 
+
+it is essential to enhance spatial understanding in logical reasoning and provide models with fine-grained spatial alignment supervision. To this end, we construct the TableVision dataset, focusing on spatially grounded reasoning. To system-atically evaluate the structured-table understanding capabilities of MLLMs, we stratify tabular question-answering tasks into three cognitive levels of varying difficulty (L1: Perception, L2: Reasoning, L3: Analysis), which are further subdi-vided into 13 sub-tasks. Furthermore, to minimize the alignment noise introduced by automated LLM or OCR annotations, we design a Rendering-Based Deter-ministic Grounding Pipeline. This pipeline anchors multi-step logical deductions directly to pixel-perfect spatial ground truths (bounding boxes), ultimately gen-erating 6,799 high-fidelity multimodal reasoning trajectories. To evaluate the performance of current multimodal models comprehensively, we conducted an extensive evaluation of 10 representative MLLMs on the pro-posed TableVision benchmark. The results reveal that existing models gener-ally underperform on complex analysis tasks involving high visual loads. Subse-quently, a diagnostic probing experiment demonstrates the potential for perfor-mance recovery: when provided with exact spatial coordinates (Oracle Ground-ing) as input prompts, the reasoning accuracy of baseline models on complex tables improves significantly. This empirical finding suggests that explicit spa-tial guidance can effectively activate the logical reasoning potential of MLLMs. 4 X. Chen, L. Dai, et al. 
+
+Motivated by this observation, we implement a two-stage decoupled framework (Stage-1 Visual Localization → Stage-2 Reasoning Generation). Under a fully automated predictive setting, this pipeline achieves an overall accuracy improve-ment of 12.3% across the test set, establishing a robust empirical baseline for multimodal structured tabular reasoning. Our main contributions are summarized as follows: 
+
+– Identification of the Perception Bottleneck: We quantitatively demon-strate that the increased density of intra-table visual retrieval, rather than the depth of logical deduction, is the core factor limiting the scalability of current end-to-end MLLMs on complex tabular tasks. 
+
+– The TableVision Benchmark: We release a tabular dataset comprising 6,799 high-fidelity reasoning trajectories. Spanning three cognitive levels, this benchmark explicitly couples multi-step logical reasoning with 2D physical bounding boxes to evaluate the spatial alignment capabilities of multimodal models. 
+
+– Deterministic Construction Pipeline: We provide a rendering-based alignment methodology that deterministically maps implicit logical deriva-tions to image pixels, offering a reliable approach for constructing low-noise document datasets. 
+
+– Empirical Analysis and Baseline: Through extensive benchmarking and a two-stage decoupled experiment, we empirically validate the practical effec-tiveness of explicit spatial grounding supervision in enhancing the accuracy of multimodal structured reasoning. 
+
+2 Related work 
+
+2.1 Multimodal Table Understanding 
+
+Multi-modal Large Language Models (MLLMs), such as LLaVA [19, 32, 33] and Qwen-VL [2, 3, 45] series, have advanced rapidly. To adapt them for table un-derstanding, several end-to-end approaches implicitly learn layouts via data-driven alignment [56,58], structural reinforcement learning [28], or autoregressive bounding box prediction [34]. To circumvent the structural entanglement in end-to-end VLMs, other works adopt a modality conversion pipeline. These methods serialize table images into one-dimensional textual formats [31, 54, 60], utilize graph networks to model local relationships [57], or transform tables into executable representations (e.g., Pandas or SQL) for program-aided computation [5,6]. While effective, text-based serialization often sacrifices vital spatial topology, and program-aided pipelines risk error cascading on dense tabular structures. 
+
+2.2 Think with Images 
+
+Transcending the view of images as merely static inputs, recent multimodal reasoning advances towards a "Thinking with Images" paradigm [42], actively TableVision: A Large-Scale Benchmark for Table Reasoning 5
+
+utilizing visual representations as manipulable intermediate steps. Early agen-tic models dynamically invoke external tools (e.g., image cropping) to acquire fine-grained details [23, 59]. However, physical cropping severs the global table topology and incurs high latency. Alternatively, data-centric and modular ap-proaches explicitly align reasoning with synthetic bounding-box data or low-level grounding [26,52]. Further extensions treat models as visual programmers orches-trating external APIs [20, 24, 36] or enable closed-loop internal visual imagina-tion [43, 44, 51]. Despite these advancements, applying explicit spatial reasoning directly to structurally dense and semantically complex tables remains an open challenge. 
+
+2.3 Table Reasoning Datasets 
+
+The evolution of table reasoning datasets reflects a shift from text processing to multimodal visual understanding. Early benchmarks [7,10,14,16,38,39,46,48] se-rialized tables into one-dimensional formats (e.g., HTML, Markdown). Although advancing semantic parsing, this dimensionality reduction strips away crucial spatial layouts, blinding models to original topological structures. To bridge this gap, hybrid datasets [27, 30, 47, 49, 61, 62] incorporated both image and text inputs to tackle more complex, real-world scenarios. However, these datasets frequently treat images merely as auxiliary context or rely heavily on external OCR, compromising essential spatial alignment. Consequently, recent focus has shifted towards purely vision-centric datasets [18, 35, 37, 40, 56] for evaluating end-to-end MLLM perception. Yet, existing datasets predominantly offer only final answers or lack fine-grained coordinate annotations for intermediate reasoning. In contrast, our TableVision provides deterministic spatial supervision, explicitly coupling each logical reasoning step with bounding boxes to systematically activate MLLMs’ multi-step visual rea-soning potential. 
+
+3 The TableVision Dataset 
+
+3.1 Design Philosophy: Disentangling Perception from Reasoning 
+
+As compared in Table 1, existing tabular VQA datasets predominantly follow an implicit end-to-end paradigm, which often leads to spatial disorientation and the capture of incorrect semantic content during long-sequence generation. To miti-gate this perception bottleneck, we introduce TableVision . Departing from di-rect prediction, we advocate for a decoupled "Locate-then-Reason" paradigm. Formally, each instance is defined as a quadruplet T = {I, Q, S, A }, where the core innovation lies in the Spatial Evidence Set S. In this framework, the model is expected to first identify and extract key cell or header regions (bound-ing boxes B) relevant to query Q from image I. These precisely localized visual evidences are then re-incorporated as inputs, enabling the model to execute a log-ical Chain-of-Thought C and derive the final answer A while effectively bypass-ing visual noise. This design physically disentangles information localization 6 X. Chen, L. Dai, et al. 
+
+Table 1: Comprehensive comparison with existing tabular datasets. "Hier." indicates multi-level hierarchical headers; "Bbox" denotes spatial grounding; "CoT" refers to step-by-step logical rationale. Compared to existing benchmarks, TableVision 
+
+provides reasoning steps and bounding boxes that unify structural perception with complex multi-step reasoning.                                                                                                                                                 
+
+> Dataset Year Format Header Bbox Task Type CoT Size
+> WTQ [39] 2015 Text Flat ×Retr., Multi-hop ×220k QA ToTTo [38] 2020 Text Flat ×Table-to-Text ×120k Tbl PubTabNet [61] 2020 Img Flat ×Structure Recog. ×568k Tbl HybridQA [10] 2020 Text Flat ×Retr., Multi-hop ×70k QA OTT-QA [7] 2021 Text Flat ×Retr., Multi-hop ×45k QA TAT-QA [62] 2021 Text Flat ×Retr., Arith. ×16k QA HiTab [14] 2022 Text Hier. ×Retr., Multi-hop ×10.6k QA SynthTabNet [37] 2022 Img Flat ✓Structure Recog. ×600k Tbl TabMWP [27] 2023 Text Flat ×Arith., Multi-hop ✓38k QA TableVQA-B. [30] 2024 Img Flat ×Retr., Multi-hop ✓1.5k QA WikiDT [40] 2024 Img Flat ×Extractive QA ×70k QA ComTQA [56] 2024 Img Flat ×Retr., Multi-hop ×9k QA MMTU [49] 2025 Img Flat ×Retr., Multi-hop ×8.9k QA ReFocus [18] 2025 Img Flat ✓Retr., Multi-hop ×14k QA TableBench [48] 2025 Text Flat ×Retr., Multi-hop ×886 QA MMQA [46] 2025 Text Flat ×Retr., Multi-hop ×3.3k QA RealHiTBench [47] 2025 Img/Text Hier. ×Retr., Multi-hop ✓3.5k QA Visual-TQA [35] 2025 Img Flat ×Retr., Multi-hop ×6k QA Open-ViTabQA [16] 2025 Text Flat ×Extractive QA ×9.9k QA
+> TableVision (Ours) 2026 Img Hier. ✓Retr./Arith./Multi-hop ✓6.8k QA
+
+from symbolic computation, allowing TableVision to serve as a granular diag-nostic tool to distinguish whether a failure stems from spatial mis-localization or logical error. 
+
+3.2 Data Taxonomy and Hierarchical Distribution 
+
+To systematically benchmark multimodal tabular intelligence, we categorize tasks into three cognitive levels (L1 to L3) spanning 13 fine-grained operation types. This hierarchical structure enables a comprehensive evaluation of model perfor-mance across varying degrees of complexity. Our dataset comprises 6,799 de-coupled reasoning instances, with 5,498 for training and 1,301 for testing. As summarized in Table 2, the visual perception burden (measured by the average number of bounding boxes) scales significantly across these levels. 
+
+Level 1: Perception. L1 tasks focus on basic visual navigation and header mapping. It includes operations such as Retrieval , Listing , and Structure Iden-tification . These tasks require the model to locate specific cells or recognize the hierarchical layoutwithout complex numerical computation. 
+
+Level 2: Reasoning. L2 tasks introduce logical operations based on successful localization. It encompasses six operation types: Comparison , Arithmetic , Rank-ing , Conditional Filtering , Counting , and Verification . These queries require the model to perform atomic reasoning after anchoring the relevant visual evidence. 
+
+Level 3: Analysis. L3 represents the highest complexity, involving multi-step structural traversals. Operations include Compositional Arithmetic , Cross-hierarchy TableVision: A Large-Scale Benchmark for Table Reasoning 7
+
+Table 2: Hierarchical distribution and complexity metrics of TableVision. 
+
+The taxonomy stratifies queries into three cognitive levels. Notably, the visual percep-tion burden (Avg Bbox) scales exponentially from simple Retrieval to complex Multi-hop analysis.                                                                              
+
+> Cognitive Level Category Train Test Total Avg Bbox Avg Steps L1: Perception
+> Retrieval 1,813 371 2,184 3.10 4.33 Listing 109 28 137 3.72 5.44 Structure 394 114 508 4.12 2.61
+> L2: Reasoning
+> Comparison 494 113 607 3.33 4.58 Arithmetic 393 48 441 4.52 4.54 Ranking 344 47 391 4.66 4.78 Counting 310 92 402 8.07 4.79 Cond. Filtering 50 13 63 7.63 4.22 Verification 363 112 475 6.57 4.45
+> L3: Analysis
+> Comp. Arithmetic 363 107 470 7.12 4.42 Multi-hop 350 104 454 17.11 4.51 Temporal 296 80 376 10.02 4.37 Cross-hier. Agg. 219 72 291 8.29 4.04
+> Overall 13 Categories 5,498 1,301 6,799 5.79 4.33
+
+Aggregation , Multi-hop Reasoning , and Temporal Analysis . L3 queries require models to concurrently manage and process a large density of visual anchors. Significant performance drops at this level highlight limitations in maintaining coherent spatial-logical associations over complex structural traversals. 
+
+3.3 The Trajectory-Aware Construction Pipeline 
+
+To construct large-scale datasets with precise Bbox and CoT annotations while avoiding coordinate hallucinations, we developed a Rendering-Based Deter-ministic Pipeline (illustrated in Fig. 3). 
+
+Step 1: Image Rendering and Coordinate Mapping. Starting from the original structured tabular data in JSON format, we programmatically render them into high-resolution images. During this process, the exact pixel coordinates 
+
+(x1, y 1, x 2, y 2) of every cell, row header, and column header are automatically logged into a spatial metadata dictionary, ensuring absolute spatial accuracy. 
+
+Step 2: Stratified Annotation Generation. We apply distinct strategies based on the source of the queries: 
+
+Legacy Query Refinement: For original queries from HiTab, we first perform a rigorous filtering process. Based on the pre-existing answer cell indices, we re-extract the precise Bboxes via the spatial metadata dictionary and employ an LLM to regenerate standardized CoT rationales, ensuring perfect alignment between legacy answers and new visual evidence. 
+
+Synthetic Query Generation: For newly synthesized queries, we utilize an LLM as a logical router to decompose complex queries into Semantic Tags . These tags cover 1D array extraction (rows/columns), 2D cell intersection (handling nested headers via the " >" operator), and header metadata references. 8 X. Chen, L. Dai, et al. Render  
+
+> Fig. 3: The TableVision Annotation Pipeline. The framework integrates deter-ministic rendering for coordinate mapping, LLM-based rationale generation (CoT), and a human-in-the-loop verification loop (Modify/Drop) to ensure high-fidelity spatial-logical alignment.
+
+Step 3: Deterministic Alignment and Decoupling. In the final stage, the pipeline executes a deterministic matching algorithm to transform semantic tags into exact Bboxes. Crucially, the CoT rationales and Bbox sets are physically decou-pled to prepare the data for training our "Locate-then-Reason" framework. This process transforms implicit reasoning into explicit pairs of Spatial Evidence Sets and Logical Chains , rectifying potential logical drifts in the original data. 
+
+3.4 Quality Assurance and Verification 
+
+Since any misalignment between a spatial anchor (Bbox) and its corresponding logical step would compromise the benchmark’s reliability, we implemented a strict hybrid verification mechanism. First, an automated evaluator parsed the generated reasoning steps, screening for logical hallucinations and spatial bound-ary violations. Second, any flagged instances, alongside a random 5% subset of the entire corpus, underwent rigorous human-in-the-loop remediation. Crucially, during the validation of the newly synthesized queries, our pipeline identified 228 instances exhibiting spatial-logical inconsistencies. For example, a rationale might reference a correct numerical value but remain anchored to an incorrect cell node due to the visual interference of merged headers. These critical topological errors were manually rectified by expert annotators or completely discarded, ensuring the absolute fidelity of the TableVision benchmark. 
+
+3.5 Dataset Characteristics and Complexity Analysis 
+
+To quantify the structural and cognitive density of TableVision , we analyze the statistical distributions of the 6,799 instances, as visualized in Fig. 1(II). 
+
+Characterizing the Perceptual Grounding Bottleneck. As shown in our Bottleneck Insight (Fig. 1 II-a), an analysis of the dataset metadata reveals a clear disparity between reasoning depth and perceptual demand. Across all 13 categories, the average reasoning length remains relatively stable, ranging from 4.3 to 4.8 steps . In contrast, the visual perception burden scales significantly with task TableVision: A Large-Scale Benchmark for Table Reasoning 9
+
+complexity: the average number of required spatial anchors increases from 3.10 Bboxes in L1 Retrieval to a weighted average of 10.87 Bboxes in L3 Analysis, with certain sub-tasks such as Cross-hierarchy Aggregation requiring up to 17.11 Bboxes .
+
+Structural Complexity and Linguistic Density. The complexity of TableVision is further reflected in its 2D layouts and textual conditions. As shown in (Fig. 1 II-b), the tables exhibit an average dimension of 14.5 rows × 9.2 columns , with an average maximum header depth of 2.20 . This hierarchical topology poses a challenge to standard localized scanning. Furthermore, each query requires processing an average question length of 16.9 words and generating reasoning rationales averaging 53.8 words , demanding both robust linguistic processing and spatial alignment. 
+
+Evaluation Split and Generalization. To evaluate spatial generalization, we cu-rated the dataset split such that the test set (1,301 queries) exhibits higher multi-modal complexity than the training set (5,498 queries). The average num-ber of spatial anchors increases from 5.68 Bboxes in the training set to 6.24 Bboxes in the test set, with slightly longer question lengths ( 17.6 vs. 16.7 words ). 
+
+4 Grounding-Enhanced Reasoning Framework 
+
+4.1 Overview and Problem Formulation 
+
+Given a table image I and a natural language question Q, the goal of table reasoning is to generate a correct answer A. Standard Multimodal Large Lan-guage Models (MLLMs) formulate this directly as maximizing the probability 
+
+P (A|I, Q ). To mitigate the structural entanglement discussed in Section 1, we propose a decoupled framework that explicitly separates spatial perception from logical computation. We reformulate the reasoning process into two sequential stages utilizing intermediate structural bounding boxes B:
+
+P (A|I, Q ) = P (B|I, Q )
+
+| {z }
+
+> Stage 1: Localization
+
+× P (A|I, Q, B )
+
+| {z }
+
+> Stage 2: Reasoning
+
+(1) Our framework is built upon the Qwen3-VL-8B-Instruct backbone. To achieve parameter-efficient adaptation, we apply Low-Rank Adaptation (LoRA) to the language model while keeping the vision tower and vision-language projector frozen. The training is implemented using the LLaMA-Factory framework. 
+
+4.2 Stage 1: Explanatory Structural Grounding 
+
+The objective of the first stage is to identify the relevant row headers, column headers, and target cells necessary for answering the query. 10 X. Chen, L. Dai, et al. QwenLM 
+
+> What is the sum of 'apps' for the 'fa cup' and 'other'
+> categories specifically for the player's time at Port Vale?
+
+LoRA 
+
+Adapters 
+
+I1 I2 In
+
+Q1 Q2 Qn
+
+... 
+
+...      
+
+> (a) Localization Objective (b) Reasoning Objective
+> Qwen Model
+> <Grounding Reasoning>
+> Reason: I need to aggregate 'fa cup apps' and
+> 'other apps' from the Port Vale total row.
+> <Grounding>
+> [column: fa cup > apps] (497,121)(580,985)
+> [column: other > apps] (662,121)(745,985)
+> [row: port vale > total] (110,889)(994,937)
+> [cell: 2] (497,889)(580,937)
+> [cell: 3] (662,889)-(745,937)"
+> <Reasoning>
+> Looking at the 'total'
+> row for Port Vale: fa
+> cup apps = 2, other
+> apps = 3. Summin g
+> these together: 2 + 3
+> = 5.
+> <Answer>
+> The answer is 5.
+> Match Condition: IoU > 0.5 Cross Entropy Loss
+> Predicted
+> Bbox
+> GT Bbox GT CoT Predicted
+> Cot
+
+Image 
+
+Question 
+
+Supervised Fine-Tuning (SFT) Optimization 
+
+Fig. 4: The SFT training pipeline of our framework. We fine-tune LoRA adapters on a frozen Qwen3-VL-8B-Instruct backbone. The process is decoupled into Explanatory Structural Localization and Grounding-Conditioned Reasoning. 
+
+Input Formulation and Tokenization. The model acts as a structural parser guided by a system prompt. The prompt defines five semantic label types (col-umn, row, cell, colhead, and rowhead) to navigate the 2D topology. To map continuous visual space to text, we employ a 1000-level normalization scheme, representing coordinates as discrete integers in the range [0 , 999] .
+
+Autoregressive Generation. For a given query, the model first generates a brief textual explanation (Reason) justifying its focus. Following this rationale R,it autoregressively outputs the localized bounding boxes in the format [label] (x1,y1)(x2,y2) . The sequence termination is naturally handled by the end-of-sentence token. We optimize this stage using the standard next-token prediction loss over the rationale and bounding box tokens B:
+
+Lloc = −
+
+|B|
+
+X
+
+t=1 
+
+log Pθ (bt|I, Q, R, b <t ) (2) 
+
+4.3 Stage 2: Grounding-Conditioned Reasoning 
+
+In the second stage, the model performs logical synthesis using the localized regions as explicit structural evidence. 
+
+Evidence-Reasoning Integration. The coordinates and semantic labels gen-erated in Stage 1 are integrated as text tokens into the prompt for Stage 2. This explicit anchoring forces the self-attention mechanism to prioritize specific visual patches during the reasoning process. By providing these spatial anchors, we decouple the cognitive burden: the model’s parameter capacity is dedicated to numerical computation and cross-hierarchical logic rather than visual spatial searching. TableVision: A Large-Scale Benchmark for Table Reasoning 11 
+
+Reasoning Objective. The model is trained to generate a Chain-of-Thought (CoT) C that cites the grounded coordinates before producing the final answer 
+
+A. Given the input image I, query Q, and the predicted spatial anchors ˆB, the training objective for this stage is formulated as: 
+
+Lreason = −
+
+> |C,A |
+
+X
+
+> t=1
+
+log Pϕ(ct|I, Q, ˆB, c <t ) (3) where ϕ denotes the trainable parameters of the LoRA adapters applied to the language model. This conditional generation ensures that the resulting reasoning trajectory is physically anchored to the structural evidence identified in the first stage. 
+
+5 Experiments 
+
+In this section, we conduct extensive experiments to: (1) Benchmark the zero-shot performance of 10 Multimodal Large Language Models (MLLMs) on the 
+
+TableVision dataset; (2) Utilize an Oracle probing strategy to isolate and diag-nose the perception bottleneck; and (3) Evaluate the effectiveness of our proposed two-stage "Locate-then-Reason" framework. 
+
+5.1 Experimental Setup Baselines for Benchmarking. To assess current capabilities in hierarchical table reasoning, we evaluate 10 representative MLLMs with active parameter scales ranging from 4B to 9B. The selection includes general-purpose models (e.g., MiniCPM-V-2.6 [53], InternVL3-8B [63], Qwen3-VL-8B-Instruct [2]) and table-specialized models (e.g., Glyph [12]). All models are evaluated in a zero-shot setting to measure their inherent structural perception. These standard VLMs perform inference by directly generating the final answer without ex-tracting bounding boxes. 
+
+Implementation Details for Our Framework. For our two-stage frame-work, we utilize Qwen3-VL-8B-Instruct as the base model. The Supervised Fine-Tuning (SFT) is conducted using the LLaMA-Factory framework. We em-ploy LoRA on all linear layers of the language model with a rank of r = 32 
+
+and an alpha of α = 64 , while the visual encoder and projector remain frozen. To ensure reproducibility, both Stage 1 (Localization) and Stage 2 (Reasoning) are trained using the identical hyperparameter configuration. Specifically, the model is trained for 2 epochs using the AdamW optimizer with a learning rate of 1 × 10 −5 and a cosine decay schedule. The total batch size is set to 32 across 4 NVIDIA A100 (40GB) GPUs. 
+
+Evaluation Metrics. We report the exact-match Accuracy (%) across the 13 fine-grained task categories spanning cognitive levels L1 to L3. 12 X. Chen, L. Dai, et al. 
+
+Table 3: Comprehensive Zero-Shot Evaluation on the TableVision Test Set. Accuracy is reported in percentage (%). We evaluate 10 VLMs with compara-ble active parameter scales (4B to 9B). Evaluated variants include: MiniCPM-V-2.6, HiPPO, InternVL3-8B, Phi-3.5-Vision-Instruct, LLaVA-OneVision-7B, DeepSeek-VL2 (27B MoE, 4.5B active), GLM-4.1V-9B, Ovis2.5-9B, Glyph(GLM-4.1V-9B-Base), and Qwen3-VL-8B-Instruct.                                                                                                                                                                        
+
+> Category NMiniCPM-V HiPPO InternVL3 Phi-3.5-V LLaVA-OV DS-VL2 GLM-4.1V Ovis2.5 Glyph Qwen3-VL
+> Params -8B 8B 8B 4.2B 7B 4.5B* 9B 9B 9B 8B
+> L1: Perception (N=513)
+> Retrieval 371 73.0 73.6 36.4 24.8 57.7 61.2 80.6 76.5 78.4 78.8 Listing 28 57.1 39.3 25.0 21.4 21.4 17.9 42.9 75.0 82.1 59.3 Structure 114 66.7 39.5 48.2 20.2 50.0 61.4 41.2 20.2 78.1 90.4
+> L2: Reasoning (N=425)
+> Comparison 113 58.4 65.5 27.4 10.6 21.2 36.3 53.1 61.9 58.4 62.3 Arithmetic 48 54.2 60.4 20.8 4.2 29.2 50.0 75.0 68.8 60.4 77.6 Ranking 47 59.6 53.2 31.9 19.1 36.2 46.8 70.2 70.2 72.3 70.5 Cond. Filtering 13 30.8 23.1 30.8 23.1 38.5 23.1 61.5 61.5 92.3 61.5 Counting 92 37.0 39.1 26.1 31.5 25.0 34.8 40.2 58.7 67.4 41.3 Verification 112 59.8 58.9 60.7 50.9 53.6 48.2 66.1 82.1 92.0 65.2
+> L3: Analysis (N=363)
+> Comp. Arith. 107 10.3 12.1 5.6 6.5 3.7 5.6 13.1 66.4 78.5 24.3 Cross-hier. Agg. 72 13.9 13.9 5.6 5.6 8.3 1.4 16.7 52.8 66.7 27.8 Multi-hop 104 6.7 4.8 1.9 4.8 8.7 10.6 13.5 25.0 58.7 26.0 Temporal 80 12.5 23.8 17.5 12.5 13.8 13.8 21.2 16.2 37.5 32.5
+> Overall 1301 48.1 46.8 28.8 19.9 34.6 39.0 51.0 58.9 71.6 59.3
+
+5.2 Benchmarking Models 
+
+Table 3 presents the comprehensive zero-shot evaluation of the 10 MLLMs on the 
+
+TableVision test set. The results reveal several critical insights into the current limitations of multimodal architectures. 
+
+Capability Degradation Across Levels. While most models perform ad-equately on L1 Perception tasks (e.g., Qwen3-VL achieves 78.8% on Retrieval), their performance degrades significantly as cognitive complexity increases. On L3 Analysis tasks, nearly all general-purpose models suffer severe performance drops, with many falling below 30% accuracy (e.g., Qwen3-VL drops to 24.3% on Compositional Arithmetic). 
+
+Challenge of Hierarchical Topologies. Even table-specialized models struggle to maintain high accuracy across all tasks. Glyph achieves the high-est overall accuracy (71.6%), but still exhibits weaknesses in complex multi-hop scenarios. This confirms that TableVision poses a significant challenge as a benchmark for multimodal architectures. 
+
+5.3 Diagnosing the Perception Bottleneck 
+
+To empirically validate the "Perception Bottleneck" hypothesis, we first evaluate the standalone performance of our Stage-1 localization module and its direct impact on downstream reasoning. 
+
+Stage-1 Localization Performance. As shown in Fig. 5a), we report the local-ization metrics of Stage-1 across training checkpoints. At Ckpt 200, the model TableVision: A Large-Scale Benchmark for Table Reasoning 13 
+
+Ckpt Pairs Mean Median ≥0.5 ≥0.75 ≥0.9 
+
+50 2202 0.287 0.198 24.9% 7.0% 1.4% 100 2847 0.585 0.657 67.2% 36.4% 9.3% 150 2453 0.527 0.648 60.3% 36.4% 11.3% 200 2458 0.542 0.672 61.8% 39.4% 12.2% (a) Localization Metrics ckpt-50 ckpt-100 ckpt-150 ckpt-200  
+
+> 0.55
+> 0.60
+> 0.65
+> 0.70
+> 0.75
+> 0.80
+> 0.85
+> 0.90
+> 0.95
+> Match IoU
+> 0.677
+> 0.835
+> 0.753
+> 0.851
+> 0.777
+> 0.859
+> 0.785
+> 0.862
+> Match IoU@0.5
+> Match IoU@0.75
+> S2 Accuracy (%)
+> 66
+> 67
+> 68
+> 69
+> 70
+> 71
+> 72
+> 73
+> 74
+> S2 Pipeline Accuracy (%)
+> 69.2%
+> 69.7%
+> 71.0%
+> 71.6%
+
+(b) Grounding vs. Accuracy 
+
+Fig. 5: Quantitative analysis of Stage-1 spatial grounding and its correlation with downstream S2 Pipeline accuracy. 
+
+achieves a median IoU of 0.672 , with 61.8% of predicted boxes exceeding the 0.5 IoU threshold. However, the performance drops significantly as the precision requirement increases, with only 12.2% of boxes achieving IoU ≥ 0.9 . This confirms that high-precision localization in dense tables remains the primary challenge. 
+
+Localization Quality vs. Downstream Accuracy. We further analyze the corre-lation between grounding precision and final task accuracy. As illustrated in Fig. 5(b), the downstream reasoning accuracy is highly sensitive to Stage-1 qual-ity. When the localization median IoU improves from 0.198 to 0.672, the overall S2 Pipeline accuracy increases accordingly from 69.2% to 71.6% . This empir-ical correlation validates the "Locate-then-Reason" paradigm: stronger spatial anchoring directly translates to more robust logical synthesis. 
+
+Oracle Probing. To isolate the reasoning bottleneck, we provide the baseline with ground-truth (GT) bounding boxes. Removing the spatial search burden surges overall accuracy by 20.7% (59.3% → 80.0%). This leap is most evident in L3 tasks; e.g., Compositional Arithmetic improves by 65.4% (24.3% → 89.7%). These results prove the model possesses the requisite logic but fails in zero-shot settings due to spatial disorientation—operating on incorrect semantic content. 
+
+Error Propagation Analysis. While our Decoupled SFT yields a 12.3% overall gain, it marginally underperforms the End-to-End baseline on L3 tasks (59.2% vs. 60.6%). This exposes the vulnerability of Stage-1: L3 queries require dense spatial anchors (avg. 10.87 Bboxes ), leading to error accumulation during auto-regressive localization that misguides Stage-2. Nonetheless, the Oracle L3 accu-racy of 67.5% confirms that precise grounding remains the ultimate bottleneck. 
+
+Performance Regression in L1. We observe an accuracy drop in L1 tasks follow-ing SFT (Table 4). This regression likely stems from: (1) Reasoning Overhead :While Zero-shot models leverage direct visual attention for simple retrieval, our SFT models are mandated to follow a structured CoT. This added complexity can introduce stochastic errors in low-level tasks compared to direct extraction. (2) Task Interference : The optimization for complex logic in L2 and L3 may overshadow simple perceptual shortcuts, a common trade-off in multi-task fine-tuning. 14 X. Chen, L. Dai, et al.                                         
+
+> Table 4: Ablation Study on the TableVision Test Set. Zero-shot : Qwen3-VL-8B baseline. End-to-End SFT : Single-stage supervised model predicting CoT and answer directly. Decoupled SFT (Ours) : Our pipeline predicting bounding boxes before CoT. Oracle : Setting using ground-truth boxes.
+> Setting Perception Reasoning Analysis Overall
+> # Test Samples 513 425 363 1301 Zero-shot 80.3 61.1 27.3 59.3 End-to-End SFT 70.8 (-9.5) 61.6 (+0.5) 60.6 (+33.3) 65.0 (+5.7)
+> Decoupled SFT (Ours) 79.1 (-1.2) 73.1 (+12.0) 59.2 (+31.9) 71.6 (+12.3 )
+> Oracle (GT Bbox) 85.8 (+5.5) 83.9 (+22.8) 67.5 (+40.2) 80.0 (+20.7 )
+
+5.4 Sensitivity and Evidence Utilization Analysis 
+
+Accuracy vs. Number of Spatial Anchors. We evaluate how reasoning accuracy fluctuates as the density of spatial anchors increases. As the required boxes grow from sparse (1 to 5) to dense (greater than 10), the zero-shot baseline experiences a sharp performance drop. In contrast, our decoupled framework maintains a significantly higher accuracy across the same density intervals, indicating that explicit spatial grounding buffers the model against perceptual overload. 
+
+Validation of Evidence Utilization via Oracle Performance. To address concerns regarding whether the model genuinely relies on provided spatial evidence, we identify the Oracle performance leap as the most direct metric of evidence utilization. As demonstrated in Table 4, providing precise spatial anchors (Ora-cle) enables the reasoning module to achieve a massive +40.2% accuracy gain on L3 tasks compared to the zero-shot baseline. This substantial improvement quan-titatively proves that the Stage-2 module possesses a high degree of evidence faithfulness : once the perception layer (Stage-1) provides accurate spatial co-ordinates, the reasoning module can faithfully synthesize logical answers based on the anchored visual content rather than falling back on hallucinations. 
+
+6 Conclusion 
+
+In this paper, we investigate the structural entanglement problem faced by Mul-timodal Large Language Models (MLLMs) when processing complex hierarchical tables. We identify a critical Perception Bottleneck through quantitative analy-sis, revealing that as task complexity scales, MLLMs struggle to maintain accu-rate spatial attention amidst increasing visual region density. To mitigate this, we introduce TableVision, a benchmark dataset comprising 6,799 high-fidelity in-stances. By providing explicit bounding box trajectories and Chain-of-Thought annotations, our dataset supports the decoupling of dense tabular reasoning into a "Locate then Reason" paradigm. Despite these advancements, this study has certain limitations. The final reasoning performance of our two-stage framework TableVision: A Large-Scale Benchmark for Table Reasoning 15 
+
+remains heavily constrained by the localization accuracy of the first stage; specif-ically, L3 Analysis tasks, which require an average of 10.87 spatial anchors, are particularly vulnerable to error propagation during the auto-regressive grounding phase. Additionally, because existing tabular datasets typically lack fine-grained spatial coordinate ground truths, direct cross-dataset generalization evaluation is currently restricted. Future work will focus on improving the structural pars-ing robustness of models on extremely dense tables and extending this decoupled paradigm to broader Visually-Rich Document Understanding (VrDU) tasks to bridge the gap between perceptual grounding and high-level logical synthesis. 
+
+References 
+
+1. Achiam, O.J., Adler, S., Agarwal, S., Ahmad, L., Akkaya, I., Aleman, F.L., de Almeida, D.M., Altenschmidt, J., Altman, S., Anadkat, S., Avila, R., Babuschkin, I., Balaji, S., Balcom, V., Baltescu, P., ing Bao, H., Bavarian, M., Belgum, J., Bello, I., Berdine, J., Bernadett-Shapiro, G., Berner, C., Bog-donoff, L., Boiko, O., laine Boyd, M., Brakman, A.L., Brockman, G., Brooks, T., Brundage, M., Button, K., Cai, T., Campbell, R., Cann, A., Carey, B., Carlson, C., Carmichael, R., Chan, B., Chang, C., Chantzis, F., Chen, D., Chen, S., Chen, R., Chen, J., Chen, M., Chess, B., Cho, C., Chu, C., Chung, H.W., Cummings, D., Currier, J., Dai, Y., Decareaux, C., Degry, T., Deutsch, N., Deville, D., Dhar, A., Dohan, D., Dowling, S., Dunning, S., Ecoffet, A., Eleti, A., Eloundou, T., Farhi, D., Fedus, L., Felix, N., Fishman, S.P., Forte, J., abella Fulford, I., Gao, L., Georges, E., Gibson, C., Goel, V., Gogineni, T., Goh, G., Gontijo-Lopes, R., Gordon, J., Grafstein, M., Gray, S., Greene, R., Gross, J., Gu, S.S., Guo, Y., Hal-lacy, C., Han, J., Harris, J., He, Y., Heaton, M., Heidecke, J., Hesse, C., Hickey, A., Hickey, W., Hoeschele, P., Houghton, B., Hsu, K., Hu, S., Hu, X., Huizinga, J., Jain, S., Jain, S., Jang, J., Jiang, A., Jiang, R., Jin, H., Jin, D., Jomoto, S., Jonn, B., Jun, H., Kaftan, T., Kaiser, L., Kamali, A., Kanitscheider, I., Keskar, N.S., Khan, T., Kilpatrick, L., Kim, J.W., Kim, C., Kim, Y., Kirchner, H., Kiros, J.R., Knight, M., Kokotajlo, D., Kondraciuk, L., Kondrich, A., Konstantinidis, A., Kosic, K., Krueger, G., Kuo, V., Lampe, M., Lan, I., Lee, T., Leike, J., Leung, J., Levy, D., Li, C., Lim, R., Lin, M., Lin, S.L., teusz Litwin, M., Lopez, T., Lowe, R., Lue, P., Makanju, A., Malfacini, K., Manning, S., Markov, T., Markovski, Y., Martin, B., Mayer, K., Mayne, A., McGrew, B., McKinney, S.M., McLeavey, C., McMillan, P., McNeil, J., Medina, D., Mehta, A., Menick, J., Metz, L., Mishchenko, A., Mishkin, P., Monaco, V., Morikawa, E., Mossing, D.P., Mu, T., Murati, M., Murk, O., M’ely, D., Nair, A., Nakano, R., Nayak, R., Neelakantan, A., Ngo, R., Noh, H., Long, O., O’Keefe, C., Pachocki, J.W., Paino, A., Palermo, J., Pan-tuliano, A., Parascandolo, G., Parish, J., Parparita, E., Passos, A., Pavlov, M., Peng, A., Perelman, A., de Avila Belbute Peres, F., Petrov, M., de Oliveira Pinto, H.P., Pokorny, M., Pokrass, M., Pong, V.H., Powell, T., Power, A., Power, B., Proehl, E., Puri, R., Radford, A., Rae, J.W., Ramesh, A., Raymond, C., Real, F., Rimbach, K., Ross, C., Rotsted, B., Roussez, H., Ryder, N., Saltarelli, M.D., Sanders, T., Santurkar, S., Sastry, G., Schmidt, H., Schnurr, D., Schulman, J., Selsam, D., Sheppard, K., Sherbakov, T., Shieh, J., Shoker, S., Shyam, P., Sidor, S., Sigler, E., Simens, M., Sitkin, J., Slama, K., Sohl, I., Sokolowsky, B., Song, Y., Staudacher, N.M., Such, F.P., Summers, N., Sutskever, I., Tang, J., Tezak, 16 X. Chen, L. Dai, et al. N.A., Thompson, M., Tillet, P., Tootoonchian, A., Tseng, E., Tuggle, P., Turley, N., Tworek, J., Uribe, J.F.C., Vallone, A., Vijayvergiya, A., Voss, C., Wainwright, C.L., Wang, J., Wang, A., Wang, B., Ward, J., Wei, J., Weinmann, C., Welihinda, A., Welinder, P., Weng, J., Weng, L., Wiethoff, M., Willner, D., Winter, C., Wol-rich, S., Wong, H., Workman, L., Wu, S., Wu, J., Wu, M., Xiao, K., Xu, T., Yoo, S., Yu, K., ing Yuan, Q., Zaremba, W., Zellers, R., Zhang, C., Zhang, M., Zhao, S., Zheng, T., Zhuang, J., Zhuk, W., Zoph, B.: Gpt-4 technical report (2023), 
+
+https://api.semanticscholar.org/CorpusID:257532815 22. Bai, S., Cai, Y., Chen, R., Chen, K., Chen, X., Cheng, Z., Deng, L., Ding, W., Gao, C., Ge, C., et al.: Qwen3-vl technical report. arXiv preprint arXiv:2511.21631 (2025) 4, 11 3. Bai, S., Chen, K., Liu, X., Wang, J., Ge, W., Song, S., Dang, K., Wang, P., Wang, S., Tang, J., Zhong, H., Zhu, Y., Yang, M., Li, Z., Wan, J., Wang, P., Ding, W., Fu, Z., Xu, Y., Ye, J., Zhang, X., Xie, T., Cheng, Z., Zhang, H., Yang, Z., Xu, H., Lin, J.: Qwen2.5-vl technical report. ArXiv abs/2502.13923 (2025), https: //api.semanticscholar.org/CorpusID:276449796 2, 4 4. Cao, B., Lu, H., Ma, C., Wang, T., Li, R., Fan, J.: Orthogonal hierarchical de-composition for structure-aware table understanding with large language models (2026), https://api.semanticscholar.org/CorpusID:285269422 25. Cao, L., Liu, H.: Tablemaster: A recipe to advance table understanding with lan-guage models. arXiv preprint arXiv:2501.19378 (2025) 4 6. Cao, Y., Chen, S., Liu, R., Wang, Z., Fried, D.: Api-assisted code generation for question answering on varied table structures. In: Proceedings of the 2023 Con-ference on Empirical Methods in Natural Language Processing. pp. 14536–14548 (2023) 4 7. Chen, W., Chang, M.W., Schlinger, E., Wang, W., Cohen, W.W.: Open question answering over tables and text. arXiv preprint arXiv:2010.10439 (2020) 5, 6 8. Chen, W., Chang, M.W., Schlinger, E., Wang, W.Y., Cohen, W.W.: Open question answering over tables and text. ArXiv abs/2010.10439 (2020), https://api. semanticscholar.org/CorpusID:224803601 29. Chen, W., Wang, H., Chen, J., Zhang, Y., Wang, H., LI, S., Zhou, X., Wang, W.Y.: Tabfact: A large-scale dataset for table-based fact verification. ArXiv abs/1909.02164 (2019), https://api.semanticscholar.org/CorpusID: 198917339 210. Chen, W., et al.: Hybridqa: A dataset of multi-hop question answering over tabular and textual data. In: Proceedings of the ACL (2020) 5, 6 11. Cheng, A.C., Yin, H., Fu, Y., Guo, Q., Yang, R., Kautz, J., Wang, X., Liu, S.: Spatialrgpt: Grounded spatial reasoning in vision language model. ArXiv abs/2406.01584 (2024), https://api.semanticscholar.org/CorpusID: 270215984 212. Cheng, J., Liu, Y., Zhang, X., Fei, Y., Hong, W., Lyu, R., Wang, W., Su, Z., Gu, X., Liu, X., Bai, Y., Tang, J., Wang, H., Huang, M.: Glyph: Scaling context windows via visual-text compression. arXiv preprint arXiv:2510.17800 (2025) 11 13. Cheng, Z., Dong, H., Wang, Z., Jia, R., Guo, J., Gao, Y., Han, S., Lou, J.G., Zhang, D.: Hitab: A hierarchical table dataset for question answering and natural language generation. In: Annual Meeting of the Association for Computational Linguistics (2021), https://api.semanticscholar.org/CorpusID:237091377 214. Cheng, Z., Dong, H., Wang, Z., Jia, R., Guo, J., Gao, Y., Han, S., Lou, J.G., Zhang, D.: Hitab: A hierarchical table dataset for question answering and natural language generation. In: Proceedings of the 60th Annual Meeting of the Association TableVision: A Large-Scale Benchmark for Table Reasoning 17 for Computational Linguistics (Volume 1: Long Papers). pp. 1094–1110 (2022) 5, 615. Dai, W., Li, J., Li, D., Tiong, A.M.H., Zhao, J., Wang, W., Li, B.A., Fung, P., Hoi, S.C.H.: Instructblip: Towards general-purpose vision-language models with instruc-tion tuning. ArXiv abs/2305.06500 (2023), https://api.semanticscholar. org/CorpusID:258615266 216. Dao, D.H., Huynh, N.T., Tran, K.Q., Nguyen, K.V.: Open-vitabqa: A novel bench-mark for vietnamese question answering on open domain wikipedia table. Knowl. Based Syst. 330 , 114391 (2025). https://doi.org/10.1016/J.KNOSYS.2025. 114391 , https://doi.org/10.1016/j.knosys.2025.114391 5, 6 17. DeepSeek-AI, Guo, D., Yang, D., Zhang, H., Song, J.M., et al.: Deepseek-r1 in-centivizes reasoning in llms through reinforcement learning. Nature 645 , 633–638 (2025) 2 18. Fu, X., Liu, M., Yang, Z., Corring, J., Lu, Y., Yang, J., Roth, D., Florencio, D., Zhang, C.: Refocus: Visual editing as a chain of thought for structured image understanding. arXiv preprint arXiv:2501.05452 (2025) 5, 6 19. Guo, Z., Xu, R., Yao, Y., Cui, J., Ni, Z., Ge, C., Chua, T.S., Liu, Z., Huang, G.: Llava-uhd: an lmm perceiving any aspect ratio and high-resolution images. In: European Conference on Computer Vision. pp. 390–406. Springer (2024) 4 20. Gupta, T., Kembhavi, A.: Visual programming: Compositional visual reasoning without training. In: Proceedings of the IEEE/CVF conference on computer vision and pattern recognition. pp. 14953–14962 (2023) 5 21. Gupta, V., Mehta, M., Nokhiz, P., Srikumar, V.: Infotabs: Inference on tables as semi-structured data. In: Annual Meeting of the Association for Computational Linguistics (2020), https://api.semanticscholar.org/CorpusID:218614095 222. Herzig, J., Nowak, P.K., Müller, T., Piccinno, F., Eisenschlos, J.M.: Tapas: Weakly supervised table parsing via pre-training. In: Annual Meeting of the Associa-tion for Computational Linguistics (2020), https://api.semanticscholar.org/ CorpusID:214802901 223. Hong, J., Zhao, C., Zhu, C., Lu, W., Xu, G., Yu, X.: Deepeyesv2: Toward agentic multimodal model. arXiv preprint arXiv:2511.05271 (2025) 5 24. Hu, Y., Hua, H., Yang, Z., Shi, W., Smith, N.A., Luo, J.: Promptcap: Prompt-guided task-aware image captioning. arXiv preprint arXiv:2211.09699 (2022) 5 25. Janner, M., Narasimhan, K., Barzilay, R.: Representation learning for grounded spatial reasoning. Transactions of the Association for Computational Linguistics 
+
+6, 49–61 (2017) 2 26. Kang, W., Kuen, J., Ren, M., Wei, Z., Yan, Y., Liu, K.: Vgent: Visual ground-ing via modular design for disentangling reasoning and prediction. arXiv preprint arXiv:2512.11099 (2025) 2, 5 27. Kang, X., Wang, Z., Jin, X., Wang, W., Huang, K., Wang, Q.: Template-driven llm-paraphrased framework for tabular math word problem generation. In: Proceedings of the AAAI Conference on Artificial Intelligence. vol. 39, pp. 24303–24311 (2025) 5, 6 28. Kang, X., Wu, S., Wang, Z., Liu, Y., Jin, X., Huang, K., Wang, W., Yue, Y., Huang, X., Wang, Q.: Can grpo boost complex multimodal table understanding? In: Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing. pp. 12642–12655 (2025) 4 29. Kim, G., Hong, T., Yim, M., Nam, J., Park, J., Yim, J., Hwang, W., Yun, S., Han, D., Park, S.: Ocr-free document understanding transformer. In: European Confer-ence on Computer Vision (2021), https://api.semanticscholar.org/CorpusID: 250924870 218 X. Chen, L. Dai, et al. 30. Kim, Y., Yim, M., Song, K.Y.: Tablevqa-bench: A visual question answering benchmark on multiple table domains. ArXiv abs/2404.19205 (2024), https: //api.semanticscholar.org/CorpusID:269457160 5, 6 31. Liu, F., Eisenschlos, J., Piccinno, F., Krichene, S., Pang, C., Lee, K., Joshi, M., Chen, W., Collier, N., Altun, Y.: Deplot: One-shot visual language reasoning by plot-to-table translation. In: Findings of the Association for Computational Lin-guistics: ACL 2023. pp. 10381–10399 (2023) 4 32. Liu, H., Li, C., Wu, Q., Lee, Y.J.: Visual instruction tuning. Advances in neural information processing systems 36 , 34892–34916 (2023) 4 33. Liu, S., Cheng, H., Liu, H., Zhang, H., Li, F., Ren, T., Zou, X., Yang, J., Su, H., Zhu, J., et al.: Llava-plus: Learning to use tools for creating multimodal agents. In: European conference on computer vision. pp. 126–142. Springer (2024) 4 34. Liu, S., Zhang, Z., Hu, P., Ma, J., Du, J., Wang, Q., Zhang, J., Liu, C.: See then tell: Enhancing key information extraction with vision grounding. Neurocomputing p. 132858 (2026) 4 35. Lompo, B.A., Haraoui, M.: Visual-tableqa: Open-domain benchmark for reasoning over table images. CoRR abs/2509.07966 (2025). https://doi.org/10.48550/ ARXIV.2509.07966 , https://doi.org/10.48550/arXiv.2509.07966 5, 6 36. Mallis, D., Karadeniz, A.S., Cavada, S., Rukhovich, D., Foteinopoulou, N., Cherenkova, K., Kacem, A., Aouada, D.: Cad-assistant: tool-augmented vllms as generic cad task solvers. In: Proceedings of the IEEE/CVF International Confer-ence on Computer Vision. pp. 7284–7294 (2025) 5 37. Nassar, A.S., Livathinos, N., Lysak, M., Staar, P.W.J.: Tableformer: Table struc-ture understanding with transformers. 2022 IEEE/CVF Conference on Com-puter Vision and Pattern Recognition (CVPR) pp. 4604–4613 (2022), https: //api.semanticscholar.org/CorpusID:247218660 5, 6 38. Parikh, A., Wang, X., Gehrmann, S., Faruqui, M., Dhingra, B., Yang, D., Das, D.: Totto: A controlled table-to-text generation dataset. In: Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP). pp. 1173–1186 (2020) 5, 6 39. Pasupat, P., Liang, P.: Compositional semantic parsing on semi-structured tables. In: Proceedings of the 53rd Annual Meeting of the Association for Computational Linguistics and the 7th International Joint Conference on Natural Language Pro-cessing (Volume 1: Long Papers). pp. 1470–1480 (2015) 5, 6 40. Shi, H., Xie, Y., Goncalves, L., Gao, S., Zhao, J.: Wikidt: Visual-based table recog-nition and question answering dataset. In: Document Analysis and Recognition -ICDAR 2024 - 18th International Conference, Athens, Greece, August 30 - Septem-ber 4, 2024, Proceedings, Part I. Lecture Notes in Computer Science, vol. 14804, pp. 406–437. Springer (2024). https://doi.org/10.1007/978-3-031-70533-5_24 ,
+
+https://doi.org/10.1007/978-3-031-70533-5_24 5, 6 41. Singh, A., Chaudhary, R., Singh, G., Kumary, A.: Lost in translation and noise: A deep dive into the failure modes of vlms on real-world tables. arXiv preprint arXiv:2511.17238 (2025) 2 42. Su, Z., Xia, P., Guo, H., Liu, Z., Ma, Y., Qu, X., Liu, J., Li, Y., Zeng, K., Yang, Z., et al.: Thinking with images for multimodal reasoning: Foundations, methods, and future frontiers. arXiv preprint arXiv:2506.23918 (2025) 4 43. Sun, Q., Cui, Y., Zhang, X., Zhang, F., Yu, Q., Wang, Y., Rao, Y., Liu, J., Huang, T., Wang, X.: Generative multimodal models are in-context learners. In: Proceed-ings of the IEEE/CVF conference on computer vision and pattern recognition. pp. 14398–14409 (2024) 5 TableVision: A Large-Scale Benchmark for Table Reasoning 19 44. Team, C.: Chameleon: Mixed-modal early-fusion foundation models. arXiv preprint arXiv:2405.09818 (2024) 5 45. Wang, P., Bai, S., Tan, S., Wang, S., Fan, Z., Bai, J., Chen, K., Liu, X., Wang, J., Ge, W., et al.: Qwen2-vl: Enhancing vision-language model’s perception of the world at any resolution. arXiv preprint arXiv:2409.12191 (2024) 4 46. Wu, J., Yang, L., Li, D., Ji, Y., Okumura, M., Zhang, Y.: Mmqa: Evaluating llms with multi-table multi-hop complex questions. In: International Conference on Learning Representations (ICLR) 2025 (2025), https://openreview.net/forum? id=GGlpykXDCa , oral 5, 6 47. Wu, P., Yang, Y., Zhu, G., Ye, C., Gu, H., Lu, X., Xiao, R., Bao, B., He, Y., Zha, L., et al.: Realhitbench: A comprehensive realistic hierarchical table bench-mark for evaluating llm-based table analysis. In: Findings of the Association for Computational Linguistics: ACL 2025. pp. 7105–7137 (2025) 5, 6 48. Wu, X., Yang, J., Chai, L., Zhang, G., Liu, J., Du, X., Liang, D., Shu, D., Cheng, X., Sun, T., Niu, G., Li, T., Li, Z.: Tablebench: A comprehensive and complex benchmark for table question answering. ArXiv abs/2408.09174 (2024), https: //api.semanticscholar.org/CorpusID:271902839 5, 6 49. Xing, J., He, Y., Zhou, M., Dong, H., Han, S., Chen, L., Zhang, D., Chaudhuri, S., Jagadish, H.V.: Mmtu: A massive multi-task table understanding and reason-ing benchmark. ArXiv abs/2506.05587 (2025), https://api.semanticscholar. org/CorpusID:279243905 5, 6 50. Xu, P., Wang, S., Zhu, Y., Li, J., Zhang, Y.: Spatialbench: Benchmarking multi-modal large language models for spatial cognition. ArXiv abs/2511.21471 (2025), 
+
+https://api.semanticscholar.org/CorpusID:283262153 251. Xu, Y., Li, C., Zhou, H., Wan, X., Zhang, C., Korhonen, A., Vulić, I.: Visual planning: Let’s think only with images. arXiv preprint arXiv:2505.11409 (2025) 5 52. Yang, Y., Patel, A., Deitke, M., Gupta, T., Weihs, L., Head, A., Yatskar, M., Callison-Burch, C., Krishna, R., Kembhavi, A., et al.: Scaling text-rich image un-derstanding via code-guided synthetic multimodal data generation. In: Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Vol-ume 1: Long Papers). pp. 17486–17505 (2025) 5 53. Yao, Y., Yu, T., Zhang, A., Wang, C., Cui, J., Zhu, H., Cai, T., Li, H., Zhao, W., He, Z., et al.: Minicpm-v: A gpt-4v level mllm on your phone. arXiv preprint arXiv:2408.01800 (2024) 11 54. Yutong, G., Wang, W., Wu, Y., Miao, Z., Wang, H.: Talent: Table vqa via augmented language-enhanced natural-text transcription. arXiv preprint arXiv:2510.07098 (2025) 4 55. Zhang, J., Pan, C., Wei, K., Xiong, S., Zhao, Y., Li, X., Peng, J., Gu, X., Yang, J., Chang, W., Wu, Z., Zhong, J., Song, S., Li, Y., Li, X.: T2r-bench: A benchmark for generating article-level reports from real world industrial tables. ArXiv abs/2508.19813 (2025), https://api.semanticscholar.org/CorpusID: 280918587 256. Zhao, W., Feng, H., Liu, Q., Tang, J., Wei, S., Wu, B., Liao, L., Ye, Y., Liu, H., Li, H., Huang, C.: Tabpedia: Towards comprehensive visual table understanding with concept synergy. CoRR abs/2406.01326 (2024). https://doi.org/10.48550/ ARXIV.2406.01326 , https://doi.org/10.48550/arXiv.2406.01326 4, 5, 6 57. Zhao, W., Liu, Y., Wan, Y., Wang, Y., Deng, Z., Yu, P.S.: Localize, retrieve and fuse: A generalized framework for free-form question answering over tables. In: Findings of the Association for Computational Linguistics: IJCNLP-AACL 2023 (Findings). pp. 1–12 (2023) 4 20 X. Chen, L. Dai, et al. 58. Zheng, M., Feng, X., Si, Q., She, Q., Lin, Z., Jiang, W., Wang, W.: Multimodal ta-ble understanding. In: Proceedings of the 62nd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers). pp. 9102–9124 (2024) 4 59. Zheng, Z., Yang, M., Hong, J., Zhao, C., Xu, G., Yang, L., Shen, C., Yu, X.: Deepeyes: Incentivizing" thinking with images" via reinforcement learning. arXiv preprint arXiv:2505.14362 (2025) 5 60. Zhong, X., ShafieiBavani, E., Jimeno Yepes, A.: Image-based table recognition: data, model, and evaluation. In: European conference on computer vision. pp. 564–580. Springer (2020) 4 61. Zhong, X., Shafieibavani, E., Jimeno-Yepes, A.: Image-based table recognition: data, model, and evaluation. In: Proceedings of the European Conference on Com-puter Vision (ECCV) (2020), https://api.semanticscholar.org/CorpusID: 208267858 5, 6 62. Zhu, F., et al.: Tat-qa: A question answering benchmark on a hybrid of tabular and textual content in finance. In: Proceedings of the ACL (2021) 5, 6 63. Zhu, J., Wang, W., Chen, Z., Liu, Z., Ye, S., Gu, L., Tian, H., Duan, Y., Su, W., Shao, J., et al.: Internvl3: Exploring advanced training and test-time recipes for open-source multimodal models. arXiv preprint arXiv:2504.10479 (2025) 11

@@ -1,0 +1,102 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2603.14463v1/fig-001.webp",
+      "caption": "Figure 8: The taxonomy of INSEva benchmark.",
+      "page": 6,
+      "index": 1,
+      "width": 590,
+      "height": 335
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14463v1/fig-002.webp",
+      "caption": "Figure 1: Performance comparison of INS-S1-235B against SOTA models.",
+      "page": 2,
+      "index": 2,
+      "width": 860,
+      "height": 371
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14463v1/fig-003.webp",
+      "caption": "Table 9: Effectiveness of Prompt Correction Loop on Data Production. Iterative refinement significantly boosts Test Set accuracy and ensures high yield rates for the Training Set.",
+      "page": 14,
+      "index": 3,
+      "width": 636,
+      "height": 219
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14463v1/fig-004.webp",
+      "caption": "Figure 2: Data Synthesis Diagram.",
+      "page": 3,
+      "index": 4,
+      "width": 824,
+      "height": 199
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14463v1/fig-005.webp",
+      "caption": "Figure 12: Synergistic Use of RLVR and RLAIF - Reward.",
+      "page": 18,
+      "index": 5,
+      "width": 677,
+      "height": 410
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14463v1/fig-006.webp",
+      "caption": "Figure 11: Detailed Data Distribution in SFT Phase",
+      "page": 18,
+      "index": 6,
+      "width": 672,
+      "height": 369
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14463v1/fig-007.webp",
+      "caption": "Table 4: Main results for LLMs on INSEva across different Business Areas.",
+      "page": 8,
+      "index": 7,
+      "width": 894,
+      "height": 382
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14463v1/fig-008.webp",
+      "caption": "Table 3: Main results on insurance and general benchmarks.",
+      "page": 8,
+      "index": 8,
+      "width": 894,
+      "height": 329
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14463v1/fig-009.webp",
+      "caption": "Figure 9: Real-world Deployment Workflow.",
+      "page": 17,
+      "index": 9,
+      "width": 898,
+      "height": 452
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14463v1/fig-010.webp",
+      "caption": "Figure 10: The development process architecture of INS-S1.",
+      "page": 17,
+      "index": 10,
+      "width": 898,
+      "height": 438
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14463v1/fig-011.webp",
+      "caption": "Table 1: Ablation study on training strategies.",
+      "page": 5,
+      "index": 11,
+      "width": 817,
+      "height": 191
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14463v1/fig-012.webp",
+      "caption": "Figure 7: SFT-RL Training Framework",
+      "page": 5,
+      "index": 12,
+      "width": 627,
+      "height": 364
+    }
+  ]
+}

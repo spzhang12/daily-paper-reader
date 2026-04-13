@@ -1,0 +1,110 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2603.14407v1/fig-001.webp",
+      "caption": "Table 1. AUROC comparison between baselines and OFA-TAD. The best results are highlighted in bold.",
+      "page": 6,
+      "index": 1,
+      "width": 1017,
+      "height": 863
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14407v1/fig-002.webp",
+      "caption": "Table 5. AUPRC comparison between baselines and OFA-TAD. The best results are highlighted in bold.",
+      "page": 15,
+      "index": 2,
+      "width": 1017,
+      "height": 850
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14407v1/fig-003.webp",
+      "caption": "Figure 4. Average rank of different methods across 34 datasets.",
+      "page": 7,
+      "index": 3,
+      "width": 433,
+      "height": 398
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14407v1/fig-004.webp",
+      "caption": "Table 2. Ablation results w.r.t. average AUROC, AUPRC, and F1.",
+      "page": 7,
+      "index": 4,
+      "width": 450,
+      "height": 285
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14407v1/fig-005.webp",
+      "caption": "Table 8. Ablation results w.r.t. per-dataset AUPRC. The best results are highlighted in bold, where G: gating, A: attention, P: position, N: noise injection, E: extrapolation, I: interpolation, M: masking.",
+      "page": 18,
+      "index": 5,
+      "width": 1017,
+      "height": 954
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14407v1/fig-006.webp",
+      "caption": "Table 4. The statistics of out-of-domain datasets.",
+      "page": 13,
+      "index": 6,
+      "width": 875,
+      "height": 329
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14407v1/fig-007.webp",
+      "caption": "Table 3. The statistics of in-domain datasets.",
+      "page": 13,
+      "index": 7,
+      "width": 995,
+      "height": 804
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14407v1/fig-008.webp",
+      "caption": "Figure 3. The pipeline of OFA-TAD. First, the multi-view distance encoding module extracts normalized neighbor-distance profiles from multiple transformation-induced metric spaces to obtain transferable representations. Then, the Mixture-of-Experts (MoE) scoring network leverages view-specific experts and an entropy-regularized gating mechanism to adaptively fuse distance-based anomaly evidence. A multi-strategy anomaly synthesis module is employed to generate diverse pseudo-anomalies for model training.",
+      "page": 4,
+      "index": 8,
+      "width": 987,
+      "height": 331
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14407v1/fig-009.webp",
+      "caption": "Table 9. Ablation results w.r.t. per-dataset F1. The best results are highlighted in bold, where G: gating, A: attention, P: position, N: noise injection, E: extrapolation, I: interpolation, M: masking.",
+      "page": 19,
+      "index": 9,
+      "width": 1017,
+      "height": 968
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14407v1/fig-010.webp",
+      "caption": "Table 7. Ablation results w.r.t. per-dataset AUROC. The best results are highlighted in bold, where G: gating, A: attention, P: position, N: noise injection, E: extrapolation, I: interpolation, M: masking.",
+      "page": 17,
+      "index": 10,
+      "width": 1017,
+      "height": 951
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14407v1/fig-011.webp",
+      "caption": "Figure 9. Performance with varying context size on the rest of target datasets.",
+      "page": 20,
+      "index": 11,
+      "width": 1001,
+      "height": 805
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14407v1/fig-012.webp",
+      "caption": "Figure 10. Gating weights on additional target datasets.",
+      "page": 20,
+      "index": 12,
+      "width": 1000,
+      "height": 322
+    },
+    {
+      "url": "assets/figures/arxiv/2603.14407v1/fig-013.webp",
+      "caption": "Table 6. F1 comparison between baselines and OFA-TAD. The best results are highlighted in bold.",
+      "page": 16,
+      "index": 13,
+      "width": 1017,
+      "height": 863
+    }
+  ]
+}

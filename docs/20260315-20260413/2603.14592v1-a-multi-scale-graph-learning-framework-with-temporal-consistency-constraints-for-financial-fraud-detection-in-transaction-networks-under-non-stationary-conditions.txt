@@ -1,0 +1,459 @@
+Title: A Multi-Scale Graph Learning Framework with Temporal Consistency Constraints for Financial Fraud Detection in Transaction Networks under Non-Stationary Conditions
+
+URL Source: https://arxiv.org/pdf/2603.14592v1
+
+Published Time: Tue, 17 Mar 2026 06:52:44 GMT
+
+Number of Pages: 39
+
+Markdown Content:
+# A Multi-Scale Graph Learning Framework with Temporal Consistency Constraints for Financial Fraud Detection in Transaction Networks under Non-Stationary Conditions 
+
+Yiming Lei a, Qiannan Shen b, ∗, Junhao Song c
+
+> aGeorgia Institute of Technology, Atlanta, GA, USA
+> bBoston University, Boston, MA, USA
+> cImperial College London, London, UK
+
+Abstract 
+
+Financial fraud detection in transaction networks involves modeling sparse anomalies, dynamic patterns, and severe class imbalance in the presence of temporal drift in the data. In real-world transaction systems, a suspicious transaction is rarely isolated: rather, legitimate and suspicious transactions are often connected through accounts, intermediaries or through temporal transaction sequences. Attribute-based or randomly partitioned learning pipelines are therefore insufficient to detect relationally structured fraud. This work presents STC-MixHop , a graph-based framework combining spatial multi-resolution propagation with lightweight temporal consistency modeling for anomaly and fraud detection in dynamic transaction networks. It integrates three components: (i) a MixHop-inspired multi-scale neighborhood diffusion encoder a multi-scale neighborhood diffusion MixHop-based encoder for learning structural patterns; (ii) a spatial-temporal attention module coupling current and preceding graph snapshots to stabilize representations; and (iii) a temporally informed self-supervised pretraining strategy exploiting unlabeled transaction interactions to improve representation quality. We evaluate the framework primarily on the PaySim dataset under strict chrono-logical splits, supplementing the analysis with Porto Seguro and FEMA data to probe cross-domain component behavior. Results show that STC-MixHop is competitive among graph methods and achieves strong screening-oriented      
+
+> ∗Corresponding author
+> Email addresses: ylei82@gatech.edu (Yiming Lei), iamqb@bu.edu (Qiannan Shen),
+> junhaosong23@imperial.ac.uk (Junhao Song)
+> arXiv:2603.14592v1 [cs.LG] 15 Mar 2026
+
+recall under highly imbalanced conditions. The experiments also reveal an important boundary condition: when node attributes are highly informative, tabular baselines remain difficult to outperform. Graph structure contributes most clearly where hidden relational dependencies are operationally impor-tant. These findings support a stability-focused view of graph learning for financial fraud detection, where the value of structural modeling is conditional, interpretable, and closely tied to deployment context. 
+
+Keywords: financial fraud detection, transaction network anomaly detection, dynamic graph representation learning, temporal consistency, self-supervised regularization 
+
+1. Introduction 
+
+Financial fraud detection in transaction networks remains challenging because suspicious behavior is sparse, temporally evolving, and often organized through hidden relational structure rather than isolated attributes alone. In modern digital payment systems, risky activity may propagate through shared accounts, repeated transfer motifs, coordinated intermediaries, or short-lived behavioral bursts[ 1], making purely tabular learning pipelines insufficient for capturing the full pattern of abnormal interactions [2, 3, 4]. Beyond relational complexity, fraud detection systems must also operate under severe class imbalance, delayed or partial supervision, and substantial temporal non-stationarity. Fraud labels are typically rare, behavioral patterns shift over time, and models trained on historical windows must generalize to future periods without benefitting from temporal leakage [ 5, 6]. These characteristics make it insufficient to evaluate models only through randomized splits or isolated ranking scores; deployment-relevant assessment requires chronological evaluation, stability analysis, and careful interpretation of when structural modeling truly helps. Graph neural networks provide a natural framework for this setting because they explicitly encode transactional relationships among entities and allow risk information to propagate across connected neighborhoods [ 7, 8]. Prior work has shown that graph-based methods can be effective for financial forensics, anti-money laundering, and abnormal transaction detection, particularly when suspicious activity is not locally observable from marginal features alone [ 9, 5, 10 ]. At the same time, the practical value of graph learning is not universal: when node or transaction attributes already contain strong 2discriminative signal, graph structure may provide only limited gains and can even introduce noise if the induced topology is weakly aligned with the prediction target [2, 6]. This motivates a more careful question than whether graph learning simply outperforms tabular baselines: which architectural components of spatial-temporal graph learning remain genuinely useful under realistic temporal drift and attribute-dominant data conditions? In particular, three issues remain central. First, temporal modeling is necessary because transaction behavior evolves over time, yet naïve temporal aggregation may become unstable under distribution shift or inadvertently leak future information [ 11 , 12 ]. Second, higher-order relational structure can be important for detecting coordinated or concealed behavior, but deeper message passing introduces oversmoothing, optimization instability, and increased computational cost [ 13 ]. Third, because positive labels are sparse and delayed, auxiliary self-supervised objectives may help regularize representations, but their benefit is often conditional rather than guaranteed [14, 15, 16]. To address these issues, we conduct a stability-focused study of STC-MixHop , a spatial-temporal graph learning framework that combines multi-resolution structural diffusion, lightweight temporal synthesis, and auxiliary contrastive regularization. Rather than presenting the model primarily as a novelty-driven architecture, we examine it as a structured combination of architectural priors whose contributions can be separated and interpreted. Our primary evaluation uses the PaySim transaction dataset [ 2], where we formulate a temporally ordered node-level fraud detection task by converting transaction-level labels into windowed entity-level labels. This setting enables a realistic study of graph learning behavior under chronological evaluation, substantial class imbalance, and partial supervision. We compare STC-MixHop against strong tabular and graph-based base-lines, and we supplement the main PaySim study with exploratory cross-domain experiments on Porto Seguro and FEMA NFIP to examine whether the observed component-level trends extend beyond a single dataset. Across experiments, the central empirical pattern is consistent: multi-hop structural diffusion is the most important architectural component, temporal synthesis mainly improves stability, and contrastive pretraining behaves as a conditional regularizer rather than a universal performance booster. 
+
+Contributions. This research provides four principal contributions. First, we present a stability-focused empirical evaluation of STC-MixHop for fraud and anomaly detection in temporally evolving transaction networks, using 3strict chronological splits to better reflect deployment conditions. Second, we define a transparent and reproducible node-level problem formulation on PaySim by explicitly mapping transaction-level fraud labels to temporally windowed entity labels. Third, we decompose STC-MixHop into three archi-tectural assumptions—multi-resolution diffusion, cross-temporal synthesis, and auxiliary contrastive regularization—and quantify their separate effects through ablation and sensitivity analyses rather than relying only on aggre-gate benchmark scores. Fourth, we show that the value of graph structure in this setting is condition-dependent: it is most useful when suspicious behavior is relationally organized, while strong tabular baselines remain difficult to beat in attribute-dominant regimes. Section 2 examines relevant literature on relational risk modeling, graph-based learning, and spatial-temporal representation learning under class imbalance and temporal drift. Section 3 introduces foundational concepts, notational conventions, and learning objectives. Section 4 describes the STC-MixHop architectural framework in detail. Section 5 presents experimental findings on PaySim, including component ablations and parametric sensitivity analyses. Section 6 summarizes implications for stability-focused evaluation and operational implementation. 
+
+2. Related Work 
+
+Risk assessment under class imbalance, temporal drift, and partial su-pervision has been studied across multiple application settings, including financial transaction monitoring, insurance analytics, anti-money laundering, and anomaly detection in relational systems. Our study intersects three complementary research directions: risk modeling under severe imbalance and non-stationarity, graph neural architectures for relational risk networks, and spatio-temporal self-supervised representation learning. This section reviews the most relevant literature and clarifies how our work differs from prior studies that focus primarily on dataset-specific performance optimization rather than deployment-oriented stability analysis. 
+
+2.1. Risk Modeling in Imbalanced Transaction and Insurance Systems 
+
+Traditional risk modeling pipelines have long relied on generalized linear models, tree-based methods, and standard supervised learning over tabular features [ 17 , 18 ]. Such approaches remain attractive because they are simple, interpretable, and often operationally robust when marginal features already 4carry strong predictive signal. In many real-world settings, however, risk is not fully expressed through isolated attributes alone. It may emerge through interactions among entities, repeated behavioral motifs, or temporally evolving dependencies that are not directly captured by independent-feature models [6, 3]. A central practical challenge in these tasks is severe class imbalance. Posi-tive instances often represent only a very small portion of the full population, making naive accuracy metrics misleading and requiring greater emphasis on ranking quality, threshold-dependent behavior, and screening-oriented recall [ 6, 5]. In addition, delayed supervision and temporal drift complicate model development: labels may arrive late, behavior changes over time, and models trained on historical windows must remain effective under future conditions [ 5, 10 ]. These considerations make chronological evaluation and deployment-relevant analysis more informative than benchmark scores alone. Public transaction datasets such as PaySim [ 2] have therefore become useful benchmarks for studying fraud detection under controlled but challenging conditions. Although synthetic, PaySim captures several characteristics relevant to practical modeling, including heavy class imbalance, evolving transaction patterns, and strong attribute-driven separability. This makes it a useful testbed for understanding when relational modeling provides additional value beyond strong tabular baselines, especially under realistic temporal segmentation and limited supervision.[19, 20] 
+
+2.2. Graph Neural Networks for Relational Risk Networks 
+
+Graph neural networks extend deep learning to relationally structured data through iterative neighborhood aggregation [ 7, 8]. This paradigm is especially useful when the prediction target depends not only on local attributes but also on connectivity patterns, shared neighbors, or higher-order relational structure. In fraud detection, financial forensics, and related tasks, graph representations allow models to capture dependencies among entities connected through transfers, shared intermediaries, or repeated interaction patterns [5, 9, 10]. A recurring architectural theme in graph-based risk modeling is the need to capture more than immediate one-hop context. Suspicious behavior is often distributed across multi-hop neighborhoods, which motivates diffusion-based and multi-resolution propagation schemes [ 13 ]. MixHop-style designs explicitly combine representations from multiple hop distances, enabling access to both local and extended structural context without relying on very deep message passing. This is particularly relevant in settings where deeper architectures 5can suffer from oversmoothing, numerical instability, and excessive sensitivity to sparse or noisy connectivity patterns [13]. In practice, relational benchmarks can be represented in different ways, including entity-centric graphs and event-centric graphs. Entity-centric for-mulations are natural when the operational task is to prioritize suspicious accounts or participants, whereas event-centric formulations focus directly on transaction-level classification. When source datasets provide labels at event level but evaluation is performed at entity level, the mapping from event labels to node labels must be made explicit. A key design choice of this work is therefore the use of a transparent temporally windowed node-label formula-tion, ensuring consistency between graph construction, label assignment, and evaluation. 
+
+2.3. Spatio-Temporal Graph Learning for Dynamic Relational Data 
+
+Many relational risk environments are intrinsically dynamic. Transaction behavior evolves over time, suspicious activity may cluster within short periods, and historical patterns may not remain stable under distribution shift [ 11 , 12 ]. Spatio-temporal graph learning addresses this by combining structural representation with temporal modeling, allowing node embeddings to incorporate both relational context and short-horizon behavioral evolution. A common practical strategy is to segment time into ordered windows and construct a sequence of graph snapshots [ 5, 11 ]. Standard graph encoders can then be applied within each snapshot, while lightweight temporal modules combine information across adjacent windows. This approach offers a reason-able balance between modeling power and implementation simplicity, but its effectiveness depends on design choices such as window granularity, temporal coupling range, and leakage prevention. Overly coarse windows may hide transient signals, while overly fine windows can amplify sparsity and noise. Equally important is the evaluation protocol. Temporal modeling is meaningful only when the train-validation-test split preserves chronological order. Randomized partitions can allow future information to enter training indirectly through repeated entities or correlated neighborhoods, thereby overstating practical performance [ 5]. For this reason, strict chronological evaluation is increasingly recognized as essential for credible deployment-oriented analysis in dynamic relational risk settings. 62.4. Self-Supervised and Contrastive Graph Representation Learning 
+
+Self-supervised graph representation learning has emerged as an effective way to exploit unlabeled relational data when annotated positives are scarce [ 14 , 15 ]. In many transaction and anomaly-detection settings, unlabeled interactions are abundant, whereas confirmed positive labels are rare, delayed, or expensive to obtain. Self-supervised objectives can therefore serve as auxiliary signals that improve representation quality and stabilize downstream supervised learning [16]. Contrastive learning is one of the most widely used self-supervised strate-gies. It typically constructs positive pairs through augmented views of the same node, subgraph, or temporal instance, and negative pairs from other nodes or distant contexts [ 15 , 14 ]. In temporal graph settings, positive pairs may also be formed across adjacent time windows, encouraging representa-tional consistency under short-horizon drift. However, the contribution of contrastive objectives is often condition-dependent rather than uniformly beneficial. In attribute-dominant settings where strong predictive signal is already contained in local features, con-trastive regularization may not always improve ranking metrics and can sometimes smooth away useful distinctions. Its value may instead lie in regularization, robustness, and label-efficiency improvement. This motivates treating contrastive learning as an auxiliary component whose contribution should be evaluated empirically rather than assumed a priori. 
+
+2.5. Summary and Positioning 
+
+The literature reviewed above suggests three recurring challenges. First, temporal modeling and evaluation remain vulnerable to distribution shift and leakage when chronology is not handled carefully. Second, extended-range relational dependencies can be informative, but capturing them efficiently and stably is nontrivial. Third, limited supervision motivates auxiliary self-supervised learning, yet the benefit of such objectives is often conditional and requires empirical verification. Our work addresses these issues by positioning STC-MixHop as a struc-tured combination of complementary architectural priors rather than as a purely novelty-driven model. Instead of asking only whether the architecture improves headline metrics, we study which components remain useful under chronological evaluation, severe imbalance, and attribute-dominant condi-tions. This stability-focused perspective is intended to be more informative 7for deployment-oriented graph learning than dataset-specific optimization alone. 
+
+3. Preliminaries 
+
+This section provides formal definitions for the dynamic transaction-network representation used throughout this work, specifies the learning task and notational conventions, and describes the supervised and self-supervised training objectives. Our goal is to provide a clear and reproducible problem definition that removes ambiguity regarding graph construction, fraud label assignment, and chronological evaluation. Although the source data sup-plies labels at transaction granularity, our framework operates on sequential temporal entity graphs where nodes correspond to participant accounts. We therefore define an explicit mapping from event-level fraud labels to temporally windowed node-level labels. 
+
+3.1. Dynamic Transaction Graph Representation 
+
+We formalize the data as a sequential collection of temporal transactional networks 
+
+G = {Gt = ( Vt, E t, X t) | t = 1 , . . . , T }, (1) where each snapshot Gt corresponds to a uniformly-sized temporal window 
+
+t. Nodes Vt = {v(t) 
+
+> i
+
+} represent accounts (participant entities) appearing within window t. Directed edges Et ⊆ Vt × Vt represent monetary transfers aggregated within the corresponding window, where (v(t) 
+
+> i
+
+, v (t) 
+
+> j
+
+) ∈ Et indicates that account i sends value to account j during window t. The node attribute matrix Xt ∈ R|Vt|× F contains F -dimensional features per account, potentially including transactional statistics and behavioral summaries computed from events occurring within the window [2]. This temporally-windowed entity-network formulation aligns naturally with screening-oriented surveillance, where the operational question addresses whether a specific account warrants prioritized investigative attention during a given temporal period. Furthermore, this specification enables application of standard graph representation learning techniques to individual snapshots while supporting cross-temporal synthesis across sequential snapshots [ 5, 21 ]. 
+
+3.2. Risk Label Construction from Transaction Events 
+
+In the PaySim dataset, fraud labels are provided at individual transaction-record granularity [ 2]. To define a node-level classification task compatible 8with the entity-network formulation, we construct temporally windowed entity fraud labels. Let Rt denote the set of events occurring within window t. Each event record r ∈ Rt includes an originating entity, a destination entity, and a binary fraud indicator. We define the node label yi,t ∈ { 0, 1} for entity node 
+
+v(t) 
+
+> i
+
+as: 
+
+yi,t = I (∃r ∈ Rt : i ∈ { r.src, r.dst } ∧ r.label = 1) .
+
+In plain terms, an entity receives a positive label within window t if it participates, as originator or recipient, in at least one fraudulent transaction during that window; otherwise it receives a negative label. This mapping produces a partially labeled dynamic graph sequence, since not all entities appear in every window and the positive class remains extremely sparse. The resulting imbalance is consistent with realistic fraud detection settings and requires evaluation beyond naive accuracy. 
+
+3.3. Graph Connectivity and Normalization 
+
+Let At ∈ { 0, 1}|Vt|×| Vt| denote the adjacency matrix of Gt. We use a normalized adjacency formulation ˆAt to stabilize propagation behavior: 
+
+ˆAt = D−1/2 
+
+> t
+
+(At + I)D−1/2 
+
+> t
+
+, (2) where I is the identity matrix and Dt is the degree matrix of At + I. Nor-malization reduces sensitivity to node degree variation and enables stable learning on sparsely connected transactional networks [5, 8]. To capture extended-range topological relationships, we define the k-hop propagation operators 
+
+A(k) 
+
+> t
+
+= ˆAkt , k = 0 , 1, . . . , K, (3) where K is a hyperparameter controlling the maximum hop distance con-sidered. These operators form the basis for multi-resolution diffusion used in MixHop-inspired spatial aggregation architectures [ 13 ]. Unlike deep se-quential stacking of message-passing layers, multi-resolution diffusion permits concurrent access to varied receptive field sizes while reducing representation uniformity risks [13, 22]. 
+
+3.4. Temporal Neighborhood and Snapshot Coupling 
+
+Transactional behavior evolves across temporal windows, and the meaning of an account embedding often depends on recent historical context [ 11 ,910 ]. We therefore combine representations across adjacent snapshots. For an account identity appearing across multiple windows, we define a causal temporal neighborhood ending at time t as 
+
+Ti,t = {v(t−ℓ) 
+
+> i
+
+, . . . , v (t) 
+
+> i
+
+},
+
+for windows where v(τ ) 
+
+> i
+
+∈ Vτ .In our implementation, we use a single-step temporal interaction window (ℓ = 1 ), combining each node in snapshot t with its representation from snapshot (t − 1) when present. This causal design supports attention-based temporal synthesis that adaptively weights recent context while preventing temporal leakage. In fraud detection settings, such coupling is useful because suspicious activity may appear in short bursts, whereas benign behavior can remain comparatively stable over adjacent periods. 
+
+3.5. Learning Task and Model Outputs 
+
+Given the network sequence {Gt}Tt=1 and the derived node labels {yi,t },our goal is to learn an encoder and classifier that can predict temporally windowed account-level fraud risk. Let fθ denote the spatial-temporal encoder and gϕ the classification module. For each snapshot t, the encoder produces node embeddings 
+
+Zt = fθ(Gt), zi,t ∈ Rd,
+
+and the classifier outputs a fraud-risk probability estimate 
+
+ˆyi,t = gϕ(zi,t ) ∈ (0 , 1) .
+
+The evaluation setup is chronologically ordered: models are trained on earlier windows and evaluated on later windows. This protocol simulates realistic deployment, where future behavioral patterns remain unseen during training and distribution shift is unavoidable. 
+
+3.6. Objectives: Auxiliary Pretraining and Supervised Fine-Tuning 
+
+The complete learning procedure consists of two sequential stages. 
+
+Stage I: self-supervised contrastive pretraining.. We pretrain the encoding architecture on unlabeled or partially labeled snapshots to encourage repre-sentational consistency across temporal windows and stochastic perturbations [ 14 , 15 ]. For each anchor embedding zi,t , we construct positive pairs from 10 two complementary sources. The first source comprises intra-snapshot consis-tency , where identical nodes are encoded under dual stochastic network views created through attribute masking and edge perturbation [ 23 ]. The second source comprises temporal consistency , where identical nodes are paired across consecutive snapshots (t − 1, t ) when appearing in both windows. We generate alternative views using stochastic attribute masking and edge perturbation [15]. A general formulation of the contrastive learning objective is: 
+
+Lpre = − ∑
+
+> (i,t )
+
+log exp(sim( zi,t , z +
+
+> i,t
+
+)/τ )exp(sim( zi,t , z +
+
+> i,t
+
+)/τ ) + ∑ 
+
+> z−∈N neg (i,t )
+
+exp(sim( zi,t , z −)/τ ), (4) where sim (·, ·) denotes cosine similarity, τ is a temperature hyperparameter, and Nneg (i, t ) is a negative exemplar set sampled from other nodes or tempo-rally distant windows. In our framework, this objective serves an auxiliary role. Its main function is encoder regularization and stability improvement under annotation scarcity, rather than assumption of consistent peak ranking metric enhancement [6, 24]. 
+
+Stage II: supervised fine-tuning with class weighting.. We initialize the encoder with pretrained parameters and jointly fine-tune all encoder parameters θ
+
+along with classifier parameters ϕ using weighted binary cross-entropy [ 5, 6]. Given the substantial imbalance between positive and negative nodes, we set class weights wpos and wneg to emphasize positive instance contributions: 
+
+Lsup = − ∑
+
+> (i,t )∈D L
+
+[wpos yi,t log ˆ yi,t + wneg (1 − yi,t ) log(1 − ˆyi,t )] , (5) where DL denotes the labeled node set. To improve learning stability, we use a lower learning rate for the encoder compared to the classifier during fine-tuning, allowing encoder adaptation while reducing overfitting risk [6]. 
+
+3.7. Problem Definition 
+
+Formally, given a sequential collection of partially labeled transactional networks {Gt}Tt=1 , we aim to learn a functional mapping 
+
+fθ,ϕ : ( Vt, E t, X t, t ) → ˆYt
+
+that outputs a fraud-risk probability estimate ˆyi,t for each entity node v(t) 
+
+> i
+
+.The learned model should generalize to subsequent temporal windows that remain completely unobserved during training. For reference convenience, Table 1 summarizes the notation used throughout this manuscript. 11 3.8. Notation Summary 
+
+> Table 1: Summary of key symbols used throughout this manuscript.
+
+Symbol Description 
+
+Gt = ( Vt, E t, X t) Snapshot transactional network at window tVt, E t Account nodes and directed transfers within window tXt Node attribute matrix within window tAt, ˆAt Adjacency matrix and normalized adjacency form 
+
+A(k) 
+
+> t
+
+k-hop propagation operator within window tK Maximum hop distance for multi-resolution diffusion 
+
+zi,t Embedding of node v(t)
+
+> i
+
+Zt Embedding matrix for snapshot t
+
+Ti,t Temporal neighborhood of node i near t
+
+ˆyi,t Predicted fraud-risk probability for node v(t)
+
+> i
+
+yi,t Temporally windowed node label derived from PaySim transactions 
+
+Lpre Auxiliary contrastive pretraining loss 
+
+Lsup Weighted supervised classification loss 
+
+θ, ϕ Encoder and classifier parameters 
+
+4. Methodology 
+
+This section presents a detailed description of the STC-MixHop (Spatio-Temporal Coupled MixHop) architectural framework investigated in this research. The framework is designed to concurrently capture multi-resolution spatial relationships and temporal evolutionary patterns within transactional networks, while leveraging unlabeled data through a temporally-informed con-trastive pretraining scheme. As illustrated in Fig. 1, the architecture combines three complementary modules: a MixHop-inspired multi-resolution diffusion encoder extracting extended-range topological context, a spatial-temporal coupling attention mechanism combining information across successive snap-shots, and a temporally-informed contrastive learning component regularizing representations via self-supervised objectives. These components work to-gether to produce temporally consistent and structurally discriminative node embeddings for downstream hazard identification. 12 Figure 1: Complete architectural diagram of the STC-MixHop framework. The architecture comprises a multi-hop spatial diffusion encoder (MixHop) for capturing extended-range topological context, a temporal attention fusion module for synthesizing information across snapshots, and a two-stage training protocol involving self-supervised contrastive pretraining followed by supervised fine-tuning. 
+
+4.1. Overall Architecture 
+
+Given a sequential collection of temporal transactional networks G =
+
+{Gt}Tt=1 , STC-MixHop learns node representations that simultaneously encode extended-range topological relationships within individual snapshots and temporal variation across sequential snapshots. For each window t, the encoder produces node embeddings Zt = fθ(Gt), and a lightweight classification module predicts node hazard: 
+
+ˆyi,t = gϕ(zi,t ) = σ(Wczi,t + bc), (6) where zi,t is the embedding of node v(t) 
+
+> i
+
+and σ(·) is the sigmoid activation. We employ a two-stage learning strategy. In Stage I (self-supervised pretraining), we train the encoder using a temporally-informed contrastive objective that enforces temporal and topological consistency. In Stage II (supervised fine-tuning), we initialize the encoder from pretrained parameters and jointly fine-tune the encoder and classifier using weighted binary cross-entropy on labeled nodes. This design separates representation learning 13 from label fitting, which proves beneficial when labels are sparse and when evaluation conditions differ from training conditions. 
+
+4.2. Spatio-Temporal Coupled MixHop Encoder Spatial aggregation via multi-resolution diffusion.. Within individual snap-shots Gt, immediate neighborhood aggregation may prove inadequate when informative relationships span multiple intermediate accounts. We therefore apply a MixHop-inspired diffusion mechanism to capture k-hop topological context without deep sequential stacking of message-passing layers. Let ˆAt be the normalized adjacency matrix of Gt. For hop distance k ∈ { 0, 1, . . . , K },we compute H(k) 
+
+> t
+
+= σ( ˆAkt XtW (k)) and combine the hop-wise representations via ˜Ht = concat (
+
+H(0)  
+
+> t
+
+, . . . , H (K)
+
+> t
+> )
+
+Wmix . (7) This formulation yields node representations that capture extended-range transactional relationships. 
+
+Temporal synthesis via attention across snapshots.. To encode temporal vari-ation while maintaining architectural simplicity, we combine each snapshot with limited historical context. Specifically, we use a single-step tempo-ral interaction window ( L = 1 ): for a node in snapshot t, we construct a historical tensor by concatenating its current representation with, when available, its representation from the immediately preceding snapshot (t − 1) .A temporally-informed attention mechanism then combines this length-2 context into a temporally smoothed representation for downstream prediction. This design aligns with streaming deployment scenarios, where only preceding information is available, and primarily serves to stabilize representations under concentrated activity clusters and distributional non-stationarity rather than providing extended-range temporal memory. 
+
+4.3. Time-Aware Contrastive Learning 
+
+We use an auxiliary self-supervised objective to regularize the encoding ar-chitecture and improve representational consistency across temporal windows and network perturbations. For each snapshot, we create dual stochastic views via attribute masking and edge perturbation, treating the embeddings of identical nodes under both views as intra-snapshot positives (NT-Xent formulation). Furthermore, when a node appears in consecutive snapshots, we include temporal positives by pairing its embedding at time t with its 14 embedding from the immediately preceding snapshot (t − 1) , thereby en-couraging short-horizon temporal consistency under regime shifts. Negative exemplars are implicitly provided by other nodes within the minibatch or snapshot. Overall, this objective serves as an auxiliary regularization mech-anism designed to improve learning stability and label utilization efficiency under substantial categorical distributional skewness, rather than ensuring uniform performance improvements in ranking metrics across all transactional data conditions. Importantly, this objective is treated as an auxiliary regularization com-ponent. Universal peak performance improvement across all data conditions is not assumed, and its functional contribution is explicitly evaluated in the ablation study. 
+
+4.4. Training Algorithm 
+
+The complete learning procedure follows a two-stage protocol. 
+
+Stage I: self-supervised pretraining.. We train encoder parameters θ using the contrastive objective Lpre on unlabeled or partially labeled snapshots. This stage learns representations that exhibit consistency across temporal shifts and robustness to stochastic perturbations. 
+
+Stage II: supervised fine-tuning.. We initialize the encoder from pretrained parameters and jointly fine-tune all encoder parameters θ along with classifier parameters ϕ using weighted binary cross-entropy on labeled nodes: 
+
+Lsup = − ∑
+
+> (i,t )∈D L
+
+[wpos yi,t log ˆ yi,t + wneg (1 − yi,t ) log(1 − ˆyi,t )] . (8) To prevent overfitting while allowing adaptation toward the supervised objec-tive, we use a reduced learning rate for the encoder compared to the classifier during Stage II. This staged design remains conceptually consistent with unified objective formulations, yet practically we optimize the two objectives sequentially to improve stability under substantial categorical distributional skewness and temporal displacement. 
+
+4.5. Complexity Analysis 
+
+Let |Vt| and |Et| denote the node and edge counts within snapshot Gt. For the spatial aggregation module, computing K-hop diffusion-based aggregations 15 has time complexity of O(K|Et|d) using sparse matrix operations, where d is the feature dimensionality. Temporal synthesis combines a bounded number of adjacent snapshots, with attention computation scaling according to the chosen temporal context range. The auxiliary contrastive objective adds an extra forward pass through augmented views, typically incurring constant-factor computational overhead. Overall, the framework remains practical for large transactional networks under standard sparse graph implementation approaches. 
+
+4.6. Discussion and Design Rationale 
+
+The STC-MixHop architecture can be understood as a systematic de-composition of complementary architectural priors for dynamic relational risk modeling. Each component addresses a specific challenge in transaction-network fraud detection while maintaining computational tractability. The multi-resolution diffusion mechanism captures extended-range topo-logical relationships without requiring excessively deep message-passing ar-chitectures. This design directly addresses oversmoothing and instability issues in deep graph neural networks while providing access to informative context beyond immediate neighbors. Such context can be important for de-tecting suspicious behavior organized through shared intermediaries, repeated interaction motifs, or multi-hop dependencies. The temporal synthesis module provides adaptive coupling across adjacent snapshots through attention-weighted combination. This mechanism stabilizes learned representations under temporal variation, concentrated activity bursts, and chronological distribution shift. Unlike recurrent architectures with long temporal memory, the present design intentionally uses minimal short-horizon coupling to smooth representational drift without introducing unnecessary complexity. The auxiliary contrastive objective serves as a regularization mechanism that encourages temporal and structural consistency in the embedding space. By promoting similar representations for identical nodes across augmented views and consecutive temporal windows, it can improve stability and label efficiency under sparse supervision. Importantly, we treat this component as auxiliary rather than primary, recognizing that its contribution may vary across data conditions. A distinguishing feature of our approach is the explicit recognition that these components play different functional roles depending on the underlying data-generating process. Rather than assuming universal performance gains, 16 we analyze each component through ablation and sensitivity studies, providing deployment-oriented insight into when structural diffusion, temporal coupling, and auxiliary self-supervision are most useful. 
+
+5. Experiments Evaluation Philosophy. Given the substantial class imbalance and synthetic origin of the PaySim corpus, our evaluation prioritizes operational stability and screening-oriented behavior rather than only absolute benchmark scores. While ROC-AUC is reported for completeness, we emphasize PR-AUC and threshold-dependent metrics because they more directly reflect deployment-oriented tradeoffs under fraud detection settings where false positives and missed suspicious entities carry asymmetric costs. This section presents a comprehensive empirical evaluation of the STC-MixHop framework using the PaySim financial transaction corpus . The experimental investigation aims to assess the effectiveness and stability of STC-MixHop under conditions relevant to transaction-network fraud detec-tion, including chronological distribution shift, sparse positive labels, and attribute-dominant separability. The evaluation framework addresses three core questions: performance under severe class imbalance; the relative contri-butions of spatial and temporal representation components; and sensitivity of the framework to key architectural hyperparameters. 
+
+5.1. Dataset 
+
+We perform evaluation using the PaySim corpus [ 2], a widely used synthetic mobile money transaction benchmark for fraud detection research. PaySim produces transactional interactions between participant entities over time and injects anomalous behavioral patterns according to predefined probabilistic rules. Each transaction record contains originator and recipient identifiers, a temporal index, a transaction amount, and a binary fraud label. Following our problem specification, we construct a sequential collection of snapshot networks by segmenting the temporal dimension into uniformly-sized windows. In implementation, PaySim provides a discrete temporal index step 
+
+measured in hourly increments; we convert step to an absolute timestamp by anchoring to a fixed reference date and then partition transactions into calendar-aligned periods using a time_bin resolution (default setting: 7D ). Within each window t, nodes represent participant accounts and directed edges represent monetary transfers occurring during that window. 17 Node labels. Since PaySim provides transaction-level fraud labels, we derive node labels per window: for each entity node v(t) 
+
+> i
+
+, we assign yi,t = 1 
+
+if the entity appears as originator or recipient in at least one fraudulent transaction during window t; otherwise yi,t = 0. 
+
+Node attributes and information containment constraints. Node attributes are computed solely from raw transactional features within each window (including in-/out-degree, transaction counts, amount statistics, bal-ance change statistics, and transaction type frequency distributions when available). Importantly, we exclude any label-derived statistics (such as fraud frequencies) from node attributes, thereby preventing information leakage from supervisory signals into model inputs. 
+
+Subsampling for computational tractability. To maintain computa-tional manageability, we limit transaction volume used for network construc-tion (default setting: 200,000 records) via a temporally-stratified sampling procedure that maintains coverage across the full temporal range, thereby avoiding the pathological situation where naive file-initial subsets focus only on early temporal windows. 
+
+Chronological partitioning. To simulate operational deployment con-ditions, we apply strict chronological partitioning across the ordered snapshot sequence: the earliest 70% of snapshots are used for training (including Stage I pretraining and Stage II fine-tuning), the next 15% for validation (threshold selection and early stopping), with remaining snapshots reserved for held-out test evaluation. Only information from preceding windows informs models evaluated on subsequent windows. 
+
+Supplementary Cross-Domain Datasets. To probe whether the component-level trends observed on PaySim extend beyond a single transac-tion benchmark, we also evaluate STC-MixHop on two additional real-world datasets with different feature and graph-construction characteristics. The 
+
+Porto Seguro Safe Driver Prediction dataset [ 25 ] contains 595,212 Brazil-ian auto insurance policies with binary claim indicators and 57 anonymized policyholder features, demonstrating substantial class imbalance typical of real insurance portfolios. The FEMA National Flood Insurance Pro-gram (NFIP) dataset [ 26 ] supplies policy-level flood insurance records including geographic, structural, and temporal attributes, enabling evaluation under property insurance settings with distinct hazard dynamics. We build policyholder networks by connecting entities sharing common geographic regions, policy characteristics, or temporal claim patterns, thereby enabling graph-based representation learning consistent with our PaySim methodology. 18 Preliminary analyses and exploratory evaluations on these supplementary datasets indicate trends consistent with our primary PaySim evaluation: multi-resolution structural diffusion remains the most important architectural component, temporal synthesis improves representational stability, and the overall framework shows consistent behavioral properties under substantial class imbalance across varied insurance domains. Due to space limitations, we focus on qualitative consistency rather than exhaustive quantitative bench-marking on these supplementary datasets. We note that findings on these datasets may depend on graph construction decisions and hyperparameter settings, and are meant to support cross-domain consistency of trends rather than establish definitive quantitative conclusions. 
+
+5.2. Benchmark Methods 
+
+To thoroughly evaluate the proposed STC-MixHop framework, we compare against a diverse set of baseline methods using the PaySim corpus under our temporally ordered node-level public detection formulation. The selected baselines cover representative modeling paradigms spanning tabular public scoring, graph-based relational learning, and self-supervised representation learning, enabling systematic evaluation of topological, temporal, and auxiliary regularization choices. The first category includes traditional machine learning methods , com-prising Logistic Regression (LogReg), Random Forest (RF), and Multi-Layer Perceptron (MLP). These methods are trained on raw node-level attributes without using network structure and serve as competitive non-graph base-lines, especially when marginal transactional attributes carry substantial information. The second category contains static graph neural architectures , specifically Graph Convolutional Network (GCN) [ 5], GraphSAGE [ 8], and Graph Atten-tion Network (GAT) [ 27 ]. These methods incorporate topological information within individual network snapshots via neighborhood aggregation but do not explicitly model temporal relationships across sequential snapshots. The third category includes self-supervised graph representation learning methods , comprising Deep Graph Infomax (DGI) [ 14 ] and contrastive graph neural network variants [ 15 ], which leverage unlabeled data through auxiliary learning objectives to improve representation quality under limited supervision [ 6]. These methods utilize unlabeled data via auxiliary learning objectives for representation enhancement under constrained label availability. 19 For fair comparison, all graph neural architectures are configured with com-parable representational capacity. Unless otherwise noted, graph encoders are implemented as single message-passing layers producing 64-dimensional node embeddings, followed by a classification module for prediction. STC-MixHop uses a MixHop-inspired multi-resolution diffusion encoder with diffusion depth 
+
+K = 2 (concatenating hop-specific representations and projecting to d = 64 ), combined with a single-step temporal interaction window ( L = 1 ) coupling each snapshot to the immediately preceding snapshot via a temporal attention synthesis module. Unless otherwise noted, we set embedding dimensionality to d = 64 and temporal attention dimensionality to dk = 128 .All models are trained using the Adam optimizer with learning rate 1×10 −3.Early stopping is applied based on validation performance. Class imbalance is handled via class-weighted loss functions, with weights set inversely propor-tional to class frequencies in training data. For STC-MixHop, self-supervised contrastive pretraining precedes supervised fine-tuning, following the protocol described in Section 4. 
+
+5.3. Evaluation Metrics 
+
+We report ROC-AUC and PR-AUC as ranking-oriented performance metrics, supplemented by precision, recall, accuracy, and Fβ (β = 0 .5) as threshold-dependent metrics. Predicted scores are converted to probability estimates via sigmoid activation. Threshold-dependent metrics are evaluated at a single operating threshold determined exclusively from the validation partition . Specifically, candidate thresholds are enumerated from empirical quantiles of the validation prediction score distribution, with threshold selection maximizing Fβ . Under substantial distributional skewness, such quantile-based threshold selection may produce operating points approaching unity, reflecting screening-oriented operational settings where recall is prioritized. We explicitly report selected thresholds to facilitate interpretation of operating-point behavior. 
+
+5.4. Overall Performance Comparison 
+
+Table 2 and Figure 2 present comprehensive performance comparisons across all evaluated methods on the PaySim corpus. The results provide a nuanced view of the relationship between attribute-based and topology-based public detection approaches under strict temporal evaluation. A notable finding is the strong performance of tabular methods (Logistic Regression, Random Forest, and MLP) on aggregate ranking metrics. This 20 reflects the attribute-rich nature of PaySim, where transaction-level features already encode substantial discriminative information [ 2]. In such settings, strong tabular baselines are not surprising and should be treated as an important reference point rather than a weakness of the study. At the same time, the evaluation protocol here is deliberately stringent. All graph-based methods are tested under strict chronological segmentation that prevents temporal leakage and more closely reflects deployment condi-tions than randomized splits. Under this protocol, STC-MixHop remains competitive among graph neural baselines, achieving strong ROC-AUC and maintaining very high recall, which is especially valuable for screening-oriented public detection where missing suspicious entities can be more costly than over-flagging benign ones. These results also clarify an important methodological point: the value of graph structure is condition-dependent . When node attributes are already highly informative, relational modeling may offer only limited gains and can even introduce noise. However, in scenarios where suspicious behavior is orga-nized through hidden topological dependencies—such as shared intermediaries, coordinated transaction patterns, or multi-hop exposure chains—graph-based models provide complementary information that attribute-only methods may miss. From an operational perspective, the evidence supports a hybrid interpre-tation rather than a winner-takes-all one. Tabular models provide a strong baseline for attribute-driven fraud scoring, while graph-based methods such as STC-MixHop are most useful when the detection task depends on rela-tional structure, temporal consistency, and high-recall screening of potentially concealed abnormal behavior. 
+
+5.5. Ablation Study 
+
+To rigorously measure each architectural component’s contribution within STC-MixHop, we conduct systematic ablation experiments shown in Figure 3 and Table 3. These experiments isolate individual component effects by selectively removing components from the full architecture while keeping all other factors constant. The ablation results reveal a clear hierarchy of component importance within the PaySim data condition. Removing within-snapshot structural diffusion causes the most substantial and consistent degradation across all performance metrics, with ROC-AUC dropping from 0.717 to 0.648 and PR-AUC from 0.061 to 0.052. This finding confirms that multi-resolution 21 Figure 2: Complete performance comparison using the PaySim corpus. The bar charts illustrate the performance of STC-MixHop (red) against tabular baselines and other GNN variants across ROC-AUC, PR-AUC, Fβ , and Recall. While tabular methods excel in several ranking metrics, STC-MixHop maintains strong recall characteristics that are valuable for high-recall fraud screening. Table 2: Complete performance comparison using the PaySim corpus. Thresholds are determined from the validation partition via probability-quantile enumeration and rounded for presentation.                                                                              
+
+> Method ROC-AUC PR-AUC FβPrecision Recall Accuracy Threshold LogReg 0.956 0.753 0.770 0.469 0.469 0.983 0.51 RF 0.892 0.760 0.865 0.573 0.573 0.985 0.54 MLP 0.981 0.854 0.869 0.578 0.578 0.986 0.52 GCN 0.688 0.056 0.069 0.056 0.982 0.982 1.00 GraphSAGE 0.609 0.045 0.055 0.045 0.973 0.981 1.00 GAT 0.853 0.112 0.137 0.112 0.977 0.984 0.99 GNN 0.718 0.068 0.084 0.068 0.987 0.985 1.00 Self-sup. (NT-Xent) 0.703 0.058 0.072 0.058 0.983 0.984 1.00 Self-sup. (DGI) 0.635 0.048 0.059 0.048 0.981 0.982 1.00 STC-MixHop (ours) 0.717 0.061 0.075 0.061 0.987 0.985 1.00
+
+topological context is the most important architectural prior, even in an attribute-dominant setting where relational structure might be expected to show reduced informativeness. The degradation magnitude suggests that structural diffusion captures complementary information not fully redundant with node-level attributes. Removing temporal attention causes moderate but consistent performance decline, with ROC-AUC dropping to 0.688 and recall decreasing from 0.987 to 0.973. This result indicates that temporal synthesis contributes mainly through representation stabilization across temporal windows rather than by introducing entirely new discriminative information. The preserved high-recall behavior under this ablation suggests that temporal attention primarily 22 Table 3: Component ablation results for STC-MixHop on the PaySim corpus.                                     
+
+> Variant ROC-AUC PR-AUC FβPrecision Recall Accuracy Full STC-MixHop 0.717 0.061 0.075 0.061 0.987 0.985 w/o same-step structure 0.648 0.052 0.066 0.052 0.981 0.982 w/o time-decay weighting 0.725 0.064 0.072 0.064 0.978 0.984 w/o temporal attention 0.688 0.060 0.069 0.060 0.973 0.983 w/o contrastive learning 0.742 0.069 0.084 0.069 0.982 0.984
+
+affects score calibration and precision-recall tradeoffs rather than the model’s basic ability to identify suspicious nodes. An unexpected but interpretable finding concerns the contrastive learning component. Removing contrastive pretraining actually improves PR-AUC from 0.061 to 0.069 and Fβ from 0.075 to 0.084. This counterintuitive result requires careful interpretation. We hypothesize that in attribute-dominant data conditions with substantial categorical distributional skewness, contrastive pretraining may compress the embedding space in ways that reduce the discriminative precision of the final classifier. The contrastive objective encourages representational consistency across views and temporal windows, potentially inadvertently smoothing the subtle attribute-driven distinctions that dominate PaySim class separability. This finding does not invalidate contrastive learning as an approach, but rather highlights its condition-dependent nature: in settings where topological and temporal regularities are the primary hazard signal source, contrastive pretraining may provide greater benefit. These ablation results have important practical implications. For environ-ments resembling PaySim—characterized by strong attribute informativeness and synthetic fraud injection—practitioners should prioritize multi-resolution structural representation while treating contrastive pretraining as optional. Conversely, in settings with weaker attribute signal and more informative relational structure, the full STC-MixHop architecture may provide greater benefit. 
+
+5.6. Hyperparameter Sensitivity 
+
+To characterize STC-MixHop operational stability with respect to archi-tectural settings, we conduct sensitivity analyses on two key hyperparameters: the spatial diffusion depth K and the temporal attention dimensionality dk.These analyses provide guidance for practitioners adapting the framework to 23 Figure 3: Component ablation study on the PaySim corpus. The results highlight the critical role of multi-resolution spatial diffusion (same-step structure) in maintaining ROC-AUC, while also showing the condition-dependent impact of contrastive learning and temporal attention on the model’s overall discriminative power. 
+
+different deployment settings. 
+
+Effect of spatial diffusion order K.. Figure 4 shows detection performance sensitivity to the MixHop diffusion depth. Increasing K from 1 to 2 yields consistent improvement across ROC-AUC and Fβ , confirming that incorpo-rating bounded extended-range neighborhood information provides beneficial topological context even in attribute-dominant data conditions. However, further increasing K beyond 2 produces diminishing returns and may slightly degrade precision-oriented metrics. This pattern reflects the limited value of extensively extended-range topological propagation in the PaySim opera-tional setting, where suspicious configurations are relatively localized. From a practical deployment perspective, K = 2 is an effective default setting balanc-ing topological expressiveness against computational cost and representation uniformity risk. 
+
+Effect of temporal attention dimension dk.. Figure 5 shows the impact of temporal attention dimensionality variation on model performance. The results exhibit a characteristic inverted-U pattern: moderate attention dimen-sionalities achieve the most reliable balance between temporal expressiveness and operational stability, while extreme settings in either direction cause performance degradation. Overly constrained dimensionalities ( dk < 64 )underfit temporal relationships, failing to capture meaningful patterns across 24 Figure 4: STC-MixHop sensitivity to MixHop diffusion depth K on the PaySim corpus. Increasing K generally improves ROC-AUC and Precision, while Recall peaks at K = 2 ,suggesting that moderate topological propagation provides the best balance for identifying elevated-risk nodes.       
+
+> Figure 5: STC-MixHop sensitivity to temporal attention dimensionality dkon the PaySim corpus. The performance metrics exhibit sensitivity to the attention size, with an optimal balance for ROC-AUC and Precision found around dk= 64 , while Recall reaches its maximum at dk= 96 .
+
+consecutive snapshots. Conversely, overly large dimensionalities ( dk > 256 )increase sensitivity to transient transactional noise, causing reduced stability and potential overfitting risk. The optimal range around dk = 128 provides sufficient capacity for temporal encoding while maintaining robustness to ephemeral fluctuations in transactional behavioral patterns. 
+
+5.7. Porto Seguro Dataset 
+
+We extend the empirical evaluation to the Porto Seguro Safe Driver Prediction dataset to examine whether the component-level behavior observed on PaySim remains visible in a real-world, attribute-dominant insurance dataset. This dataset is substantially noisier and less naturally relational than 25 PaySim, making it useful as a stress test for understanding when graph-based modeling provides added value. The results on Porto Seguro indicate that graph-based methods do not consistently outperform strong tabular baselines in this setting. Logistic Regression achieves the highest ROC-AUC, which is consistent with the attribute-dominant nature of the dataset. STC-MixHop remains competitive with other graph-based variants, but the broader conclusion is clear: graph structure is most useful when meaningful relational dependencies are present, and its benefit is not universal across all datasets. The sensitivity analysis in Figure 7 shows that moderate diffusion depth provides the best trade-off on Porto Seguro. Performance generally peaks around K = 2 , suggesting that limited multi-hop propagation is sufficient to capture the small amount of useful relational context available in this dataset, while deeper diffusion mainly introduces noise.    
+
+> Figure 6: Overall performance comparison on the Porto Seguro dataset across ROC-AUC, PR-AUC, Fβ, and Recall. Graph-based models do not consistently dominate tabular baselines, indicating that strong relational inductive bias is not guaranteed in real-world insurance data.
+
+Figure 8 illustrates the impact of varying temporal attention dimensionality. Performance is best at intermediate dimensions, while both very small and very large settings reduce stability. This pattern suggests that short-horizon temporal coupling can be useful on Porto Seguro, but only within a limited capacity range; beyond that range, additional attention capacity does not translate into better discrimination. 26 Table 4: Overall performance comparison on the Porto Seguro auto insurance fraud dataset. All methods are evaluated under the same data split and threshold selection protocol. Besides ROC-AUC, we emphasize PR-AUC and threshold-dependent metrics to reflect operational performance under extreme class imbalance. 
+
+Method ROC-AUC PR-AUC Fβ F1 Precision Recall Accuracy Logistic Regression 0.614 0.056 0.074 0.081 0.070 0.096 0.920 Random Forest 0.580 0.055 0.071 0.100 0.059 0.322 0.788 MLP 0.559 0.048 0.052 0.067 0.045 0.130 0.867 GCN 0.560 0.044 0.058 0.071 0.051 0.116 0.889 GraphSAGE 0.602 0.057 0.080 0.068 0.091 0.055 0.946 
+
+GAT 0.547 0.043 0.025 0.023 0.027 0.021 0.937 Supervised-only GNN 0.610 0.056 0.059 0.057 0.060 0.055 0.934 Self-sup. (NT-Xent) 0.609 0.058 0.075 0.078 0.074 0.082 0.929 Self-sup. (DGI) 0.606 0.055 0.069 0.066 0.071 0.062 0.937 
+
+STC-MixHop (ours) 0.609 0.058 0.075 0.078 0.074 0.082 0.929 
+
+Figure 7: Sensitivity analysis with respect to MixHop depth K on the Porto Seguro dataset. Moderate multi-hop aggregation achieves the best trade-off, while deeper diffusion introduces noise propagation and performance degradation. 
+
+27 Figure 8: Sensitivity analysis with respect to attention dimension dk on the Porto Seguro dataset. Performance peaks at intermediate dimensions, suggesting diminishing returns from increasing attention capacity under sparse and noisy relational signals. 
+
+Figure 9 and Table 5 present the ablation study for Porto Seguro. Re-moving structural diffusion produces the clearest degradation in threshold-dependent performance, supporting the conclusion that even weak relational context contributes useful complementary signal. By contrast, the tempo-ral and contrastive components mainly affect precision-recall tradeoffs and operating-point behavior rather than causing large changes in aggregate ranking metrics. 
+
+Figure 9: Visualization of component ablation results on the Porto Seguro dataset. Remov-ing same-step structural diffusion leads to the most consistent degradation in threshold-dependent metrics, while temporal and contrastive components mainly affect precision–recall trade-offs. 
+
+28 Table 5: Ablation study of STC-MixHop components on the Porto Seguro dataset. Each variant removes one component while keeping all other settings unchanged. Results highlight the relative importance of structural diffusion, temporal modeling, and contrastive regularization.                                     
+
+> Variant ROC-AUC PR-AUC FβF1 Precision Recall Full (STC-MixHop) 0.609 0.058 0.075 0.078 0.074 0.082 w/o same-step structure 0.603 0.056 0.076 0.062 0.089 0.048 w/o time-decay weighting 0.609 0.057 0.069 0.100 0.057 0.438
+> w/o temporal attention 0.608 0.056 0.089 0.072 0.105 0.055 w/o contrastive learning 0.610 0.056 0.059 0.057 0.060 0.055
+
+5.8. FEMA Dataset 
+
+We further evaluate the framework on the FEMA National Flood Insur-ance Program (NFIP) dataset as an additional cross-domain testbed. Unlike PaySim, this dataset is not a transaction benchmark, and its graph struc-ture depends more heavily on graph construction choices based on shared geographic or policy attributes. For this reason, the FEMA results should be interpreted primarily as supplementary evidence about component behavior rather than as a direct fraud-detection benchmark. In the FEMA screening regime, STC-MixHop achieves very high recall, indicating that the framework can function effectively as a broad screening tool in highly imbalanced settings. At the same time, ranking-oriented met-rics remain modest and differences between models are small, suggesting that strong relational inductive bias is not guaranteed in this domain. The main takeaway is therefore not superiority in headline scores, but the ob-servation that the framework remains stable under a substantially different data-generating process. The sensitivity analysis with respect to diffusion depth suggests that somewhat deeper propagation can be helpful on FEMA than on PaySim or Porto Seguro. This is plausible because the induced graph reflects broader shared geographic and structural relationships, so useful information may exist at slightly larger relational ranges. At the same time, the gains remain modest, indicating that structural diffusion should still be interpreted cautiously in this setting. As shown in Figure 12,the model exhibits relatively stable behavior across a wide range of temporal attention dimensions. This suggests that temporal coupling in FEMA acts more as a consistency regularizer than as a primary 29 Figure 10: Overall performance comparison on the FEMA NFIP dataset across ROC-AUC, PR-AUC, Fβ , and Recall. The performance gap among methods is modest, highlighting that strong relational inductive bias is not guaranteed across domains and that metric choice (especially PR-AUC and thresholded measures) remains crucial. Table 6: Overall performance comparison on the FEMA NFIP dataset. All methods are evaluated under the same data split and threshold selection protocol. We report ROC-AUC together with PR-AUC and threshold-dependent metrics to reflect operational behavior under high class imbalance.                                                                              
+
+> Method ROC-AUC PR-AUC FβF1 Precision Recall Accuracy Logistic Regression 0.4998 0.4872 0.5467 0.6553 0.4923 0.9797 0.4933 Random Forest 0.4987 0.4891 0.5445 0.6434 0.4939 0.9227 0.4970
+> MLP 0.4945 0.4822 0.5469 0.6545 0.4929 0.9736 0.4945 GCN 0.5106 0.4927 0.5465 0.6556 0.4920 0.9822 0.4925 GraphSAGE 0.5004 0.4934 0.5478 0.6582 0.4927 0.9914 0.4938 GAT 0.4996 0.4903 0.5472 0.6565 0.4925 0.9842 0.4935 Supervised-only GNN 0.4972 0.4876 0.5464 0.6563 0.4915 0.9873 0.4915 Self-sup. (NT-Xent) 0.4989 0.4879 0.5467 0.6543 0.4927 0.9736 0.4940 Self-sup. (DGI) 0.4977 0.4883 0.5463 0.6554 0.4917 0.9822 0.4920
+> STC-MixHop (ours) 0.4989 0.4879 0.5467 0.6543 0.4927 0.9736 0.4940
+
+source of discriminative signal, which is reasonable given the weaker short-horizon temporal dynamics in this dataset. The ablation results for the FEMA dataset ( Figure 13 and Table 7) reveal a comparatively stable performance landscape. Removing individual components changes the metrics only modestly, which suggests that auxiliary modules in this setting mainly contribute regularization and robustness rather than large gains in discriminative power. High recall is preserved across ablations, reinforcing the view that the framework functions primarily as a screening-oriented model on this dataset. 30 Figure 11: Sensitivity analysis with respect to MixHop depth K on the FEMA NFIP dataset. Performance varies mildly across K, indicating that deeper diffusion provides limited marginal benefit under this domain and that moderate multi-hop aggregation is sufficient. 
+
+Figure 12: Sensitivity analysis with respect to attention dimension dk on the FEMA NFIP dataset. Results are relatively stable across a wide range of dk, suggesting diminishing returns from increasing attention capacity in this setting. 
+
+31 Figure 13: Component ablation results on the FEMA NFIP dataset. Removing individual temporal/contrastive components yields only minor changes, supporting the view that these modules mainly act as regularizers under this domain. Interestingly, excluding same-step structural modeling can slightly improve recall, suggesting potential noise from immediate neighborhood signals in this dataset. Table 7: Ablation study of STC-MixHop components on the FEMA NFIP dataset. Each variant removes one component while keeping all other settings unchanged. Differences are relatively small across variants, suggesting that on this dataset temporal/contrastive components behave primarily as regularizers and that certain same-step structural signals may introduce noise depending on the domain. 
+
+Variant ROC-AUC PR-AUC Fβ F1 Precision Recall Full (STC-MixHop) 0.4989 0.4879 0.5467 0.6543 0.4927 0.9736 w/o same-step structure 0.5036 0.4907 0.5477 0.6582 0.4926 0.9919 
+
+w/o time-decay weighting 0.5008 0.4886 0.5472 0.6564 0.4926 0.9832 w/o temporal attention 0.5033 0.4911 0.5475 0.6575 0.4925 0.9888 w/o contrastive learning 0.4972 0.4876 0.5464 0.6563 0.4915 0.9873 
+
+5.9. Discussion 
+
+The experimental evidence supports several conclusions with implications for both methodology and deployment. First, the behavior of STC-MixHop on PaySim is better understood through the lens of stability, screening utility, and component-level interpretability than through a simple benchmark-style comparison focused only on headline scores. Across ablations, the most reli-able contribution comes from multi-hop structural diffusion, while temporal 32 synthesis mainly improves representation stability under chronological evalua-tion. Contrastive pretraining behaves as a conditional regularizer rather than a universally beneficial performance booster. Second, the results should be interpreted candidly. On attribute-dominant datasets, strong tabular baselines can remain difficult to outperform. This is particularly visible when informative node or transaction features already separate a large portion of the positive class. In such cases, adding graph structure does not automatically improve performance and may introduce noise if the induced topology is only weakly aligned with the target labels. We view this not as a negative result, but as an important empirical boundary condition that clarifies when graph-based modeling is justified. Third, the advantage of STC-MixHop is most meaningful in settings where suspicious or anomalous behavior is relationally organized. When risk is associated with hidden topological dependencies, repeated interaction motifs, shared intermediaries, or multi-hop coordination patterns, multi-scale graph propagation provides information that marginal attributes alone cannot fully express. Under these conditions, graph learning contributes most clearly as a high-recall screening tool for difficult and partially concealed cases. Finally, the study highlights the importance of realistic evaluation design. Strict chronological splits, validation-based threshold selection, and multiple complementary metrics provide a more deployment-relevant assessment than randomized partitioning alone. For fraud and anomaly detection in evolving transaction systems, such protocol choices are not merely implementation details; they materially shape the validity of reported conclusions. 
+
+6. Conclusion 
+
+This research presents a comprehensive stability-focused evaluation of the STC-MixHop framework using PaySim, a synthetic mobile money trans-action dataset for fraud detection whose data generation properties differ substantially from commonly studied blockchain transaction benchmarks. Our evaluation employs strict chronological segmentation, multiple comple-mentary performance metrics, and systematic ablation studies to provide insights beyond single-dataset optimization. The experimental results yield three main findings with direct implica-tions for both research methodology and operational deployment. First, multi-resolution topological diffusion is the most important architectural prior within the STC-MixHop framework. Even in attribute-dominant data 33 conditions where extended-range relational patterns are relatively weak, en-coding topological context beyond immediate neighbors remains essential for achieving reliable screening-oriented detection behavior. Second, temporal synthesis contributes mainly through representation stabilization rather than introduction of fundamentally new discriminative capacity. By smoothing short-horizon representational drift across temporal snapshots, this component reduces sensitivity to concentrated activity patterns and temporal distribu-tional variation without requiring complex extended-range temporal memory mechanisms. Third, contrastive pretraining serves as a condition-dependent auxiliary regularization component. Although it does not consistently improve ranking-oriented metrics in attribute-dominant conditions, it affects learning dynamics and score distributions in ways that may prove beneficial under different data generation conditions. The supplementary cross-domain experiments suggest that these component-level findings are not unique to PaySim, although they should be interpreted cautiously because the additional datasets depend more heavily on graph construction choices and were not intended as exhaustive quantita-tive benchmarks. Across these settings, the most consistent pattern is that structural diffusion remains the strongest contributor, while temporal cou-pling and auxiliary contrastive objectives mainly affect stability, robustness, and representational smoothness rather than uniformly improving headline metrics. These findings support a stability-focused perspective on spatial-temporal graph learning for fraud and anomaly detection in evolving transaction sys-tems. Rather than treating architectural components as interchangeable performance boosters, our results show that their functional roles are distinct and condition-dependent. In particular, graph structure is most useful when suspicious behavior is relationally organized or partially concealed, whereas strong tabular baselines remain highly competitive when informative marginal attributes dominate the signal. 
+
+Future Directions.. This research provides a foundation for several promising future directions. While our primary evaluation uses the PaySim corpus, we have also conducted preliminary cross-domain validation on the Porto Seguro and FEMA NFIP datasets (Section 5). Extending the analysis to additional real-world datasets would further strengthen the empirical basis of the component-level conclusions reported here and help clarify how graph learning behaves under different forms of relational structure, label sparsity, 34 and temporal drift. The framework’s modular architecture also enables straightforward adap-tation to domain-specific deployment needs. The attention-based temporal synthesis mechanism provides interpretable weighting coefficients that may support model inspection and documentation in operational settings. In addition, the explicit separation between structural diffusion and classifica-tion components makes it easier to incorporate domain constraints, fairness regularization, or customized decision thresholds when required by application context. From a methodological perspective, adaptive mechanisms that automati-cally adjust component contributions according to detected data character-istics may improve deployment flexibility. Furthermore, integrating explicit cost-sensitive learning objectives reflecting operational asymmetries between false positives and false negatives would improve the framework’s relevance for real-world fraud and anomaly detection settings. We hope this study encourages further work on robust and interpretable graph learning systems for temporally evolving relational risk detection tasks. 
+
+Funding 
+
+This research was funded by the Natural Sciences and Engineering Re-search Council of Canada (NSERC) under grant number PINV000071561. 
+
+Acknowledgements 
+
+The authors acknowledge the support provided by Gradient Training Funding, including access to decentralized computing infrastructure used in this study. 
+
+Declarations 
+
+Conflict of Interest 
+
+The authors have no competing interests to declare that are relevant to the content of this article. 
+
+Ethical Approval 
+
+This article does not contain any studies with human participants or animals performed by any of the authors. 35 Informed Consent 
+
+Informed consent was not required as this study did not involve human participants. 
+
+Data Availability 
+
+The datasets analyzed during the current study are publicly available third-party datasets. The PaySim financial mobile money simulator dataset is available from the Kaggle repository as cited in Reference [1]. The Porto Seguro’s safe driver prediction dataset is available from the Kaggle Competi-tion repository as cited in Reference [36]. The FIMA NFIP redacted policies dataset is available from the OpenFEMA portal as cited in Reference [37]. All persistent web links to these datasets are provided in the references section of this article. 
+
+References 
+
+[1] Q. Yu, Z. Ke, G. Xiong, Y. Cheng, X. Guo, Identifying money laundering risks in digital asset transactions based on AI algorithms, in: 2024 4th International Conference on Electronic Information Engineering and Computer Communication (EIECC), IEEE, 2024, pp. 1081–1085. URL https://ieeexplore.ieee.org/document/10929087 
+
+[2] A. Lopez-Rojas, B. Elmir, S. Axelsson, Paysim: A financial mobile money simulator for fraud detection, in: 2016 European Modelling Symposium (EMS), IEEE, 2016, synthetic mobile money transaction dataset used widely for fraud detection research. URL https://www.kaggle.com/datasets/ealaxi/paysim1 
+
+[3] I. Vorobyev, A. Kireev, E. Fedulova, Graph neural networks for financial fraud detection: A survey, ACM Computing Surveys 56 (8) (2024) 1–35. [4] Z. Ke, S. Zhou, Y. Zhou, C. H. Chang, R. Zhang, Detection of ai deepfake and fraud in online payments using gan-based mod-els, in: 2025 8th International Conference on Advanced Algorithms and Control Engineering (ICAACE), IEEE, 2025, pp. 1786–1790. doi:10.1109/ICAACE65325.2025.11020513. [5] M. Weber, G. Domeniconi, J. Chen, D. K. I. Weidele, C. Bellei, T. Robin-son, C. E. Leiserson, Anti-money laundering in bitcoin: Experimenting 36 with graph convolutional networks for financial forensics, in: KDD ’19 Workshop on Anomaly Detection in Finance, 2019. URL https://arxiv.org/abs/1908.02591 
+
+[6] W. W. Lo, G. K. Kulatilleke, M. Sarhan, S. Layeghy, M. Portmann, Inspection-l: Self-supervised gnn node embeddings for money launder-ing detection in bitcoin, Applied Intelligence 53 (2023) 19406–19417. doi:10.1007/s10489-023-04504-9. [7] F. Scarselli, M. Gori, A. C. Tsoi, M. Hagenbuchner, G. Monfardini, The graph neural network model, IEEE Transactions on Neural Networks 20 (1) (2009) 61–80. [8] W. L. Hamilton, R. Ying, J. Leskovec, Inductive representation learning on large graphs, in: Advances in Neural Information Processing Systems (NeurIPS), Vol. 30, 2017. URL https://proceedings.neurips.cc/paper/2017/hash/5dd9db5 e033da9c6fb5ba83c7a7ebea9-Abstract.html 
+
+[9] L. Yu, N. Zhang, W. Wen, Abnormal transaction detection based on graph networks, in: 2021 IEEE 45th Annual Computers, Software, and Applications Conference (COMPSAC), IEEE, 2021, pp. 312–317. [10] A. Mohan, K. PV, P. Sankar, K. Maya Manohar, A. Peter, Improving anti-money laundering in bitcoin using evolving graph convolutions and deep neural decision forest, Data Technologies and Applications 57 (3) (2023) 313–329. [11] A. Pareja, G. Domeniconi, J. Chen, T. Ma, T. Suzumura, H. Kanezashi, T. Kaler, T. B. Schardl, C. E. Leiserson, Evolvegcn: Evolving graph convolutional networks for dynamic graphs, in: Proceedings of the Thirty-Fourth AAAI Conference on Artificial Intelligence, 2020. [12] C. Dai, Q. Tang, H. Ding, Tgat: Temporal graph attention network for blockchain phishing scams detection, in: 2024 International Conference on Computer, Information and Telecommunication Systems (CITS), IEEE, Girona, Spain, 2024, pp. 1–7. doi:10.1109/CITS61189.2024.10608015. [13] S. Abu-El-Haija, B. Perozzi, A. Kapoor, H. Harutyunyan, N. Alipour-fard, K. Lerman, G. V. Steeg, A. Galstyan, Mixhop: Higher-order graph 37 convolutional architectures via sparsified neighborhood mixing, in: Pro-ceedings of the 36th International Conference on Machine Learning (ICML), PMLR, 2019, pp. 21–29. URL http://proceedings.mlr.press/v97/abu-el-haija19a.html 
+
+[14] P. Veličković, W. Fedus, W. L. Hamilton, P. Liò, Y. Bengio, R. D. Hjelm, Deep graph infomax, in: International Conference on Learning Representations (ICLR), 2019. URL https://openreview.net/forum?id=rklz9iAcKQ 
+
+[15] Y. You, T. Chen, Y. Sui, T. Chen, Z. Wang, Y. Shen, Graph contrastive learning with augmentations, in: Advances in Neural Information Pro-cessing Systems (NeurIPS), Vol. 33, 2020, pp. 5812–5823. URL https://proceedings.neurips.cc/paper/2020/file/3fe2303 48e9a12c13120749e3f9fa4cd-Paper.pdf 
+
+[16] S. Li, F. Xu, R. Wang, S. Zhong, Self-supervised incremental deep graph learning for ethereum phishing scam detection (2021). [17] M. V. Wüthrich, C. Buser, Data analytics for non-life insurance pricing, Tech. Rep. Research Paper No. 16-68, Swiss Finance Institute, sSRN Manuscript 2870308 (2019). [18] E. W. Frees, R. A. Derrig, G. Meyers, Predictive Modeling Applica-tions in Actuarial Science: Volume 1, Predictive Modeling Techniques, International Series on Actuarial Science, Cambridge University Press, 2014. [19] W. Sun, Z. Qi, Q. Shen, High-recall deep learning: A gated recurrent unit approach to bank account fraud detection on imbalanced data, Research Square Preprint (2025). doi:10.21203/rs.3.rs-8136120. URL https://www.researchsquare.com/article/rs-8136120 
+
+[20] W. Sun, Q. Shen, Y. Gao, Q. Mao, T. Qi, S. Xu, Objective over architec-ture: Fraud detection under extreme imbalance in bank account opening, Computation 13 (12) (2025) 290. doi:10.3390/computation13120290. URL https://www.mdpi.com/2079-3197/13/12/290 
+
+[21] Y. Wang, Q. Zheng, X. Li, L. Wang, L. Lin, CoSemiGNN: Blockchain fraud detection with dynamic graph neural networks based on co-38 association of semi-supervised, Expert Systems with Applications 298 (2025) 129853. doi:10.1016/j.eswa.2025.129853. [22] S. Chen, Y. Liu, Q. Zhang, Z. Shao, Z. Wang, Multi-distance spatial-temporal graph neural network for anomaly detection in blockchain transactions, Advanced Intelligence System 7 (8) (2025). [23] T. Sun, X. Li, T. Shi, J. Peng, S. Zheng, H. Kim, Mcre: Multimodal conditional representation and editing for text-motion generation, in: European Conference on Computer Vision (ECCV), Springer, 2024, pp. 406–414. [24] K. Reynisson, M. Schreyer, D. Borth, Graphguard: Contrastive self-supervised learning for credit-card fraud detection in multi-relational dynamic graphs, arXiv preprint arXiv:2407.12440 (2024). URL https://arxiv.org/abs/2407.12440 
+
+[25] Porto Seguro, Porto seguro’s safe driver prediction, Kaggle Competition, brazilian auto insurance claim prediction dataset with 595,212 policies (2017). URL https://www.kaggle.com/c/porto-seguro-safe-driver-pre diction 
+
+[26] Federal Emergency Management Agency, Fima nfip redacted policies, OpenFEMA Dataset, national Flood Insurance Program policy-level data (2024). URL https://www.fema.gov/openfema-data-page/fima-nfip-red acted-policies-v2 
+
+[27] P. Veličković, G. Cucurull, A. Casanova, A. Romero, P. Lio, Y. Bengio, Graph attention networks, in: International Conference on Learning Representations (ICLR), 2018. URL https://openreview.net/forum?id=rJXMpikCZ 
+
+39
