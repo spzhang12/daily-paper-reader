@@ -1,0 +1,38 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2604.10599v1/fig-001.webp",
+      "caption": "Table 1: The Changing Identity of the Software Engineer",
+      "page": 3,
+      "index": 1,
+      "width": 852,
+      "height": 235
+    },
+    {
+      "url": "assets/figures/arxiv/2604.10599v1/fig-002.webp",
+      "caption": "Table 2: Representative Peer-Reviewed Studies Supporting the AIAugmented Software Engineering Paradigm",
+      "page": 5,
+      "index": 2,
+      "width": 986,
+      "height": 1154
+    },
+    {
+      "url": "assets/figures/arxiv/2604.10599v1/fig-003.webp",
+      "caption": "Figure 1: The Inversion of the Engineering Value.",
+      "page": 6,
+      "index": 3,
+      "width": 910,
+      "height": 365
+    },
+    {
+      "url": "assets/figures/arxiv/2604.10599v1/fig-004.webp",
+      "caption": "Table 3: Evolving Engineering Education & Assessment",
+      "page": 8,
+      "index": 4,
+      "width": 910,
+      "height": 204
+    }
+  ]
+}

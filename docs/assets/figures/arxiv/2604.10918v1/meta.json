@@ -1,0 +1,142 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2604.10918v1/fig-001.webp",
+      "caption": "Figure 1: Motivating example of reward ambiguity in",
+      "page": 1,
+      "index": 1,
+      "width": 448,
+      "height": 392
+    },
+    {
+      "url": "assets/figures/arxiv/2604.10918v1/fig-002.webp",
+      "caption": "Table 9: Performance comparisons among 7B SFT, GRPO and our CSPO models, with fine-grained metrics evaluated by using different LLM judges.",
+      "page": 15,
+      "index": 2,
+      "width": 875,
+      "height": 346
+    },
+    {
+      "url": "assets/figures/arxiv/2604.10918v1/fig-003.webp",
+      "caption": "Figure 2: Overview of Component-Specific Policy Optimization (CSPO). Particularly, CSPO decomposes each generated code sequence into functional components (e.g., structure, cell appearance, caption, package inclusion, alignment, and line style) using a LaTeX parser. It conducts component-specific rewarding by assessing each component’s fidelity (with a strong LLM as the judge), performs component-specific credit assignment and optimization, effectively mitigating reward ambiguity in table image-to-LaTeX generation.",
+      "page": 2,
+      "index": 3,
+      "width": 917,
+      "height": 452
+    },
+    {
+      "url": "assets/figures/arxiv/2604.10918v1/fig-004.webp",
+      "caption": "Table 1: Performance comparisons on TableTex-test (with fine-grained metrics evaluated by GPT-4o). We report metrics across hierarchical dimensions. Global metrics: TEDS, Overall Fidelity (OF), Compilation Rate (R); Fine-grained metrics: (i) Structure Fidelity (S), (ii) Content Fidelity (C); (iii) Style Fidelity(Y): Line Style (Yline), Alignment (Yalign), Cell Style (Ycell). Higher scores (↑) indicate better performance. Note that all evaluation metrics, initially defined in the [0, 1] range (e.g., scoring and correctness measures), are presented as percentages (%) in all the tables for clarity. ∗ denotes that, for fair comparison, we reimplement the reward design of Ling et al. (Ling et al., 2025) within our codebase and dataset.",
+      "page": 7,
+      "index": 4,
+      "width": 891,
+      "height": 317
+    },
+    {
+      "url": "assets/figures/arxiv/2604.10918v1/fig-005.webp",
+      "caption": "Table 2: Generalization performance on DocGenome-table-1k and Table2LaTeX-test-simple (with fine-grained metrics evaluated by GPT-4o). ∗ denotes that, for fair comparison, we reimplement the reward design of Ling et al. (Ling et al., 2025) within our codebase and dataset.",
+      "page": 7,
+      "index": 5,
+      "width": 893,
+      "height": 336
+    },
+    {
+      "url": "assets/figures/arxiv/2604.10918v1/fig-006.webp",
+      "caption": "Figure 12: A typical example comparing GRPO and CSPO of 3B models, showing CSPO mitigates alignment errors.",
+      "page": 18,
+      "index": 6,
+      "width": 423,
+      "height": 348
+    },
+    {
+      "url": "assets/figures/arxiv/2604.10918v1/fig-007.webp",
+      "caption": "Figure 13: Failure case for GRPO and CSPO of 3B models. Both models’ generations exhibit structure errors (marked by red boxes) on this complex table, where \\multicolumn{} is used in groudtruth code but is ignored in the generated code. In addition, GRPO generation further has alignment errors (center aligned rather than left aligned as groudtruth).",
+      "page": 18,
+      "index": 7,
+      "width": 425,
+      "height": 941
+    },
+    {
+      "url": "assets/figures/arxiv/2604.10918v1/fig-008.webp",
+      "caption": "Figure 11: A typical example comparing GRPO and CSPO of 3B models, showing CSPO mitigates line style errors.",
+      "page": 18,
+      "index": 8,
+      "width": 419,
+      "height": 394
+    },
+    {
+      "url": "assets/figures/arxiv/2604.10918v1/fig-009.webp",
+      "caption": "Figure 3: Illustration of proposed CSPO algorithm. Each component-specific advantage A (g) c (c ∈ C̃) is calculated, and credited exclusively to its relevant tokens in rollout g.",
+      "page": 4,
+      "index": 9,
+      "width": 939,
+      "height": 250
+    },
+    {
+      "url": "assets/figures/arxiv/2604.10918v1/fig-010.webp",
+      "caption": "Figure 8: Training curves for 3B-GRPO and 3B-CSPO (ours). All curves are smoothed using a moving average (MA) for better visualization.",
+      "page": 17,
+      "index": 10,
+      "width": 941,
+      "height": 505
+    },
+    {
+      "url": "assets/figures/arxiv/2604.10918v1/fig-011.webp",
+      "caption": "Figure 9: A typical example comparing GRPO and CSPO of 3B models, showing CSPO mitigates content errors.",
+      "page": 17,
+      "index": 11,
+      "width": 415,
+      "height": 572
+    },
+    {
+      "url": "assets/figures/arxiv/2604.10918v1/fig-012.webp",
+      "caption": "Figure 10: A typical example comparing GRPO and CSPO of 3B models, showing CSPO mitigates structure, and content (in table caption) errors.",
+      "page": 17,
+      "index": 12,
+      "width": 409,
+      "height": 558
+    },
+    {
+      "url": "assets/figures/arxiv/2604.10918v1/fig-013.webp",
+      "caption": "Figure 4: A typical example comparing GRPO and CSPO of 7B models, showing CSPO mitigates structure and line style errors.",
+      "page": 9,
+      "index": 13,
+      "width": 439,
+      "height": 579
+    },
+    {
+      "url": "assets/figures/arxiv/2604.10918v1/fig-014.webp",
+      "caption": "Figure 5: A typical example comparing GRPO and CSPO of 3B models, showing CSPO mitigates cell style errors.",
+      "page": 9,
+      "index": 14,
+      "width": 446,
+      "height": 350
+    },
+    {
+      "url": "assets/figures/arxiv/2604.10918v1/fig-015.webp",
+      "caption": "Table 4: Performance comparisons among 3B SFT, GRPO and our CSPO models, with fine-grained metrics evaluated by using different LLM judges.",
+      "page": 9,
+      "index": 15,
+      "width": 875,
+      "height": 348
+    },
+    {
+      "url": "assets/figures/arxiv/2604.10918v1/fig-016.webp",
+      "caption": "Figure 6: Prompt for LLM-based rewarding for components of package dependencies, caption correctness, structural organization, cell appearance, column alignment, and rule placement (vline, hline).",
+      "page": 16,
+      "index": 16,
+      "width": 452,
+      "height": 1086
+    },
+    {
+      "url": "assets/figures/arxiv/2604.10918v1/fig-017.webp",
+      "caption": "Figure 7: Prompt for LLM-based fine-grained fidelity evaluation in terms of content, structure, and style (line style, alignment, and cell style).",
+      "page": 16,
+      "index": 17,
+      "width": 452,
+      "height": 1046
+    }
+  ]
+}

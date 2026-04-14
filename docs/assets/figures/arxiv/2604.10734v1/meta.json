@@ -1,0 +1,110 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2604.10734v1/fig-001.webp",
+      "caption": "Figure 1: Comparison of document retrieval and selection workflows between the Baseline (Top-k) and the proposed Self-Correcting RAG Framework.",
+      "page": 1,
+      "index": 1,
+      "width": 458,
+      "height": 456
+    },
+    {
+      "url": "assets/figures/arxiv/2604.10734v1/fig-002.webp",
+      "caption": "Table 7: Hyperparameters for NLI-Guided MCTS. The generator uses these settings during the test-time search phase.",
+      "page": 15,
+      "index": 2,
+      "width": 423,
+      "height": 363
+    },
+    {
+      "url": "assets/figures/arxiv/2604.10734v1/fig-003.webp",
+      "caption": "Figure 8: Comprehensive Trace of Failure vs. Correction. Left: The Baseline fails due to information crowding. High-similarity redundant documents about Entity A fill the context window, cutting off Entity B. The model then hallucinates to fill the gap. Right: Our approach employs MMKP (Maximal Marginal Relevance based Knapsack Problem) to filter semantic duplicates, ensuring both entities are present. Subsequently, the MCTS (Monte Carlo Tree Search) planner explores reasoning paths. It actively penalizes the hallucinated branch (Branch 1) via NLI verification and rewards the factually consistent branch (Branch 2).",
+      "page": 21,
+      "index": 3,
+      "width": 950,
+      "height": 1210
+    },
+    {
+      "url": "assets/figures/arxiv/2604.10734v1/fig-004.webp",
+      "caption": "Table 3: Retrieval performance (passage recall@5) on RAG benchmarks. While CRAG achieves the best performance on MuSiQue, Self-Correcting RAG demonstrates superior consistency, achieving the highest recall on 5 out of 6 datasets.",
+      "page": 7,
+      "index": 4,
+      "width": 761,
+      "height": 430
+    },
+    {
+      "url": "assets/figures/arxiv/2604.10734v1/fig-005.webp",
+      "caption": "Table 2: The performance comparison across Simple QA, Multi-Hop QA, and Multi-Doc QA benchmarks using Exact Match (EM) and F1 scores. The datasets include NQ and PopQA for simple queries, MuSiQue, 2Wiki, and HotpotQA for multi-hop reasoning, and MultiHop-RAG for multi-document contexts. The best performance is bolded with † and the second best is underlined.",
+      "page": 7,
+      "index": 5,
+      "width": 929,
+      "height": 404
+    },
+    {
+      "url": "assets/figures/arxiv/2604.10734v1/fig-006.webp",
+      "caption": "Figure 9: Analysis of Distractor Filtering and Numerical Verification. Left: The Baseline fails due to Distractor Crowding. Popular documents about DeepMind’s AI achievements (AlphaGo) overwhelm the context window, displacing the necessary CEO tenure dates. Right: The MMKP Selector identifies the \"AI Achievement\" documents as semantically redundant and removes them. This preserves space for documents containing specific tenure dates. The MCTS Planner then rejects the heuristic bias (\"Founders serve longer\") via NLI verification, ensuring the final answer is derived from arithmetic comparison of the retrieved dates.",
+      "page": 22,
+      "index": 6,
+      "width": 950,
+      "height": 1232
+    },
+    {
+      "url": "assets/figures/arxiv/2604.10734v1/fig-007.webp",
+      "caption": "Table 5: Statistics of the evaluation datasets. The \"Queries\" and \"Passages\" columns denote the specific counts used in our experimental evaluation.",
+      "page": 14,
+      "index": 7,
+      "width": 879,
+      "height": 186
+    },
+    {
+      "url": "assets/figures/arxiv/2604.10734v1/fig-008.webp",
+      "caption": "Figure 5: Sensitivity of Recall@5 to the redundancy budget (Cred). A budget of approx. 120 provides the optimal trade-off, allowing sufficient diversity without excluding relevant evidence.",
+      "page": 18,
+      "index": 8,
+      "width": 440,
+      "height": 348
+    },
+    {
+      "url": "assets/figures/arxiv/2604.10734v1/fig-009.webp",
+      "caption": "Figure 2: Illustration of the comparison between traditional retrieval paradigms and our proposed framework.(a) The Baseline Traditional Top-K RAG relies primarily on simple relevance scoring and embeddings to select top-ranked documents within a token limit.(b) In contrast, our proposed Self-Correcting RAG Optimizer models document selection as a combinatorial optimization problem. It integrates feature extraction and a dedicated Self-Correcting Optimization Engine (employing MMKP and NLI-guided mechanisms) to efficiently select the best draft.",
+      "page": 4,
+      "index": 9,
+      "width": 825,
+      "height": 581
+    },
+    {
+      "url": "assets/figures/arxiv/2604.10734v1/fig-010.webp",
+      "caption": "Figure 6: The prompt template used for the NLI-Guided Generator. It enforces strict adherence to retrieved context and requires explicit reasoning steps to support the MCTS verification process.",
+      "page": 19,
+      "index": 10,
+      "width": 950,
+      "height": 827
+    },
+    {
+      "url": "assets/figures/arxiv/2604.10734v1/fig-011.webp",
+      "caption": "Figure 4: Complexity Analysis. Our method shows significant scaling advantages on harder queries.",
+      "page": 17,
+      "index": 11,
+      "width": 396,
+      "height": 310
+    },
+    {
+      "url": "assets/figures/arxiv/2604.10734v1/fig-012.webp",
+      "caption": "Figure 3: Impact of token budget on retrieval performance. This figure compares the Retrieval Recall@5 of our MMKP method against RAG+MMR and Top-K baselines across varying token budgets (Ctoken). Our MMKP (red line) consistently outperforms the baselines, demonstrating superior robustness.",
+      "page": 17,
+      "index": 12,
+      "width": 396,
+      "height": 310
+    },
+    {
+      "url": "assets/figures/arxiv/2604.10734v1/fig-013.webp",
+      "caption": "Figure 7: The prompt template used for the Symbolic Plan Generator. This prompt restricts the LLM to output a structured execution plan using predefined API primitives.",
+      "page": 20,
+      "index": 13,
+      "width": 950,
+      "height": 702
+    }
+  ]
+}

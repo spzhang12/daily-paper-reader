@@ -1,0 +1,62 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2604.04527v1/fig-001.webp",
+      "caption": "Fig. 1. Encrust two-phase translation pipeline. Phase 1 (left): for each function, the LLM generates a",
+      "page": 6,
+      "index": 1,
+      "width": 827,
+      "height": 415
+    },
+    {
+      "url": "assets/figures/arxiv/2604.04527v1/fig-002.webp",
+      "caption": "Table 5. Safety and correctness metrics on the Laertes benchmark. Column definitions as in Table 4. Comp.Rate: fraction of LLM-translated functions that compiled within the retry budget (Encrust and EvoC2Rust); N/A for C2Rust (no LLM translation). Correct.: test-vector pass rate (100% = all inputs match C reference output). All 8 libraries have Encrust results. Best value per metric per library bolded; second-best",
+      "page": 22,
+      "index": 2,
+      "width": 827,
+      "height": 744
+    },
+    {
+      "url": "assets/figures/arxiv/2604.04527v1/fig-003.webp",
+      "caption": "Table 6. Ablation: incremental contribution of each phase, aggregated over the Coreutils (7 programs) and",
+      "page": 22,
+      "index": 3,
+      "width": 825,
+      "height": 369
+    },
+    {
+      "url": "assets/figures/arxiv/2604.04527v1/fig-004.webp",
+      "caption": "Table 1. Phase 2 tool suite (17 tools). All tools operate on the working copy of rust_safe_remap/.",
+      "page": 14,
+      "index": 4,
+      "width": 666,
+      "height": 936
+    },
+    {
+      "url": "assets/figures/arxiv/2604.04527v1/fig-005.webp",
+      "caption": "Table 3. Laertes benchmark statistics [4]. Test inputs are collected via AFL++ fuzzing (1,000 per library).",
+      "page": 18,
+      "index": 5,
+      "width": 527,
+      "height": 265
+    },
+    {
+      "url": "assets/figures/arxiv/2604.04527v1/fig-006.webp",
+      "caption": "Table 7. Phase 2 task completion breakdown aggregated over all 15 programs (7 Coreutils + 8 Laertes). Rate = Completed / Discovered. Avg. iters = mean agentic loop iterations per completed task.",
+      "page": 23,
+      "index": 6,
+      "width": 552,
+      "height": 219
+    },
+    {
+      "url": "assets/figures/arxiv/2604.04527v1/fig-007.webp",
+      "caption": "Table 4. Safety and correctness metrics on the GNU Coreutils benchmark. Columns (all ↓ lower is better unless noted): Ptr.Decl = raw pointer declarations; Ptr.Deref = raw pointer dereferences; Unsafe LoC = unsafe lines of code; Unsafe Cast = unsafe type casts; Unsafe Call = unsafe call expressions; Comp.Rate (↑) = fraction of LLM-translated functions that compiled (N/A for systems without LLM function translation);Correct. (↑) = testscript pass rate; Clippy = cargo clippy warning count. EvoC2Rust Correct. = 0% and Clippy = N/A because the translated project does not compile. Best value per metric per program bolded; second-best underlined.",
+      "page": 20,
+      "index": 7,
+      "width": 827,
+      "height": 656
+    }
+  ]
+}

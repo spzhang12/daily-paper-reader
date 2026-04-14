@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2604.11042v1/fig-001.webp",
+      "caption": "Table 31,877 2,964 2,941 37,782",
+      "page": 9,
+      "index": 1,
+      "width": 708,
+      "height": 544
+    }
+  ]
+}
