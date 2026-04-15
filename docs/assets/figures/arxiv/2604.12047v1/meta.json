@@ -1,0 +1,30 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2604.12047v1/fig-001.webp",
+      "caption": "Table 11: Effect of chunk overlap on retrieval.",
+      "page": 8,
+      "index": 1,
+      "width": 506,
+      "height": 352
+    },
+    {
+      "url": "assets/figures/arxiv/2604.12047v1/fig-002.webp",
+      "caption": "Table 8: Parsing times on TableQuest (169 pages).",
+      "page": 8,
+      "index": 2,
+      "width": 506,
+      "height": 238
+    },
+    {
+      "url": "assets/figures/arxiv/2604.12047v1/fig-003.webp",
+      "caption": "Figure 5: Heatmaps of page-level retrieval performance (MRR) by PDF parser and chunking strategy (0% overlap).",
+      "page": 9,
+      "index": 3,
+      "width": 251,
+      "height": 492
+    }
+  ]
+}

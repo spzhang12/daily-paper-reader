@@ -1,0 +1,78 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2604.12329v1/fig-001.webp",
+      "caption": "Figure 1: A workflow comparison between chain-specific blockchain fraud account detection methods and our multi-chain universal fraud detection method. Conventional methods rely on chainspecific feature engineering, while our method leverages an LLMbased agent to enable consistent fraud detection across diverse blockchains.",
+      "page": 1,
+      "index": 1,
+      "width": 448,
+      "height": 285
+    },
+    {
+      "url": "assets/figures/arxiv/2604.12329v1/fig-002.webp",
+      "caption": "Figure 7: CoT prompt template of the forensics analyst agent.",
+      "page": 11,
+      "index": 2,
+      "width": 504,
+      "height": 707
+    },
+    {
+      "url": "assets/figures/arxiv/2604.12329v1/fig-003.webp",
+      "caption": "Figure 5: Experimental results of UniDetect’s generalization ability. Cross-chain inference (a) shows that fraud detection capability transfers across blockchains with different data structures, while cross-domain transfer (b) demonstrates its effectiveness beyond blockchain scenarios.",
+      "page": 7,
+      "index": 3,
+      "width": 504,
+      "height": 762
+    },
+    {
+      "url": "assets/figures/arxiv/2604.12329v1/fig-004.webp",
+      "caption": "Table 3: Evaluation on Bitcoin-M and Bitcoin-L datasets (in percentage %). The notations are the same as those in Table 2.",
+      "page": 8,
+      "index": 4,
+      "width": 1052,
+      "height": 487
+    },
+    {
+      "url": "assets/figures/arxiv/2604.12329v1/fig-005.webp",
+      "caption": "Figure 6: Hyperparameter sensitivity analysis on the Ethereum dataset reveals that UniDetect maintains stable and competitive performance across a broad range of hyperparameter configurations.",
+      "page": 8,
+      "index": 5,
+      "width": 1056,
+      "height": 275
+    },
+    {
+      "url": "assets/figures/arxiv/2604.12329v1/fig-006.webp",
+      "caption": "Figure 2: The overall framework of UniDetect. During training, we construct account-centered subgraphs, generate transaction summaries via a forensic analysis agent, and apply a two-stage alternating training strategy that jointly fine-tunes LLM-based summary analyst agents and the graph encoder. During inference, the forensic and discriminative summary agents collaboratively enrich account representations for fraud prediction.",
+      "page": 4,
+      "index": 6,
+      "width": 1048,
+      "height": 610
+    },
+    {
+      "url": "assets/figures/arxiv/2604.12329v1/fig-007.webp",
+      "caption": "Figure 8: CoT prompt template of discriminative summary analyst agent and residual summary analyst agent.",
+      "page": 12,
+      "index": 7,
+      "width": 502,
+      "height": 814
+    },
+    {
+      "url": "assets/figures/arxiv/2604.12329v1/fig-008.webp",
+      "caption": "Table 5: Efficiency analysis of UniDetect on the Ethereum dataset. Despite the additional training overhead introduced by the LLM component, UniDetect remains practical for real-world deployment with acceptable inference latency and throughput.",
+      "page": 9,
+      "index": 8,
+      "width": 529,
+      "height": 367
+    },
+    {
+      "url": "assets/figures/arxiv/2604.12329v1/fig-009.webp",
+      "caption": "Figure 4: Prompt template of discriminative and residual summary analyst agents.",
+      "page": 5,
+      "index": 9,
+      "width": 494,
+      "height": 287
+    }
+  ]
+}

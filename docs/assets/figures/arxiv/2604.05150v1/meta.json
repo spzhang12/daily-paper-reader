@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2604.05150v1/fig-001.webp",
+      "caption": "Table 3: DocILE results. KILE: Key Information Line-level Extraction (exact-match on key fields, e.g. invoice number, date, total). LIR: Line Item Recognition (accuracy on structured line items). Code Factory makes compiled LLM calls; Deterministic uses pure regex.",
+      "page": 9,
+      "index": 1,
+      "width": 864,
+      "height": 235
+    },
+    {
+      "url": "assets/figures/arxiv/2604.05150v1/fig-002.webp",
+      "caption": "Figure 1: Token consumption comparison across baselines (BFCL, n=400). Compiled AI incurs a one-time 9,600-token generation cost, then executes at zero marginal cost. Break-even vs. Direct LLM at n∗ ≈ 17; at 1,000 transactions, compiled AI reduces consumption by 57× vs. Direct LLM and 84× vs. AutoGen.",
+      "page": 3,
+      "index": 2,
+      "width": 919,
+      "height": 459
+    }
+  ]
+}

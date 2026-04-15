@@ -1,0 +1,988 @@
+Title: UniDetect: LLM-Driven Universal Fraud Detection across Heterogeneous Blockchains
+
+URL Source: https://arxiv.org/pdf/2604.12329v1
+
+Published Time: Wed, 15 Apr 2026 00:57:23 GMT
+
+Number of Pages: 14
+
+Markdown Content:
+# UniDetect: LLM-Driven Universal Fraud Detection across Heterogeneous Blockchains 
+
+# Shuyi Miao 
+
+Beihang University Beijing, China 
+
+# Wangjie Qiu ∗
+
+Beihang University Beijing, China 
+
+# Shengda Zhuo 
+
+Jinan University Guangzhou, China 
+
+# Fei Shen ∗
+
+National University of Singapore Singapore, Singapore 
+
+# Dan Lin 
+
+Sun Yat-Sen University Guangzhou, China 
+
+# Xingtong Yu 
+
+The Chinese University of Hong Kong Hong Kong, China 
+
+# Tat-Seng Chua 
+
+National University of Singapore Singapore, Singapore 
+
+# Zhiming Zheng 
+
+Beihang University Beijing, China 
+
+## Abstract 
+
+As cross-chain interoperability advances, decentralized finance (DeFi) protocols enable illicit funds to be reorganized into uni-form liquid assets that flow throughout the cryptocurrency mar-ket. Such operations can bypass monitoring targeted at individual blockchains and thereby weaken current regulatory frameworks. Motivated by these, we introduce UniDetect, a multi-chain cryp-tocurrency fraud account detection method based on large lan-guage models (LLMs). Specifically, we use domain knowledge to guide the LLM to generate general transaction summary texts ap-plicable to heterogeneous blockchain accounts, which serve as evidence for fraud account detection. Furthermore, we introduce a two-stage alternating training strategy to continuously and dy-namically enhance the multimodal joint reasoning for detecting fraudulent accounts based on both the textual evidence and the transaction graph patterns. Experiments on multiple blockchains show that UniDetect outperforms existing methods 5.57 ∼7.58% in Kolmogorov–Smirnov (KS). For cross-chain zero-shot detection, UniDetect identifies over 94.58% of fraudulent accounts. It also generalizes well to non-blockchain data, delivering a 6.06% im-provement in 𝐹 1 over existing methods. The dataset and source code are available in https://github.com/msy0513/UniDetect. 
+
+## CCS Concepts 
+
+• Security and privacy → Social engineering attacks ; • Applied computing → Electronic funds transfer .
+
+## Keywords 
+
+Cryptocurrency, Cross-chain detection, Fraud detection, Multi-modal fusion, Graph neural networks, Large language model 
+
+## 1 Introduction 
+
+Web3 envisions a “distributed value internet" that operates without trusted third parties, leveraging blockchain technology for value transfer and programmable transaction logic. Propelled by this vision of decentralization and user empowerment, users actively initiate on-chain transactions, fueling the rapid expansion of the cryptocurrency digital economy [ 7 ]. However, the pseudonymous 
+
+> ∗
+
+Corresponding authors. Contact email: shuyimiao@buaa.edu.cn Rules  Transaction Features Bitcoin      
+
+> Transaction
+> Multiple Transactions
+> of Account
+> Rules Account Features Ethereum
+> Transaction
+> Transaction Graph
+> Account Graph
+> The Conventional Graph Fraud Detection for Particular Blockchain
+> GNN Fraudster
+> GNN
+> Node Representations
+> The Proposed LLM-enhanced Universal Blockchain Fraud Detection
+> LLM
+> Transaction Summary
+> …
+> Graph GNN Multi-chain
+> Transaction Generate
+> Reflect
+> Fraudster
+> …
+> Multi-chain Fraudster
+> …
+> Node Representations
+> Summary
+> Embedding
+> C1 & C2 C3 Node Representations
+> Single Transaction
+
+Figure 1: A workflow comparison between chain-specific blockchain fraud account detection methods and our multi-chain universal fraud detection method. Conventional methods rely on chain-specific feature engineering, while our method leverages an LLM-based agent to enable consistent fraud detection across diverse blockchains. 
+
+nature of the underlying blockchain technology enables users to bypass “Know Your Customer” (KYC) processes, creating fertile ground for malicious actors and leading to frequent security inci-dents. According to CertiK 1, total fraud losses in the first half of 2025 exceeded USD 2.47 billion, surpassing the 2024 total. More recently, as cross-asset and cross-chain transactions have become routine for users, fraudsters have begun exploiting regulatory gaps between blockchains to launder illicit funds. This trend is further evidenced by industry reports [ 6 ], which reveal that nearly 20% of complex illicit cases now span more than ten blockchains, with the total volume of cross-chain criminal activity exceeding USD 21.8 billion in 2025. Existing cryptocurrency fraud detection studies [ 17 , 18 , 23 , 33 ,34 ] are primarily designed for a single blockchain, which limits their semantic modelling capabilities and makes it difficult to scale to multi-chain scenarios. Specifically, as illustrated in Figure 7 (1), these methods rely heavily on expert-defined numerical statistical features tailored to specific blockchains and exhibit limited seman-tic expressiveness. In fact, blockchain transaction data is inherently 
+
+> 1
+
+https://www.certik.com  
+
+> arXiv:2604.12329v1 [cs.CR] 14 Apr 2026 Conference’17, July 2017, Washington, DC, USA Miao et al.
+
+multimodal: it not only contains structured information such as transfer amounts and frequencies, but also rich unstructured seman-tic content, such as the natural-language information embedded in the input data message fields of Ethereum [ 30 ]. However, ex-isting methods are constrained to single-modality analysis, and the form of data modalities varies considerably across different blockchains. Furthermore, due to substantial differences in data structures, transaction mechanisms, and event semantics across blockchains, current methods struggle to address the multimodal heterogeneous fraud account analysis required in complex cross-chain transaction scenarios. Therefore, to improve the effectiveness and generalizability of fraud account detection, new paradigms are needed to address the limitations. Large language models (LLMs), with their rich knowl-edge and strong semantic reasoning capabilities, offer promising potential for extracting deeper insights from complex on-chain transactions [ 15 ]. Nevertheless, adapting LLMs for blockchain fraud account detection poses several fundamental challenges ( C) that need to be addressed: (C1) Understanding heterogeneous block-chains. To overcome the shallow feature design and single-chain constraints of existing approaches, LLMs must automatically pro-cess and align these disparate data to enable unified multi-chain understanding. (C2) Hallucination and over-inference risks. 
+
+When processing large volumes of transactions, LLMs may gener-ate inaccurate or fabricated information, known as hallucination. In fraud detection scenarios, preventing over-inference and false posi-tives is critical to ensuring reliable, explainable detection results. 
+
+(C3) Effectively integrating multimodal data. Numerical fea-tures and textual information in transactions provide complemen-tary evidence for understanding transaction semantics. Meanwhile, transaction graphs capture the behavioural patterns of accounts, which are crucial for account identification. Although numerical features and textual information in transactions are relatively easy to handle, directly serializing large-scale transaction graphs into text for large language models incurs substantial computational overhead. Therefore, it is imperative to develop an efficient graph– language integration framework that supports effective fusion and collaborative modeling of multiple transaction data modalities un-der explicit computational constraints. To address the above challenges, we propose UniDetect , an LLM-driven cryptocurrency fraud account detect ion method designed to improve uni versality and effectiveness across heterogeneous blockchains, as illustrated in Figure 7 (2). Specifically, (i) for C1 , we develop a forensic analysis agent, which can utilize LLM’s inherent knowledge and relevant prompts to handle transactions on different blockchains adaptively, and save historical transaction summaries of accounts as evidence for reasoning. (ii) For C2 , we elaborately design two summary analysis agents and fine-tune their underlying LLMs via reinforcement learning (RL) to guide the transaction sum-maries in eliminating irrelevant hallucination and over-inference content unrelated to the task. (iii) For C3 , during transaction graph construction, we adopt a semantic-guided sampling and structural compression to reduce computational complexity. In addition, we treat the high-quality transaction summaries, after removing irrele-vant information, as accounts’ semantic features and use them to further train the graph model. Together with the preceding fine-tuning stage, this process forms a two-stage alternating training that enables achieving efficient integration of multimodal data. Our main contributions are summarised as follows: 
+
+• We make the first attempt to integrate LLMs with customized fine-tuning strategies to develop a universal detection method that identifies fraudulent accounts across heterogeneous blockchains. 
+
+• Our UniDetect leverages LLM-generated transaction summaries as node features to enhance transaction-graph representation learning, and further employs a two-stage alternating training strategy to jointly refine summary quality while enabling tightly coupled and reliable integration with downstream graph-reasoning tasks. 
+
+• Extensive evaluations on three real cryptocurrency datasets show that UniDetect improves fraud detection performance by up to 8.56% in 𝐹 1 and at least 5.57% in Kolmogorov–Smirnov (KS). More-over, our method successfully identifies over 94.58% of real fraud-ulent accounts in zero-shot cross-chain detection and achieves 4.47% AUC improvement on cross-domain datasets. 
+
+## 2 Related work 
+
+We review related work on blockchain-based cryptocurrency fraud detection from three key perspectives: 
+
+General Graph-based Learning Methods. These methods typ-ically model transaction behaviours between accounts as graphs and perform account representation learning using classical graph learning models, such as DeepWalk [ 20 ], Node2Vec [ 8], GCN [ 13 ], and GAT [ 13 ], or general graph anomaly detection approaches, including CARE-GNN [ 4], BWGNN [ 24 ], and GRIT [ 16 ]. However, these methods lack integration of blockchain-specific background knowledge, making them not directly applicable. 
+
+Blockchain-specific Detection Methods. This line of research incorporates blockchain-specific fraud characteristics into graph learning frameworks to improve detection performance. For exam-ple, Trans2Vec [ 19 ] integrates transaction amounts and timestamps into graph-based random walks to enhance traditional random walk models. Ethident [ 34 ] designs 49 graph augmentation strategies and 16 manually crafted features tailored for Ethereum accounts to identify optimal augmentation and initialization settings. TEGDe-tector [ 33 ] converts transaction sequences into multiple temporal slices and jointly learns account representations by combining time-series modelling with graph learning techniques. TSGN [ 28 ]reformulates blockchain fraud detection as a transaction-centric graph classification problem, enabling the capture of significant transaction patterns. However, these methods are applicable only to specific blockchains and cannot generalize to solve complex multi-chain or even cross-chain scenarios. 
+
+Multi-chain Detection Methods. This line of work aims to re-duce reliance on blockchain-specific designs by adopting unified graph reconstruction or sequence-based modelling of transaction behaviours. SIGTRAN [ 21 ] models transactions from different block-chains using a generic graph representation and performs node classification by combining multiple types of features. BERT4ETH [ 11 ] employs a Transformer [ 26 ] architecture to encode historical transaction sequences of accounts, enabling chain-independent rep-resentation learning. DIAM [ 3] constructs directed multi-graphs UniDetect: LLM-Driven Universal Fraud Detection across Heterogeneous Blockchains Conference’17, July 2017, Washington, DC, USA 
+
+and applies a gated recurrent unit (GRU) [ 2] temporal encoder to initialize account representations without requiring chain-specific features. However, these methods generally separate domain knowl-edge from the reasoning learning process. This decoupled learning model makes it difficult to effectively understand the semantics of fraudulent accounts. 
+
+## 3 Preliminaries 
+
+Data Model . We represent the transaction graph as 𝐺 = (𝑉 , 𝐸 ),which consists of the following components: (i) node set 𝑉 =
+
+{𝑢, 𝑣, . . . } containing 𝑛 nodes; (ii) directed edge set 𝐸 containing 𝑚 
+
+transaction edges; and (iii) edge attribute matrix X𝐸 ∈ R𝑚 ×𝑑 , where each row is a 𝑑 -dimensional vector encoding the corresponding transaction details. 
+
+Problem Definition . We formulate the fraud account detection task as the node classification. Let 𝑌 𝐿 denote the set of node la-bels, and the objective is to learn a binary classifier 𝑓 : 𝐺 =
+
+(𝑉 , 𝐸, X𝐸 , 𝑌 𝐿 ) ↦ −→ 𝑌 𝑈 , which predicts the labels 𝑌 𝑈 of the unlabeled nodes. 
+
+## 4 Proposed Approach 
+
+Figure 8 presents the overall framework of UniDetect, which mainly consists of a training phase and an inference phase. 
+
+## 4.1 Subgraph Construction 
+
+Due to the large volume of account transactions, processing the entire transaction graph directly would incur significant time and computational costs. Therefore, we first optimize the graph size by sampling the account-centered subgraph and structure-aware graph compression. 
+
+Semantics-aware Sampling . We select a labelled account node 
+
+𝑣 as the centre node and perform ℎ-hop neighbour sampling to construct an account-centred transaction subgraph, prioritizing neighbours that exhibit high-value behaviours with the central account. Specifically, we sample the top-𝐾 most important neigh-bours at each hop based on their average transaction value. The sampling process can be described as follows: 
+
+𝐶 ℎ =
+
+Ø 
+
+> 𝑣 ∈𝐶 ℎ−1
+
+topK  N𝑣 , 𝐾, R[𝑣, N𝑣 ], (1) where 𝐶 ℎ is the set of nodes obtained through ℎ-th hop sampling (ℎ = 0 indicates node 𝑣 ), N𝑣 is the set of 1-hop neighbour nodes centered at node 𝑣 , 𝐾 is the number of neighbours selected for each hop, R[𝑣, N𝑣 ] represents the average transaction value of candi-date interactions, serving as guidance for selecting adjacent nodes. 
+
+C𝑣 = ∪ℎ𝑘 =0𝐶 𝑘 represents the set of nodes constructed by sampling 
+
+ℎ-hop neighbors from the target account 𝑣 . If the sample contains duplicate average transaction amounts, we will select the transac-tion information based on the total transaction value. 
+
+Structure-aware Compression . Although the subgraph is prelim-inarily reduced via sampling, its node count may still be of order 𝐾 ℎ .Therefore, we propose a s tructural i mportance graph compression (SIGC) algorithm that removes non-critical nodes while preserving the core structure and connectivity of the subgraph, effectively re-ducing its size without losing essential information. 1 Computing the Structural Importance of Neighbour Nodes. We define 𝑆 𝑢 as the structural importance of neighbour node 𝑢 in the subgraph: 
+
+𝑆 𝑢 = log (𝑎 in  
+
+> 𝑢
+
++ 𝑎 out  
+
+> 𝑢
+
++ 1) + 𝛽 · log (𝑑 in  
+
+> 𝑢
+
++ 𝑑 out  
+
+> 𝑢
+
++ 1)
+
+𝐿 𝑢 + 1 , (2) where 𝑎 𝑖𝑛 𝑢 /𝑎 𝑜𝑢𝑡 𝑢 denote the inflow/outflow transaction amounts of the neighbour node 𝑢 . 𝑑 𝑖𝑛 𝑢 /𝑑 𝑜𝑢𝑡 𝑢 represents its in/out-degree within the subgraph. 𝐿 𝑢 is the shortest path length from the central node 
+
+𝑣 to the the neighbour node 𝑢 , computed via Breadth-First Search (BFS) [ 1]. And 𝛽 controls the trade-off between behavioural infor-mation and structural signals when computing the node importance score. 2 Structural Importance Graph Compression. If the ℎ-hop transaction subgraph centred on the node 𝑣 contains more than 
+
+𝑁 𝑐 nodes, we sort the neighbour nodes by their structural impor-tance score 𝑆 𝑢 and retain the top 𝑁 𝑐 . To preserve connectivity, we trace the shortest paths from the node 𝑣 to the retained nodes and include all nodes and edges on these paths in the final compressed subgraph. 
+
+## 4.2 Transaction Summary Generation 
+
+After graph construction, we employ an LLM-based forensic analy-sis agent to automatically process the transactions associated with each account node 𝑣 and generate an account-level summary 𝑟 𝑣 . By leveraging LLMs’ embedded knowledge and a carefully designed chain-of-thought (CoT) prompting strategy, the agent can consis-tently handle blockchain accounts with heterogeneous data struc-tures. Figure 3 illustrates the prompt template, with more details provided in Appendix 1 .
+
+## 4.3 Two-stage Alternating Training 
+
+To improve the quality of transaction summaries, we develop two summary analysis agents that share the same LLM backbone. The 
+
+discriminative summary analyst agent focuses on classification-relevant cues (e.g., value movements, transaction patterns, and log semantics), while the residual summary analyst agent preserves descriptive content that is weakly correlated with detection. Then, we adopt a two-stage training strategy to improve training stability and convergence efficiency. 
+
+• Stage 1: High-Quality Transaction Summary Generation Training: 
+
+In Stage 1 (outer loop ), the parameters of the LLM-based sum-mary analyst agent are fine-tuned while the graph encoder remains frozen. To mitigate the high computational cost of full-parameter LLM fine-tuning, we use Low-Rank Adaptation (LoRA) [ 10 ] to im-prove efficiency. The detailed process is as follows: 
+
+Discriminative And Residual Summary Generation . We lever-age a discriminative summary analyst agent to extract discrimi-native information 𝑟 𝐷 𝑣 from account transaction summaries 𝑟 𝑣 . In addition, to improve the quality of the discriminative summary, we introduce an auxiliary task that extracts a complementary residual summary 𝑟 𝑅 𝑣 from the transaction summary 𝑟 𝑣 . Figure 4 shows the prompts for the discriminative summary and residual summary analyst agents, with further details provided in Appendix 1 . The 
+
+discriminative summary analyst agent extracts task-relevant, discriminative information from the initial transaction summary to generate a discriminative transaction summary. Its analysis fo-cuses on the following four aspects: (1) Transaction patterns: Conference’17, July 2017, Washington, DC, USA Miao et al. Transaction Summary 
+
+Analysis reveals a slight 
+
+negative net flow… 
+
+Account -centered Subgraph 
+
+Construct …            
+
+> Role :You are ablockchain
+> behavior analyst .
+> Task :1.Analyze Transaction
+> Data ;2.Generate Narrative .
+> Input :transaction .
+
+Prompt 
+
+Residual 
+
+Summary 
+
+Discriminative 
+
+Summary 
+
+LM LM 
+
+Linear 
+
+GNN Attention 
+
+Layer 
+
+Linear 
+
+GNN 
+
+Dual -PGNN 
+
+𝑧 !
+
+> "/$
+
+^
+
+𝑧 !
+
+> %
+
+^
+
+𝑡 !
+
+"^
+
+𝑣 
+
+𝑣 
+
+𝜒 !
+
+𝑡 !
+
+#^
+
+𝑣 
+
+D
+
+v
+
+R
+
+v
+
+O
+
+v
+
+𝑝 !
+
+> "
+
+𝑆 ! 
+
+> "
+
+Label 
+
+𝑝 !
+
+> #
+
+𝑆 !
+
+> $
+
+Uniform 
+
+Orthogonal 
+
+^
+
+^
+
+^
+
+^
+
+^
+
+^
+
+^
+
+u Stage 1 : High -Quality Transaction Summary Generation Training 
+
+RL Agent 
+
+Reward 
+
+Action 2 
+
+Dual -
+
+PGNN 
+
+§4.3 Two -stage Alternating Training 
+
+Discriminative 
+
+Summary 
+
+Residual 
+
+Summary 
+
+𝑣 
+
+𝑣 
+
+𝑝 !
+
+> "
+
+𝑆 ! 
+
+> "
+
+Label D
+
+v
+
+R
+
+v
+
+O
+
+v
+
+𝑝 !
+
+> #
+
+𝑆 !
+
+> $
+
+Uniform 
+
+Action 1 
+
+LM LM 
+
+𝑡 !
+
+"
+
+𝑡 !
+
+# Orthogonal 
+
+Transaction 
+
+Summary 
+
+# Training Phase 
+
+Trading Network 
+
+Dual -
+
+PGNN 
+
+Discriminative 
+
+Summary LM 
+
+LM 
+
+# Inference Phase 
+
+𝑣 Transaction 
+
+Summary 
+
+Is this account a fraudster ?
+
+𝑝 != 0.985 
+
+Classifier 
+
+Forensics Analyst Agent Discriminative Summary 
+
+Analyst Agent 
+
+Residual Summary 
+
+Analyst Agent 
+
+Trainable 
+
+Frozen 
+
+Account 
+
+Transaction 
+
+v
+
+^
+
+Cryptocurrency 
+
+Transaction 
+
+Fraudster 
+
+u Stage 2 : Graph Inference Training 
+
+RL Agent 
+
+… 
+
+> l
+
+Semantics -aware Sampling  
+
+> l
+
+Structure -aware Compression 
+
+§4.1 Subgraph Construction 
+
+§4.2 Summary Generation 
+
+Figure 2: The overall framework of UniDetect. During training, we construct account-centered subgraphs, generate transaction summaries via a forensic analysis agent, and apply a two-stage alternating training strategy that jointly fine-tunes LLM-based summary analyst agents and the graph encoder. During inference, the forensic and discriminative summary agents collaboratively enrich account representations for fraud prediction. 1. Task Description  
+
+> You are a blockchain behavior analyst tasked with analyzing a account's transaction of [The specific chain name] (e.g., Ethereum) patterns to produce a professional, engaging, and cohesive narrative.
+> 2. Output Constraint
+> The output should be suitable for generating rich text embeddings or supporting classification tasks.
+> 3. Chain-of-Thought (CoT) Instructions
+> 1) Analyze Transaction Data: The analysis is conducted from four dimensions: Value Flow, Partner Ratio, Transaction Timing, and Gas Expenditure.
+> 2) Generate Narrative: Produce a 3-5 sentence paragraph that weaves together insights on value flow, partner ratios, transaction timing, and Gas expenditure.
+
+Prompt for Forensics Analyst Agent  
+
+> 1. Task Description:
+> For each transaction summary, identify the MOST distinguishing causal pattern that indicates whether the address is normal or fraudulent.
+> 2. Analysis Framework: The analysis is conducted from four dimensions: Transaction Patterns, Fund Flows, Associated Addresses, and Temporal Signs.
+> 3. Output
+> Generate ONE sentence per address.
+
+Prompt for Discriminative Summary Analyst Agent  
+
+> 1. Task Description:
+> For each transaction summary, write one factual sentence. These sentences must present objective, raw data points, without any assessment of normal, fraudulent, or significance.
+> 2. Analysis Framework: The analysis is conducted from the two dimensions of Noise Extraction and Factual Data Points.
+> 3. Output
+> Generate ONE sentence per address.
+
+Prompt for Residual Summary Analyst Agent 
+
+Figure 3: Prompt template of forensics analyst agent. 
+
+extracting transaction behaviour descriptions related to fraudulent activities, such as high-frequency or dense transfers within short time intervals; (2) Fund flows: identifying aggregation–dispersion patterns, for example, funds collected from multiple sources and subsequently transferred through multi-hop paths to multiple des-tinations; (3) Associated addresses: extracting interactions with known high-risk entities, such as mixers, darknet services, or other risky addresses; (4) Temporal signs: identifying time-related indi-cators of potential risk, such as transactions concentrated in specific high-risk periods. In addition, the residual summary analyst agent aims to sep-arate statement-like content that is not directly relevant to the fraud identification task from the initial transaction summary. Such information is inherently non-discriminatory and therefore can-not be used to effectively support fraud classification. Its analysis mainly includes two aspects: (1) Noise extraction: identifying and extracting task-irrelevant noise, including expressions arising from model hallucinations or over-reasoning, such as prompt-like lan-guage, redundant descriptions, or subjective risk judgments lacking explicit transactional evidence; (2) Factual statements: extracting purely factual descriptions that directly state transaction data but do not convey risk-related characteristics, such as an account’s transaction activity lasting for 𝑋 months or transaction volumes remaining stable over time. Subsequently, a fixed-parameter language model (LM) is em-ployed to encode both independently, yielding vector representa-tions 𝑡 𝐷 𝑣 and 𝑡 𝑅 𝑣 that serve as initial node features for the graph encoder. Additionally, we feed the original transaction summary 𝑟 𝑣 
+
+from Subsection 4.2 into the same LM to obtain its representation 
+
+𝜒 𝑣 .
+
+Dual-path graph neural network (Dual-PGNN) Encoder . The discriminative/residual summary representations 𝑡 𝐷 𝑣 /𝑡 𝑅 𝑣 and the original summary representation 𝜒 𝑣 are respectively input into the Dual-PGNN. After encoding, we obtain node representations 𝑆 𝐷 𝑣 
+
+and 𝑆 𝑅 𝑣 . A detailed introduction to Dual-PGNN is provided in Stage 2.
+
+Tri-View Loss. We define the model loss from three perspectives: UniDetect: LLM-Driven Universal Fraud Detection across Heterogeneous Blockchains Conference’17, July 2017, Washington, DC, USA rating rich text embeddings or supporting classification 
+
+> ns
+> alysis is conducted from four dimensions: Value Flow, Gas Expenditure.
+> entence paragraph that weaves together insights on value and Gas expenditure.
+> 1. Task Description
+> For each transaction summary, identify the MOST distinguishing causal pattern that indicates whether the address is normal or fraudulent.
+> 2. Analysis Framework
+> The analysis is conducted from four dimensions: Transaction Patterns, Fund Flows, Associated Addresses, and Temporal Signs.
+> 3. Output
+> Generate ONE sentence per address.
+
+Prompt for Discriminative Summary Analyst Agent 
+
+> 1. Task Description
+> For each transaction summary, write one factual sentence. These sentences must present objective, raw data points, without any assessment of normal, fraudulent, or significance.
+> 2. Analysis Framework
+> The analysis is conducted from the two dimensions of Noise Extraction and Factual Data Points.
+> 3. Output
+> Generate ONE sentence per address.
+
+Prompt for Residual Summary Analyst Agent 
+
+Figure 4: Prompt template of discriminative and residual summary analyst agents. 
+
+i) Discriminative summary loss : For each central node 𝑣 of the sub-graph, we compute binary cross-entropy (BCE) loss 𝐿 𝐷 𝑣 between the node’s prediction 𝑝 𝐷 𝑣 obtained by encoding the discriminative summary as the initial node feature and its ground-truth label 𝑦 𝑣 .For node 𝑣 , the discriminative summary loss is defined as: 
+
+L𝐷 𝑣 = −∑︁  
+
+> 𝑣 ∈𝑉
+
+[𝑦 𝑣 log (𝑝 𝐷 𝑣 ) + ( 1 − 𝑦 𝑣 ) log (1 − 𝑝 𝐷 𝑣 )] . (3) (ii) Residual summary loss : We minimize a Kullback–Leibler (KL) divergence, where the residual summary loss for node 𝑣 is defined as: 
+
+L𝑅 𝑣 = −∑︁ 
+
+𝑣 ∈𝑉 
+
+𝐷 𝐾𝐿 (𝑝 𝑅 𝑣 ∥𝑈 𝑣 ) =∑︁ 
+
+𝑣 ∈𝑉 ∑︁ 𝑘 ∈ { 0,1}
+
+𝑝 𝑅 𝑣 (𝑘 ) log 𝑝 𝑅 𝑣 (𝑘 )
+
+𝑈 𝑣 (𝑘 ) , (4) where 𝑝 𝑅 𝑣 denotes the predicted probability obtained by encoding the residual summary as the initial node feature, while 𝑈 𝑣 represents a uniformly distributed prediction ( 𝑈 𝑣 = 1 
+
+> 𝐾
+
+, where 𝐾 is the number of label classes). (iii) Orthogonal Loss : To clearly distinguish node representations from the discriminative and residual summaries 𝑆 𝐷 𝑣 
+
+and 𝑆 𝑅 𝑣 , we impose an orthogonality regularizer between them: 
+
+L𝑂 𝑣 = 𝑆 𝐷 𝑣 · 𝑆 𝑅 𝑣  
+
+> 22
+
+, (5) where · denotes the dot product used to enforce orthogonality between the two representations, preventing mutual interference in account node embeddings. Finally, the overall loss of account 𝑣 
+
+consists of the above three terms and can be expressed as: 
+
+L𝑣 = L𝐷 𝑣 + 𝜆 1 · L 𝑅 𝑣 + 𝜆 2 · L 𝑂 𝑣 , (6) where 𝜆 1 and 𝜆 2 are hyperparameters. 
+
+RL-based Fine-tuning Strategy. We fine-tune the LLM using sequence-level REINFORCE [ 29 ] with an exponential moving aver-age baseline to improve the discriminative transaction summary. Specifically, the tri-view loss L𝑣 of the account node 𝑣 is converted into a reward: 
+
+𝑅 𝑣 = exp (−L 𝑣 ). (7) Then, we further compute an advantage by subtracting a moving-average baseline: 
+
+ˆ𝐴 𝑣 = 𝑅 𝑣 − 𝑏 𝑡 , (8) where 𝑏 𝑡 is an exponential moving-average baseline at training step 
+
+𝑡 . Finally, the RL objective of node 𝑣 is defined as: 
+
+LRL  
+
+> 𝑣
+
+= − ˆ𝐴 𝑣 ·
+
+
+
+log 𝑝 Disc  
+
+> 𝑣
+
++ log 𝑝 Resi 
+
+> 𝑣
+
+
+
+, (9) where 𝑝 Disc  
+
+> 𝑣
+
+and 𝑝 Resi  
+
+> 𝑣
+
+denote the sequence-level generation proba-bilities of the discriminative and residual summary analyst agent, respectively. 
+
+• Stage 2: Graph Inference Training: 
+
+In Stage 2 (inner loop ), the LLM is frozen, and the graph encoder begins to train. Similar to Stage 1 , the only difference is that we use the two fine-tuned summary analyst agents to generate the discrimination and residual transaction summaries, which we en-code as ˆ𝑡 𝐷 𝑣 and ˆ𝑡 𝑅 𝑣 . Then, we use the Dual-PGNN to encode the account representation. Specifically, the original transaction sum-maries 𝜒 𝑣 and discriminative/residual summaries ˆ𝑡 𝐷 𝑣 /ˆ𝑡 𝑅 𝑣 are fed into the two branches of the Dual-PGNN. Each branch comprises a backbone GNN and a linear projection that aggregates neighbour-hood information while preserving the original summary. The node representation of account 𝑣 obtained by encoding the discrimina-tive/residual summary as node features is: 
+
+ˆ𝑍 𝐷 /𝑅 𝑣 = GNN ( ˆ𝑟 𝐷 /𝑅 𝑣 , A𝑣 ) + 𝜃 ( ˆ𝑟 𝐷 /𝑅 𝑣 ), (10) and the node representation obtained by the original summary is: 
+
+ˆ𝑍 𝑂 𝑣 = GNN (𝜒 𝑣 , A𝑣 ) + 𝜃 (𝜒 𝑣 ), (11) where 𝜃 (·) is a linear layer and A𝑣 denotes the adjacency matrix of the subgraph centered at node 𝑣 . Then, an attention layer performs weighted fusion of the two branch representations to obtain the final node embedding: 
+
+ˆ𝑆 𝐷 /𝑅 𝑣 = 𝑊 1 · ˆ𝑍 𝐷 /𝑅 𝑣 + 𝑊 2 · ˆ𝑍 𝑂 𝑣 , (12) where 𝑊 1 and 𝑊 2 are learnable parameters derived from attention weights, which adjust the relative importance of the discrimina-tive/residual summary and the original transaction summary dur-ing fusion. Finally, we employ the tri-view loss to optimize the Dual-PGNN parameters. 
+
+## 4.4 Validation and Test 
+
+During verification and testing, we feed the original transaction summaries generated by the forensic analysis agent and the dis-criminative summaries generated by the discriminative summary analysis agent into the two branches of the dual-PGNN, respectively. The encoded and aggregated account node representations are then input into a fully connected (FC) layer to predict the probability of fraud. 
+
+## 5 Experiments 
+
+This section aims to answer the following research questions: RQ1 :How does UniDetect perform in heterogeneous blockchain trans-actions? RQ2 : What is the contribution of each component of UniDetect? RQ3 : How well does UniDetect generalize? RQ4 : How sensitive is UniDetect to its hyperparameters? RQ5 : What is the computational overhead of UniDetect in practice? Finally, we ana-lyzed the rationality and effectiveness of our method by examining a real fraud account detection case. Conference’17, July 2017, Washington, DC, USA Miao et al. 
+
+## 5.1 Experimental Settings 
+
+Datasets: We evaluate UniDetect on Ethereum and Bitcoin, two representative public blockchains with fundamentally different data structures, as shown in Table 6. (1) Ethereum: We obtain the fraud labels from the Etherscan label cloud 2, XLabelCloud 3 and Cryp-toScamDB 4. These labels cover major illegal account types such as phishing, Upbit vulnerability attacks, gambling, and honeypots. Ad-ditionally, we consider special identity accounts, such as miners and financial service providers, as benign because they are known to be non-fraudulent. Then, we use the Etherscan API 5 to collect histori-cal transaction data of both fraudulent and non-fraudulent accounts from “2015-08-07" to “2025-04-10”. During data preprocessing, we remove transactions with zero amounts and failed transactions, and then construct the Ethereum transaction graph. (2) Bitcoin: We utilise two publicly available datasets: Bitcoin-M and Bitcoin-L [ 3 ], with varying node and edge scales to evaluate model performance comprehensively. In addition, to evaluate our method’s generaliza-tion to other fields, we include the Instagram [12 ] social network dataset. All datasets are split into training, validation, and test sets following an 8:1:1 ratio. Further details of the datasets and graph construction are provided in Appendix 2 .
+
+> Table 1: Statistics of the blockchain datasets.
+
+Dataset Ethereum Bitcoin-M Bitcoin-L #Nodes 187,960 2,505,841 20,085,231 #Edges 397,038 14,181,316 203,419,765 #Fraud 1,991 46,930 362,391 #Normal 1,439 213,026 1,271,556 #Fraud (%) 1.06 1.87 1.80 
+
+Evaluation metrics: We use four common metrics: Precision, Re-call, 𝐹 1, and AUC. In addition, we use the KS, a widely used metric in credit scoring, to measure the separability between benign and fraudulent accounts, defined as KS = max |𝐹 1 (𝑥 ) − 𝐹 2 (𝑥 )| . For all metrics, higher values indicate better performance. 
+
+Baselines: We compare UniDetect against 20 baseline methods, which can be grouped into four major categories: (1) Graph repre-sentation learning methods : DeepWalk [ 20 ], Node2Vec [ 8], GCN [ 13 ], GAT [ 27 ], GIN [ 31 ], GraphSAGE [ 9], and APPNP [ 14 ]; (2) Graph anomaly detection method : CARE-GNN [ 4 ], BWGNN [ 24 ], GRIT [ 16 ], DGA-GNN [ 5], PMP [ 35 ], FLAG [ 32 ]; (3) Single-chain fraud detection methods : Trans2Vec [ 19 ], TSGN [ 28 ], Ethi-dent [ 34 ], and TEGDetector [ 33 ]; (4) Multi-chain fraud detection methods : SIGTRAN [ 21 ], BERT4ETH [ 11 ] and DIMA [ 3]. Details are provided in Appendix 3 .
+
+Implementation Details: We initiate a 2-hop neighbour sampling, retaining up to 𝐾 = 10 neighbours per hop. In the compression process, the hyperparameter 𝛽 = 2 is used to prioritize aggregating highly correlated nodes, and the final subgraph size 𝑁 𝑐 is set to 10. In the two-stage alternating training, we use gemma-3-4b-it [ 25 ]as the base LLM for all agents. Sentence-BERT [ 22 ] serves as the LM for generating embeddings. The Dual-PGNN is configured with 
+
+> 2https://etherscan.io/
+> 3https://xblock.pro/#/labelcloud
+> 4https://cryptoscamdb.org/scams
+> 5https://etherscan.io/
+
+two layers, a hidden-layer size of 64, and a GNN backbone of CARE-GNN. In the tri-view loss function, we set 𝜆 1 to 0.05 and 𝜆 2 to 0.3, respectively. Furthermore, we utilize the AdamW optimizer with a fixed learning rate of 5e-6 and adopt early stopping to prevent overfitting. The training process involves 2 outer epochs and 10 inner epochs. All experiments are conducted on a machine with an Intel(R) Xeon(R) Gold 6248R CPU (3.00 GHz), 128 GB of RAM, and two NVIDIA A6000 GPUs. Detailed baseline implementation settings are provided in Appendix 4 . In addition, to prevent the LLM from exploiting pre-trained knowledge of known labels, we strictly exclude account identifiers and label information from both the input data and prompt instructions. A detailed discussion is provided in Appendix 5 (Q1) .
+
+## 5.2 Overall Effectiveness (RQ1) 
+
+Tables 2 and 3 present results from two representative blockchain platforms, including the average metrics and their standard devi-ations across multiple runs. The best and the second are marked. UniDetect † uses the LLM in a zero-shot setting without fine-tuning. A detailed analysis of the RL training convergence is provided in 
+
+Appendix 5 (Q2) , confirming the stability of the proposed fine-tuning process. Several key conclusions can be drawn: 
+
+• UniDetect consistently outperforms all competing methods across all evaluation metrics and datasets. 
+
+• Among graph representation learning and graph anomaly detec-tion methods are constrained by challenges in real-world cryp-tocurrency fraud detection, including severe label imbalance and limited transaction information. 
+
+• Single-chain blockchain methods rely on manual feature engi-neering and fail to capture key transaction patterns, leading to limited performance. 
+
+• Multi-chain methods typically treat transactions as direction-aware numeric sequences for encoding learning. However, it often struggles to fully capture the structural semantics of the transaction graph; moreover, separating the sequence encoder and the graph reasoning also makes it difficult to consistently capture the semantics of fraudulent accounts. 
+
+## 5.3 Ablation Study (RQ2) 
+
+To validate the effectiveness of each key component in UniDetect, we conducted five comprehensive ablation studies on the Ethereum dataset, including the following settings: 
+
+• w/o GC removes the SIGC algorithm. 
+
+• w/o TS. train removes the two-stage alternating training and uses only the origin account summaries as node features. 
+
+• w/o Resi. agent removes the residual summary analyst agent as well as the associated residual summary loss and orthogonal loss. 
+
+• w/o RL removes RL-based fine-tuning and reduces optimization to standard backpropagation. 
+
+• w/o Dual-PGNN removes the Dual-PGNN Encoder and replaces it with a standard GNN, without explicitly preserving self-features as an independent channel during aggregation. The ablation results are shown in Table 4, and the main findings are as follows: (1) “ w/o GC” exhibits that compressing the subgraphs UniDetect: LLM-Driven Universal Fraud Detection across Heterogeneous Blockchains Conference’17, July 2017, Washington, DC, USA 
+
+Table 2: Evaluation on Ethereum dataset (in percentage %). The best and the second are marked. UniDetect † uses the LLM in a zero-shot setting without fine-tuning. 
+
+Ethereum 
+
+Model Precision Recall 𝐹 1 AUC KS DeepWalk 71.91 0.56 52.89 1.14 60.95 0.31 64.82 0.89 42.31 0.37 
+
+Node2Vec 82.68 0.23 41.77 0.01 55.60 0.49 60.15 0.26 36.75 1.12 
+
+GCN 40.97 1.17 50.00 0.49 45.04 0.73 42.37 1.67 26.39 0.92 
+
+GAT 40.97 1.19 50.00 1.33 45.04 0.86 42.34 0.32 26.33 0.14 
+
+GIN 50.00 0.05 45.03 0.51 47.39 0.16 64.91 0.03 29.12 0.67 
+
+GraphSAGE 70.12 0.63 79.07 1.73 74.27 1.34 76.28 1.42 44.23 0.83 
+
+APPNP 59.88 0.93 51.08 1.47 55.04 0.59 52.74 0.16 31.41 1.87 
+
+CARE-GNN 69.58 0.12 81.56 0.41 75.05 1.15 56.71 1.35 38.46 0.03 
+
+BWGNN 80.33 0.02 82.21 1.43 81.26 0.74 81.14 0.72 50.73 1.18 
+
+GRIT 55.89 1.35 56.41 1.03 56.15 1.36 61.63 1.18 42.03 1.28 
+
+DGA-GNN 82.43 1.12 82.91 0.71 82.67 0.91 81.39 0.94 61.09 0.48 
+
+PMP 67.00 0.51 81.86 0.54 73.49 0.48 71.79 0.73 37.60 0.64 
+
+Trans2Vec 79.47 0.61 48.44 0.66 60.19 0.65 73.95 0.28 42.51 1.19 
+
+TSGN 73.75 1.28 71.30 1.12 72.50 1.83 75.44 0.03 43.68 0.68 
+
+Ethident 80.28 0.55 87.80 0.52 83.86 1.57 82.27 0.55 60.17 1.66 
+
+TEGDetector 81.33 0.49 80.42 0.75 80.86 1.30 79.33 0.74 59.42 0.38 
+
+SIGTRAN 79.75 1.18 88.55 0.62 83.89 0.31 79.71 0.28 50.43 0.65 
+
+BERT4ETH 81.65 0.78 85.62 0.44 83.59 1.76 81.82 0.25 58.77 1.03 
+
+DIAM 81.96 0.13 86.38 0.63 84.09 0.42 82.67 0.11 60.23 0.17 
+
+UniDetect † 85.14 0.43 85.63 0.36 85.38 0.45 81.82 1.23 63.32 0.39 
+
+UniDetect 91.39 0.60 93.95 0.56 92.65 0.34 94.82 0.24 68.94 0.12 
+
+Improv. △ +8.71 +5.40 +8.56 +12.15 +7.58 98.65 100.00 100.00 94.58 96.73 60.20 63.25 62.14 60.07 60.35 74.60 77.50 76.67 73.46 74.33 0.45 0.50 0.55 0.60 0.65 0.70 60 70 80 90 100 %Classifier Threshold  Recall Precision  F 1AUC   
+
+> (a) Cross-chain inference. +6.06% +4.47% (b) Cross-domain transfer.
+
+Figure 5: Experimental results of UniDetect’s generalization abil-ity. Cross-chain inference (a) shows that fraud detection capability transfers across blockchains with different data structures, while cross-domain transfer (b) demonstrates its effectiveness beyond blockchain scenarios. 
+
+appropriately can significantly reduce the time costs with minimal impact on performance. (2) “ w/o TS. train” shows degraded perfor-mance, demonstrating that improving transaction summary quality is essential to overall detection effectiveness. (3) “ w/o Resi. agent” underperforms UniDetect, suggesting that incorporating residual summaries to contrast is important for enhancing summary quality. (4) “ w/o RL” leads to noticeable performance degradation, highlight-ing the importance of RL feedback in optimizing LLM fine-tuning. (5) “ w/o Dual-PGNN” results in reduced performance, reflecting that self-feature injection is crucial for mitigating neighbourhood cam-ouflage. Additionally, experiments on the choice of LLM backbone for the proposed agents are provided in Appendix 5 (Q3) .
+
+## 5.4 Generalization Ability Investigation (RQ3) 
+
+To evaluate the generalization ability of the proposed method, we conducted two experiments, as shown in Figure 5: (a) Cross-chain zero-shot inference , where UniDetect trained on Ethereum is di-rectly applied to Bitcoin. After extensively varying the classification threshold to mitigate sensitivity, cross-chain zero-shot inference exhibits inherent asymmetry—strong cross-chain generalization for fraudulent accounts but insufficient precision in identifying nor-mal accounts. (b) Cross-domain transfer : we extend UniDetect to the Instagram graph dataset, where the proportion of business users (the minority class) is 36.29%. The experimental results show that UniDetect remains robust and effective, demonstrating the generality of the proposed approach. 
+
+## 5.5 Hyper-parameter Sensitivity Analysis (RQ4) 
+
+Figure 6 presents the hyperparameter sensitivity analysis of UniDe-tect on the Ethereum dataset, focusing on the node threshold 𝑁 𝑐 
+
+for subgraph compression, the signal balancing factor 𝛽 used in neighbourhood structural importance estimation, and the hyper-parameter weights used in the tri-view loss function. Three key observations can be drawn: (1) A larger 𝑁 𝑐 introduces more benign nodes into the sampled subgraph, weakening the neighbourhood representation of the fraudulent centre node. Reducing 𝑁 𝑐 allevi-ates this issue, whereas an overly small 𝑁 𝑐 leads to insufficient neighbourhood information and degraded performance. (2) When 
+
+𝛽 is small, the model becomes more sensitive to noise induced by transaction amounts. In contrast, an excessively large 𝛽 overem-phasizes structural importance, leading the model to mistakenly treat highly connected nodes (e.g., exchanges or ICO wallets) as important neighbours, thereby distracting the model and reducing its discriminative power. (3) We analyze the effect of the weighting parameters 𝜆 1 and 𝜆 2 in the tri-view loss. Figures 6c and 6d show the 𝐹 1 and KS results under different settings. As 𝜆 1 and 𝜆 2 increase, overall performance first improves and then declines, remaining relatively stable across a wide range of values. 
+
+## 5.6 Computational efficiency (RQ5) 
+
+To evaluate the computational efficiency of UniDetect in practical deployment scenarios, we conduct a comprehensive profiling of graph construction time, model training time, inference time, and model parameters, with results reported in Table 5. In the graph construction, the average time for subgraph sampling and com-pression per account is only 1.26 s. In the training, Stage 1 and 
+
+Stage 2 together take approximately 13 h; although introducing the LLM incurs additional training overhead, this is a necessary cost of leveraging LLM capabilities. In the inference, UniDetect achieves an online inference latency of only 1.47 ms/sample with a throughput of 680 samples/s, comparable to existing lightweight graph-based methods and confirming its practical deployability. Regarding model parameters, thanks to the LoRA fine-tuning strat-egy, the trainable parameters account for only 0.07% of the total model parameters. In summary, UniDetect exchanges an acceptable one-time training cost for substantial gains in cross-chain general-isation and detection performance, striking a favourable balance between practicality and effectiveness. Conference’17, July 2017, Washington, DC, USA Miao et al. 
+
+Table 3: Evaluation on Bitcoin-M and Bitcoin-L datasets (in percentage %). The notations are the same as those in Table 2. 
+
+Dataset Bitcoin-M Bitcoin-L Model Precision Recall 𝐹 1 AUC KS Precision Recall 𝐹 1 AUC KS DeepWalk 63.42 0.65 57.68 0.95 60.42 0.74 69.51 0.31 35.65 0.94 62.31 1.59 60.63 0.31 61.45 1.48 67.00 2.11 32.62 0.16 
+
+Node2Vec 76.81 0.59 72.61 2.71 74.63 2.34 68.72 1.59 45.63 0.36 68.49 0.59 60.75 1.94 64.39 0.68 64.46 1.35 36.02 0.64 
+
+GCN 79.90 0.01 81.21 0.26 80.49 0.96 78.33 1.80 46.71 0.36 70.11 1.94 73.35 0.01 71.69 0.73 73.72 1.02 43.88 0.79 
+
+GAT 86.16 0.46 81.45 1.62 83.71 1.47 81.27 0.87 53.42 0.70 79.45 0.54 65.73 0.61 71.80 1.33 80.44 1.25 44.79 0.43 
+
+GIN 64.68 0.73 61.88 0.04 63.14 0.01 77.17 0.42 38.67 1.68 70.06 0.87 55.45 1.38 61.70 1.75 74.27 0.66 43.68 0.74 
+
+GraphSAGE 87.17 1.12 83.27 1.38 85.17 2.25 83.28 0.96 58.26 1.72 73.16 1.28 74.79 2.06 74.00 0.76 89.93 1.35 45.43 1.73 
+
+APPNP 83.27 1.03 79.58 2.33 81.36 0.75 80.23 1.23 51.33 1.20 71.69 1.76 70.34 0.76 71.00 0.98 83.79 0.29 44.17 2.23 
+
+CARE-GNN 86.69 2.31 86.58 0.01 86.67 1.85 85.04 1.89 60.22 3.16 64.61 0.05 80.38 1.48 71.62 0.01 70.33 1.67 37.23 1.61 
+
+BWGNN 86.09 1.62 87.12 0.01 86.66 2.10 81.55 1.25 60.60 1.68 71.15 2.97 80.38 0.85 75.46 1.51 71.57 0.55 47.57 2.24 
+
+GRIT 68.63 2.16 69.41 2.42 69.02 2.36 67.64 1.75 38.31 2.08 65.43 1.39 62.78 1.46 64.11 1.73 64.36 2.08 35.44 1.77 
+
+DGA-GNN 87.15 0.58 87.95 1.74 87.55 0.65 87.36 0.95 64.40 0.38 68.66 1.07 80.07 1.38 73.97 1.59 72.67 1.95 43.19 0.02 
+
+PMP 85.16 1.53 86.30 1.54 85.73 2.43 85.73 0.01 64.61 2.49 59.31 0.01 80.38 1.29 71.64 0.46 70.42 1.40 44.68 2.21 
+
+SIGTRAN 75.97 0.28 52.24 1.45 61.94 1.09 74.30 2.38 43.82 0.72 80.52 0.32 75.22 2.50 77.80 2.16 80.45 0.71 50.32 0.72 
+
+BERT4ETH 80.03 2.18 59.95 0.71 68.55 0.42 78.32 0.66 47.11 1.07 84.68 0.48 77.31 0.01 80.81 2.49 86.19 0.53 58.11 0.01 
+
+DIAM 88.83 1.04 86.39 0.12 87.57 1.56 84.10 0.52 64.88 1.03 89.58 0.68 90.11 0.64 89.80 0.64 90.05 0.78 65.76 0.83 
+
+UniDetect † 89.32 0.30 90.16 0.66 89.74 0.82 88.23 0.62 67.41 0.27 85.23 0.01 77.43 0.43 81.10 1.18 86.39 0.52 60.16 0.16 
+
+UniDetect 90.61 0.48 95.47 0.99 92.98 0.64 93.83 0.32 70.45 1.16 90.61 0.50 96.43 1.16 93.41 0.49 95.22 0.71 72.25 0.66 
+
+Improv. △ +1.78 +7.52 +5.41 +6.47 +5.57 +1.03 +6.32 +3.61 +5.17 +6.49 20 15 10 560 65 70 75 80 85 90 95 KS F1 Precision Recall AUC 
+
+(a) 𝑁 𝑐 .1.0 1.5 2.0 2.5 60 65 70 75 80 85 90 95 KS Precision Recall F1 AUC (b) 𝛽 .0.00 0.01 0.02 0.03 0.04 0.05 0.06 0.0 0.1 0.2 0.3 0.4 0.5 78 80 82 84 86 88 90 92  2 
+
+> F
+> 1
+> 1
+
+(c) 𝐹 1 metric under varying 𝜆 1 and 
+
+𝜆 2.0.00 0.01 0.02 0.03 0.04 0.05 0.06 0.0 0.1 0.2 0.3 0.4 0.5 39 42 45 48 51 54 57 60 63 66 69  2 
+
+> KS1
+
+(d) KS metric under varying 𝜆 1 and 
+
+𝜆 2.
+
+Figure 6: Hyperparameter sensitivity analysis on the Ethereum dataset reveals that UniDetect maintains stable and competitive performance across a broad range of hyperparameter configurations. Table 4: Ablation studies of UniDetect on the Ethereum dataset. 
+
+Methods 𝐹 1 AUC Time (s/account) 
+
+w/o GC 93.62 94.14 40.37 
+
+w/o TS. train 85.65 82.52 /
+
+w/o Resi. agent 78.37 79.81 /
+
+w/o RL 87.50 86.63 /
+
+w/o Dual-PGNN 88.50 89.63 /UniDetect 92.65 94.82 1.26 
+
+## 5.7 Study Case 
+
+To validate the rationality of our method, we present an analysis from a real-world Ethereum account detection case. For an account 0xfe68f28599b19c5d8a562e8cc7f7b07c36e0a99d, the forensics analyst agent generates the following raw trans-action summary : The target node executed 3,742 transactions involving 81 unique addresses over approximately nine years, re-ceiving inflows totalling 5,454.23 ETH. The collection behaviour exhibits significant net outflow dominance with extensive part-ner interactions, consistent with large-scale multi-hop transfer activity. Transactions occurred primarily during European busi-ness hours. The node has been previously flagged in Europol’s 2022 cryptocurrency monitoring report. Then, the discriminative transaction summary retains : 1. Collection node: significant net outflow dominance with extensive multi-party interactions, sug-gesting a potential laundering operation. 2. Distribution node: large-scale multi-hop dispersal pattern with sustained high-frequency transaction behaviour. And the residual transaction summary 
+
+isolates: Transactions occurred primarily during European business hours. The node has been previously flagged in Europol’s 2022 cryptocurrency monitoring report. The trained analyst agent is able to distinguish task-relevant content from raw transaction summaries and, more importantly, to identify over-inference and hallucinations introduced by the LLM, UniDetect: LLM-Driven Universal Fraud Detection across Heterogeneous Blockchains Conference’17, July 2017, Washington, DC, USA 
+
+Table 5: Efficiency analysis of UniDetect on the Ethereum dataset. Despite the additional training overhead introduced by the LLM component, UniDetect remains practical for real-world deployment with acceptable inference latency and throughput. 
+
+Component Cost 
+
+Data processing Time (s/sample) Graph construction 1.26 
+
+Training Time (h) Stage 1: RL fine-tuning (LLM) 12.42 Stage 2: GNN training 0.38 
+
+Inference Time (ms/sample) Inference 1.47 
+
+Throughput (samples/s) Inference throughput 680 
+
+Model parameters (M) 
+
+LLM (Gemma-3-4B-it + LoRA) 4303.30 (3.22 trainable) Dual-PGNN 0.04 such as the timezone inference issue highlighted in the case study. The resulting discriminative summary serves as a transaction his-tory profile for the corresponding account in the transaction graph, which is jointly used with the behavioural topology to determine the account identity. 
+
+## CONCLUSION 
+
+In this paper, we make the first attempt to apply LLMs and fine-tuning techniques to multi-chain cryptocurrency fraud account detection and propose UniDetect. We construct three LLM-based agents to generate transaction summaries as forensic clues, and then dynamically and closely combine them with the transaction graph learning through a two-stage alternating fine-tuning strategy. Extensive experiments show that UniDetect consistently outper-forms state-of-the-art methods across multiple blockchain datasets and generalizes well to unseen chains and new application domains. 
+
+## References 
+
+[1] Scott Beamer, Krste Asanović, and David Patterson. 2013. Direction-optimizing breadth-first search. Scientific Programming 21, 3-4 (2013), 137–148. [2] Junyoung Chung, Caglar Gulcehre, KyungHyun Cho, and Yoshua Bengio. 2014. Empirical evaluation of gated recurrent neural networks on sequence modeling. 
+
+arXiv preprint arXiv:1412.3555 (2014). [3] Zhihao Ding, Jieming Shi, Qing Li, and Jiannong Cao. 2024. Effective illicit account detection on large cryptocurrency multigraphs. In Proceedings of the 33rd ACM International Conference on Information and Knowledge Management .457–466. [4] Yingtong Dou, Zhiwei Liu, Li Sun, Yutong Deng, Hao Peng, and Philip S Yu. 2020. Enhancing graph neural network-based fraud detectors against camouflaged fraudsters. In Proceedings of the 29th ACM international conference on information & knowledge management . 315–324. [5] Mingjiang Duan, Tongya Zheng, Yang Gao, Gang Wang, Zunlei Feng, and Xinyu Wang. 2024. Dga-gnn: Dynamic grouping aggregation gnn for fraud detection. In 
+
+Proceedings of the AAAI conference on artificial intelligence , Vol. 38. 11820–11828. [6] Elliptic. 2025. Chain-hopping Emerges as the Defining Money Laundering Method of 2025. https://www.elliptic.co/blog/chain-hopping-defining-money-laundering-method-of-2025 [7] Sam Gilbert. 2022. Crypto, web3, and the Metaverse. Bennett Institute for Public Policy, Cambridge, Policy Brief (2022). [8] Aditya Grover and Jure Leskovec. 2016. node2vec: Scalable feature learning for networks. In Proceedings of the 22nd ACM SIGKDD international conference on Knowledge discovery and data mining . 855–864. [9] Will Hamilton, Zhitao Ying, and Jure Leskovec. 2017. Inductive Representation Learning on Large Graphs. In Advances in Neural Information Processing Systems ,I. Guyon, U. Von Luxburg, S. Bengio, H. Wallach, R. Fergus, S. Vishwanathan, and R. Garnett (Eds.), Vol. 30. Curran Associates, Inc. [10] Edward J Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu Wang, Weizhu Chen, et al . 2022. Lora: Low-rank adaptation of large language models. ICLR 1, 2 (2022), 3. [11] Sihao Hu, Zhen Zhang, Bingqiao Luo, Shengliang Lu, Bingsheng He, and Ling Liu. 2023. Bert4eth: A pre-trained transformer for ethereum fraud detection. In 
+
+Proceedings of the ACM Web Conference 2023 . 2189–2197. [12] Xuanwen Huang, Kaiqiao Han, Yang Yang, Dezheng Bao, Quanjin Tao, Ziwei Chai, and Qi Zhu. 2024. Can gnn be good adapter for llms?. In Proceedings of the ACM Web Conference 2024 . 893–904. [13] Thomas N. Kipf and Max Welling. 2016. Semi-Supervised Classification with Graph Convolutional Networks. CoRR abs/1609.02907 (2016). arXiv:1609.02907 [14] Johannes Klicpera, Aleksandar Bojchevski, and Stephan Günnemann. 2018. Per-sonalized embedding propagation: Combining neural networks on graphs with personalized pagerank. CoRR, abs/1810.05997 3 (2018). [15] Dan Lin, Yanli Ding, Weipeng Zou, Jiachi Chen, Xiapu Luo, Jiajing Wu, and Zibin Zheng. 2025. RiskTagger: An LLM-based Agent for Automatic Annotation of Web3 Crypto Money Laundering Behaviors. arXiv preprint arXiv:2510.17848 
+
+(2025). [16] Liheng Ma, Chen Lin, Derek Lim, Adriana Romero-Soriano, Puneet K Dokania, Mark Coates, Philip Torr, and Ser-Nam Lim. 2023. Graph inductive biases in transformers without message passing. In International Conference on Machine Learning . PMLR, 23321–23337. [17] Shuyi Miao, Wangjie Qiu, Xiaofan Tu, Yunze Li, Yongxin Wen, and Zhiming Zheng. 2026. Tracing Your Account: A Gradient-Aware Dynamic Window Graph Framework for Ethereum under Privacy-Preserving Services. IEEE Transactions on Information Forensics and Security (2026). [18] Shuyi Miao, Wangjie Qiu, Hongwei Zheng, Qinnan Zhang, Xiaofan Tu, Xunan Liu, Yang Liu, Jin Dong, and Zhiming Zheng. 2025. Know Your Account: Double Graph Inference-based Account De-anonymization on Ethereum. 2025 IEEE 41rd International Conference on Data Engineering (ICDE) (2025). [19] Dang Nguyen, Tu Dinh Nguyen, Wei Luo, and Svetha Venkatesh. 2018. Trans2vec: learning transaction embedding via items and frequent itemsets. In Pacific-Asia Conference on Knowledge Discovery and Data Mining . Springer, 361–372. [20] Bryan Perozzi, Rami Al-Rfou, and Steven Skiena. 2014. Deepwalk: Online learning of social representations. In Proceedings of the 20th ACM SIGKDD international conference on Knowledge discovery and data mining . 701–710. [21] Farimah Poursafaei, Reihaneh Rabbany, and Zeljko Zilic. 2021. Sigtran: signature vectors for detecting illicit activities in blockchain transaction networks. In 
+
+Pacific-Asia Conference on Knowledge Discovery and Data Mining . Springer, 27– 39. [22] Nils Reimers and Iryna Gurevych. 2019. Sentence-bert: Sentence embeddings using siamese bert-networks. arXiv preprint arXiv:1908.10084 (2019). [23] Jie Shen, Jiajun Zhou, Yunyi Xie, Shanqing Yu, and Qi Xuan. 2021. Identity inference on blockchain using graph neural network. In International conference on blockchain and trustworthy systems . Springer, 3–17. [24] Jianheng Tang, Jiajin Li, Ziqi Gao, and Jia Li. 2022. Rethinking graph neural networks for anomaly detection. In International conference on machine learning .PMLR, 21076–21089. [25] Gemma Team, Thomas Mesnard, Cassidy Hardin, Robert Dadashi, Surya Bhupati-raju, Shreya Pathak, Laurent Sifre, Morgane Rivière, Mihir Sanjay Kale, Juliette Love, et al . 2024. Gemma: Open models based on gemini research and technology. 
+
+arXiv preprint arXiv:2403.08295 (2024). [26] Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Łukasz Kaiser, and Illia Polosukhin. 2017. Attention is all you need. Advances in neural information processing systems 30 (2017). [27] Petar Velickovic, Guillem Cucurull, Arantxa Casanova, Adriana Romero, Pietro Lio, Yoshua Bengio, et al . 2017. Graph attention networks. stat 1050, 20 (2017), 10–48550. [28] Jinhuan Wang, Pengtao Chen, Xinyao Xu, Jiajing Wu, Meng Shen, Qi Xuan, and Xiaoniu Yang. 2025. Tsgn: Transaction subgraph networks assisting phishing detection in ethereum. IEEE Transactions on Dependable and Secure Computing 
+
+(2025). [29] Ronald J Williams. 1992. Simple statistical gradient-following algorithms for connectionist reinforcement learning. Machine learning 8, 3 (1992), 229–256. [30] Xihan Xiong, Zhipeng Wang, Qin Wang, Endong Liu, Pascal Berrang, and William Knottenbelt. 2025. Talking Transactions: Decentralized Communication through Ethereum Input Data Messages (IDMs). arXiv:2505.24724 [cs.CR] https://arxiv. org/abs/2505.24724 [31] Keyulu Xu, Weihua Hu, Jure Leskovec, and Stefanie Jegelka. 2018. How Powerful are Graph Neural Networks? CoRR abs/1810.00826 (2018). arXiv:1810.00826 [32] Chengdong Yang, Hongrui Liu, Daixin Wang, Zhiqiang Zhang, Cheng Yang, and Chuan Shi. 2025. Flag: Fraud detection with llm-enhanced graph neural network. In Proceedings of the 31st ACM SIGKDD Conference on Knowledge Discovery and Data Mining V. 2 . 5150–5160. Conference’17, July 2017, Washington, DC, USA Miao et al. 
+
+[33] Haibin Zheng, Minying Ma, Haonan Ma, Jinyin Chen, Haiyang Xiong, and Zhijun Yang. 2023. Tegdetector: a phishing detector that knows evolving transaction behaviors. IEEE Transactions on Computational Social Systems 11, 3 (2023), 3988– 4000. [34] Jiajun Zhou, Chenkai Hu, Jianlei Chi, Jiajing Wu, Meng Shen, and Qi Xuan. 2022. Behavior-aware account de-anonymization on Ethereum interaction graph. IEEE Transactions on Information Forensics and Security 17 (2022), 3433–3448. [35] Wei Zhuo, Zemin Liu, Bryan Hooi, Bingsheng He, Guang Tan, Rizal Fathony, and Jia Chen. 2024. Partitioning message passing for graph fraud detection. arXiv preprint arXiv:2412.00020 (2024). UniDetect: LLM-Driven Universal Fraud Detection across Heterogeneous Blockchains Conference’17, July 2017, Washington, DC, USA 
+
+## Supplementary Material 
+
+Outline. This supplementary material is divided into four sections: Section A introduces the prompt templates for the multiple agents used in this paper. Section B details the dataset construction process and its specific data information. Section C describes the baseline methods. Section D presents the implementation details of the baseline methods in the experiments. Section E addresses common questions regarding training fairness, RL training convergence, and the choice of LLM backbone for the proposed agents. 
+
+## A Templates of agents 
+
+Figure 7 illustrates the prompt templates of the forensics ana-lyst agent . This agent is responsible for analyzing raw transaction records of an account and summarizing its transactional behaviour from four dimensions: value flow, counterparty (partner), transac-tion timing, and gas expenditure, to generate an initial transaction summary. Figure 8 illustrates the prompt templates for the discrimina-tive summary analyst agent and the residual summary analyst agent, which share a unified role definition. The discriminative summary analyst agent extracts task-relevant, discriminative information from the initial transaction summary to generate a dis-criminative transaction summary. Its analysis focuses on the follow-ing four aspects: (1) Transaction patterns: extracting transaction behaviour descriptions related to fraudulent activities, such as high-frequency or dense transfers within short time intervals; (2) Fund flows: identifying aggregation–dispersion patterns, for example, funds collected from multiple sources and subsequently transferred through multi-hop paths to multiple destinations; (3) Associated addresses: extracting interactions with known high-risk entities, such as mixers, darknet services, or other risky addresses; (4) Tem-poral signs: identifying time-related indicators of potential risk, such as transactions concentrated in specific high-risk periods. In addition, the residual summary analyst agent aims to sep-arate statement-like content that is not directly relevant to the fraud identification task from the initial transaction summary. Such information is inherently non-discriminatory and therefore can-not be used to effectively support fraud classification. Its analysis mainly includes two aspects: (1) Noise extraction: identifying and extracting task-irrelevant noise, including expressions arising from model hallucinations or over-reasoning, such as prompt-like lan-guage, redundant descriptions, or subjective risk judgments lacking explicit transactional evidence; (2) Factual statements: extracting purely factual descriptions that directly state transaction data but do not convey risk-related characteristics, such as an account’s transaction activity lasting for 𝑋 months or transaction volumes remaining stable over time. 
+
+## B Detailed Descriptions of Dataset. 
+
+In our experiments, we evaluate UniDetect using Ethereum and Bitcoin, two representative public blockchains with fundamentally different data structures. 1. Task Description                        
+
+> You are a blockchain behavior analyst tasked with analyzing a account's transaction of [The specific chain name] (e.g., Ethereum) patterns to produce a professional, engaging, and cohesive narrative.
+> 2. Output Constraint
+> The output should be suitable for generating rich text embeddings or supporting classification tasks.
+> 3. Chain-of-Thought Instructions (CoT)
+> 1) Analyze Transaction Data :
+> Value Flow : Assess whether the account primarily acts as a net receiver, net distributor, or remains balanced based on overall incoming and outgoing value. Describe the scale of value transfers (e.g., large if total_value_out > 1000 ETH, small if < 100 ETH);
+> Partner Ratio : Compare incoming and outgoing counterparties to identify collecting versus distributing tendencies, and describe the diversity of interaction partners. A high in_partners/out_partners ratio (> 2) suggests collecting behavior; a low ratio (< 0.5) suggests distributing behavior. Note the diversity of interactions via unique_partners;
+> Transaction Timing : Examine the activity duration and temporal concentration of transactions, including whether activity is bursty or sustained, and whether transactions are biased toward nighttime or weekends;
+> Gas Expenditure :Analyze total_gas_spent and avg_gas_per_outgoing_tx. High total_gas_spent (> 1,000,000,000 gwei) or avg_gas_per_outgoing_tx (> 100,000 gwei) suggests intensive or priority-driven behavior; low values (< 50,000 gwei) suggest conservative behavior.
+> 2) Generate Narrative : Produce a 3-5 sentence paragraph that weaves together insights on value flow, partner ratios, transaction timing, and Gas expenditure.
+> 4. Data Preparation
+> Provided Data: [Transactions]
+
+## Prompt for Forensics Analyst Agent 
+
+Figure 7: CoT prompt template of the forensics analyst agent. 
+
+Ethereum. We obtain the fraud labels from the Etherscan label cloud 6, XLabelCloud 7 and CryptoScamDB 8. These labels cover ma-jor illegal account types such as phishing, Upbit vulnerability at-tacks, gambling, and honeypots. Additionally, we consider special identity accounts, such as miners and financial service providers, as benign because they are known to be non-fraudulent. Then, we use the Etherscan API 9 to collect historical transaction data of both fraudulent and non-fraudulent accounts from “2015-08-07" to “2025-04-10”. During data preprocessing, we remove transac-tions with zero amounts and failed transactions, and then construct the Ethereum transaction graph. Each Ethereum transaction has a sender and a receiver, and we represent the transfer behavior as directed edges in the graph. The transfer amount and transac-tion frequency are used as edge attributes. For multiple transfer behaviors between the same pair of accounts, they are uniformly represented as a single edge in the graph, with edge attributes in-cluding the cumulative transfer amount and cumulative transaction frequency across all related transactions. 
+
+Bitcoin. We leveraged two publicly available datasets: Bitcoin-M and Bitcoin-L [ 3], which differ in the numbers of nodes and                
+
+> 6https://etherscan.io/
+> 7https://xblock.pro/#/labelcloud
+> 8https://cryptoscamdb.org/scams
+> 9https://etherscan.io/ Conference’17, July 2017, Washington, DC, USA Miao et al. 1. Task Description
+> For each transaction summary, identify the MOST distinguishing causal pattern that indicates whether the address is normal or fraudulent (e.g., phishing, scam).
+> 2. Analysis Framework:
+> •Transaction Patterns :High-frequency/large-value transfers, amounts near regulatory thresholds(e.g., < $50k if the reporting limit is $50k), round-number transfers (e.g., 1,000/10,000 units) without business logic, or self-transfers/reversals.
+> •Fund Flows : Aggregation (many sources to one address) or Dispersion (one address to many targets), layered transfers via intermediates.
+> •Associated Addresses :Connections to mixers, darknet markets, sanctioned entities, or addresses with zero transaction history.
+> •Temporal Signs : Large transactions during non-business hours (e.g., 2-4 AM), sudden spikes in volume/frequency.
+> 3. Output
+> Generate ONE sentence per address.
+
+Prompt for Discriminative Summary Analyst Agent 
+
+Role definition                                        
+
+> You are provided with a list of [The specific chain name] (e.g., Ethereum) accounts' historical transaction summaries. Each account is classified as either normal or fraudulent (e.g., associated with phishing, scams, or other illicit activities) based on their historical transaction summaries characteristics.
+> 1. Task Description
+> For each transaction summary, Write ONE factual sentence. These sentences must present objective, raw data points, without any assessment of normal, fraudulent, or significance.
+> 2. Analysis Framework
+> •Noise Extraction : Exclude unsupported or unverifiable statements (e.g., speculative risk assertions and fabricated associations), as well as task-irrelevant generation noise such as prompt echoing and redundant content.
+> •Allowed Factual Data Points (Strictly Quantitative and Objective) :Retain only descriptive, verifiable statements that directly report transaction statistics or timelines without any interpretation, inference, or risk implication. (e.g., ‘Processed Xtransactions within Ydays.’, ‘Activity spanned X months’, …)
+> 3. Output
+> Generate ONE sentence per address.
+
+Prompt for Residual Summary Analyst Agent 
+
+Figure 8: CoT prompt template of discriminative summary analyst agent and residual summary analyst agent. 
+
+edges, to enable a more comprehensive evaluation of our model. (1) Bitcoin-M contains the first 1.5 million transactions before June 2015. For each transaction edge in Bitcoin-M, we include four attributes: input value, input amount, output value, and output amount. (2) Bitcoin-L covers all transactions from June to Septem-ber 2015. Each transaction edge in Bitcoin-L is associated with five attributes: input value, input amount, output value, output amount, and transaction fee. Following common practice, addresses related to gambling and mixing services—both strongly correlated with money-laundering activities—are labelled as fraudulent, while all remaining accounts are treated as benign. For repeated transfers between the same pair of accounts, we keep only a single edge in the graph and aggregate the corresponding transaction attributes. In addition, to evaluate our method’s generalization to other fields, we include the Instagram [12] social network dataset, and its statistics are provided in Table 6. The Instagram dataset models users as nodes and their follow relationships as edges. Each user’s profile description serves as the initial feature representation for the 
+
+Table 6: Statistics of the Instagram datasets. 
+
+Dataset #Nodes #Edges #Pos. #Neg. #Pos. ratio(%) Instagram 11,339 198,448 4115 7224 36.29 
+
+node. Our task is to classify the nodes’ account types, distinguishing between business and regular accounts. Similar to the common class imbalance setting in fraud detection tasks, business accounts account for a relatively low proportion in this dataset, so they are treated as the minority class and used as positive examples. 
+
+## C Detailed Descriptions of Baselines 
+
+• DeepWalk [ 20 ] employs random walks to generate node sequences, which are then used to learn node embeddings through a Skip-Gram model. 
+
+• Node2Vec [ 8] extends DeepWalk by balancing local and global exploration to learn more nuanced node embeddings. 
+
+• GCN [ 13 ] uses graph convolutions to aggregate node features from the neighbourhood for node representation learning. 
+
+• GAT [ 27 ] applies attention mechanisms to weigh the impor-tance of neighbouring nodes during feature aggregation. 
+
+• GIN [ 31 ] leverages the graph isomorphism principle to learn node embeddings that are invariant to graph permutations. 
+
+• GraphSAGE [ 9 ] employs a sampling-and-aggregation frame-work to generate node embeddings from large graphs effi-ciently. 
+
+• APPNP [ 14 ] approximates personalized PageRank scores to capture node relationships for representation learning. 
+
+• CARE-GNN [ 4] mitigates fraudster camouflage with label-aware neighbour sampling and RL-based neighbour selec-tion. 
+
+• BWGNN [ 24 ] introduces beta graph wavelets to construct band-pass spectral filters for detecting anomaly-related high-frequency components. 
+
+• GRIT [ 16 ] incorporates graph inductive biases into Trans-formers without message passing via random-walk relative positional encodings and degree information. 
+
+• DGA-GNN [ 5] boosts fraud detection with decision-tree bin-ning for non-additive features and dynamic neighbour group-ing for aggregation. 
+
+• PMP [ 35 ] distinguishes homophilic and heterophilic neigh-bours via partitioned message passing for graph fraud detec-tion. 
+
+• FLAG [ 32 ] enhances graph-based fraud detection by inte-grating LLM-extracted textual semantics to mitigate neigh-bourhood camouflage and improve node discrimination. 
+
+• Trans2Vec [ 19 ] introduces a transaction-aware network em-bedding that encodes transfer amounts and temporal infor-mation for Ethereum phishing detection. 
+
+• TSGN [ 28 ] identifies phishing accounts by modelling trans-action subgraphs as attribute-aware transaction subgraph networks that capture temporal and topological transaction patterns. 
+
+• Ethident [ 34 ] proposes a hierarchical graph attention frame-work with contrastive self-supervision to model account interaction graphs for Ethereum account de-anony-mization. UniDetect: LLM-Driven Universal Fraud Detection across Heterogeneous Blockchains Conference’17, July 2017, Washington, DC, USA RL Reward Convergence 
+
+> Training Step
+> Reward
+> Figure 9: RL reward convergence curve during LLM fine-tuning on the Ethereum dataset. The smoothed reward stabilises rapidly within the first 50 steps, confirming the stability of the proposed RL-based training strategy.
+
+• TEGDetector [ 33 ] models phishing detection as a dynamic graph classification task by learning spatial–temporal pat-terns from transaction evolution graphs with adaptive time-aware attention. 
+
+• SIGTRAN [ 21 ] constructs transaction signature vectors for account nodes and fuses them with generic graph embed-dings to learn node representations for fraud account detec-tion. 
+
+• BERT4ETH [ 11 ] pre-trains a Transformer on Ethereum trans-action sequences using contrastive masked address predic-tion to learn transferable account representations for down-stream fraud classification. 
+
+• DIAM [ 3] models multi-chain transaction networks as attrib-uted directed multigraphs and applies dis-crepancy-aware message passing to mitigate anti-homophily for illicit ac-count detection. 
+
+## D Baseline Implementation Settings 
+
+We use the official implementation code for all open-source base-lines. For DeepWalk and Node2Vec, the random walk step size is set to 30, the number of walks for each account node is set to 200, and the node embedding dimension is set to 64. For GCN, we use a two-layer network with a hidden-layer dimension of 64. For GAT, we set the hidden dimension to 256 and used 8 attention heads. For GIN and GraphSAGE, we employ the hidden-layer dimension of 256. In the graph anomaly detection method, for FLAG, we use CARE-GNN as the GNN backbone. In the single-chain fraud detec-tion method, for Ethident, we use avgAmount to guide subgraph sampling, and for TEGDetector, we use max pooling in the pooling layer. In the multi-chain fraud detection method, for BERT4ETH, we use the in/out-separation variant. All other parameters not ex-plicitly specified are set to the recommended values from their respective original works to ensure optimal model performance. Furthermore, in the Ethereum dataset, except for the multi-chain fraud detection method, which does not require generating optimal account features through feature engineering and can be used di-rectly as the initial node representation, the other methods follow existing work [ 18 ] and select 15-dimensional account features as the initial node features. Gemma-3-4B-it Qwen2.5-3B-it Qwen2.5-7B-it Llama-3.1-8B-it 60 65 70 75 80 85 90 95 Precision Recall F1 AUC KS 
+
+> Figure 10: CoT prompt template of the forensics analyst agent.
+
+## E More Discussion 
+
+⊲ Q1. Does the LLM have prior knowledge of account ground-truth labels, such that the observed performance gains may be attributed to label leakage rather than genuine learning? 
+
+To prevent label leakage arising from the LLM’s pre-trained knowledge, all account identifiers are removed from the transaction data fed into the Forensics Analyst Agent, and no label information is injected into the CoT prompts of any agent. Furthermore, we explicitly prohibit the LLM from retrieving or referencing any ex-ternally accessible information, including publicly disclosed fraud reports or labelled account databases, thereby preventing the model from associating account identifiers with known labels and ensur-ing the reliability of the detection results. 
+
+⊲ Q2. How stable is the RL fine-tuning process for the agent’s under-lying LLM, and is there dedicated analysis of the reward convergence during training? 
+
+Figure 9 illustrates the reward convergence curve of the RL fine-tuning process on the Ethereum dataset. The smoothed reward rises rapidly from near zero to approximately 0.5 within the first 50 train-ing steps. Subsequently, it stabilises in the range 0.5–0.6 throughout the remainder of training, with no signs of divergence or collapse. The persistent variance in the raw reward reflects the inherent difficulty heterogeneity across subgraphs rather than training in-stability, and the EMA baseline effectively stabilises the advantage estimation by providing a dynamic reference point. These results confirm that the proposed RL-based fine-tuning strategy converges reliably and remains stable across the entire training process. 
+
+⊲ Q3. Which LLM backbone is most suitable for the proposed agents in terms of both detection performance and computational efficiency? 
+
+Figure 10 presents the detection performance of UniDetect un-der different LLM backbones. Overall, Gemma-3-4B-it achieves the most balanced performance across all five metrics. Llama-3.1-8B-it yields slightly higher Precision but at the cost of approximately twice the parameter count and training overhead. Qwen2.5-7B-it achieves comparable 𝐹 1 and AUC to Gemma-3-4B-it but shows a noticeable drop in KS, suggesting weaker separability between fraudulent and benign accounts. Qwen2.5-3B-it exhibits the lowest performance across most metrics, particularly in KS, indicating that an excessively small backbone limits the quality of generated transaction summaries. These results confirm that Gemma-3-4B-it Conference’17, July 2017, Washington, DC, USA Miao et al. 
+
+strikes a favourable balance between detection effectiveness and computational efficiency, justifying its selection as the default back-bone in UniDetect.

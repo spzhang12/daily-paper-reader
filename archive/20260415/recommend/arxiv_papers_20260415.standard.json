@@ -1,0 +1,1719 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-04-15T19:58:38.388073+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 2,
+    "deep_divecandidates": 73,
+    "deep_cap": 7,
+    "deep_selected": 27,
+    "quick_candidates": 170,
+    "quick_skim_target": 12,
+    "quick_selected": 12
+  },
+  "deep_dive": [
+    {
+      "id": "2604.05966v1",
+      "source": "arxiv",
+      "title": "FinReporting: An Agentic Workflow for Localized Reporting of Cross-Jurisdiction Financial Disclosures",
+      "abstract": "Financial reporting systems increasingly use large language models (LLMs) to extract and summarize corporate disclosures. However, most assume a single-market setting and do not address structural differences across jurisdictions. Variations in accounting taxonomies, tagging infrastructures (e.g., XBRL vs. PDF), and aggregation conventions make cross-jurisdiction reporting a semantic alignment and verification challenge. We present FinReporting, an agentic workflow for localized cross-jurisdiction financial reporting. The system builds a unified canonical ontology over Income Statement, Balance Sheet, and Cash Flow, and decomposes reporting into auditable stages including filing acquisition, extraction, canonical mapping, and anomaly logging. Rather than using LLMs as free-form generators, FinReporting deploys them as constrained verifiers under explicit decision rules and evidence grounding. Evaluated on annual filings from the US, Japan, and China, the system improves consistency and reliability under heterogeneous reporting regimes. We release an interactive demo supporting cross-market inspection and structured export of localized financial statements. Our demo is available at https://huggingface.co/spaces/BoomQ/FinReporting-Demo . The video describing our system is available at https://www.youtube.com/watch?v=f65jdEL31Kk",
+      "authors": [
+        "Fan Zhang",
+        "Mingzi Song",
+        "Rania Elbadry",
+        "Yankai Chen",
+        "Shaobo Wang",
+        "Yixi Zhou",
+        "Xunwen Zheng",
+        "Yueru He",
+        "Yuyang Dai",
+        "Georgi Georgiev",
+        "Ayesha Gull",
+        "Muhammad Usman Safder",
+        "Fan Wu",
+        "Liyuan Meng",
+        "Fengxian Ji",
+        "Junning Zhao",
+        "Xueqing Peng",
+        "Jimin Huang",
+        "Yu Chen",
+        "Xue",
+        "Liu",
+        "Preslav Nakov",
+        "Zhuohan Xie"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-04-07T15:00:01+00:00",
+      "link": "https://arxiv.org/pdf/2604.05966v1",
+      "tags": [
+        "keyword:BK LLM",
+        "query:BK LLM"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "agentic workflow for financial disclosures and PDF extraction",
+      "llm_evidence_cn": "用于财务披露和PDF提取的智能体工作流",
+      "llm_evidence": "用于财务披露和PDF提取的智能体工作流",
+      "canonical_evidence": "用于财务披露和PDF提取的智能体工作流",
+      "llm_tldr_en": "FinReporting automates cross-jurisdiction financial reporting by extracting data from PDFs and XBRL using LLMs.",
+      "llm_tldr_cn": "FinReporting通过LLM自动化跨司法管辖区的财务报告提取与汇总，支持PDF等格式。",
+      "llm_tldr": "FinReporting通过LLM自动化跨司法管辖区的财务报告提取与汇总，支持PDF等格式。",
+      "llm_tags": [
+        "query:bk-llm"
+      ],
+      "matched_query_tag": "query:bk-llm",
+      "matched_query_text": "application of large language models in financial document processing",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2604.07952v1",
+      "source": "arxiv",
+      "title": "Fraud Detection System for Banking Transactions",
+      "abstract": "The expansion of digital payment systems has heightened both the scale and intricacy of online financial transactions, thereby increasing vulnerability to fraudulent activities. Detecting fraud effectively is complicated by the changing nature of attack strategies and the significant disparity between genuine and fraudulent transactions. This research introduces a machine learning-based fraud detection framework utilizing the PaySim synthetic financial transaction dataset. Following the CRISP-DM methodology, the study includes hypothesis-driven exploratory analysis, feature refinement, and a comparative assessment of baseline models such as Logistic Regression and tree-based classifiers like Random Forest, XGBoost, and Decision Tree. To tackle class imbalance, SMOTE is employed, and model performance is enhanced through hyperparameter tuning with GridSearchCV. The proposed framework provides a robust and scalable solution to enhance fraud prevention capabilities in FinTech transaction systems. Keywords: fraud detection, imbalanced data, HPO, SMOTE",
+      "authors": [
+        "Ranya Batsyas",
+        "Ritesh Yaduwanshi"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-04-09T08:17:27+00:00",
+      "link": "https://arxiv.org/pdf/2604.07952v1",
+      "tags": [
+        "keyword:BK LLM",
+        "query:BK LLM"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "machine learning-based fraud detection for banking transactions",
+      "llm_evidence_cn": "基于机器学习的银行交易欺诈检测",
+      "llm_evidence": "基于机器学习的银行交易欺诈检测",
+      "canonical_evidence": "基于机器学习的银行交易欺诈检测",
+      "llm_tldr_en": "Develops a fraud detection system for banking transactions using machine learning and synthetic datasets.",
+      "llm_tldr_cn": "利用机器学习和合成数据集开发了一个用于银行交易的欺诈检测系统。",
+      "llm_tldr": "利用机器学习和合成数据集开发了一个用于银行交易的欺诈检测系统。",
+      "llm_tags": [
+        "query:bk-llm"
+      ],
+      "matched_query_tag": "query:bk-llm",
+      "matched_query_text": "automated transaction analysis and anomaly detection in banking",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2604.08538v2",
+      "source": "arxiv",
+      "title": "ParseBench: A Document Parsing Benchmark for AI Agents",
+      "abstract": "AI agents are changing the requirements for document parsing. What matters is \\emph{semantic correctness}: parsed output must preserve the structure and meaning needed for autonomous decisions, including correct table structure, precise chart data, semantically meaningful formatting, and visual grounding. Existing benchmarks do not fully capture this setting for enterprise automation, relying on narrow document distributions and text-similarity metrics that miss agent-critical failures. We introduce \\textbf{ParseBench}, a benchmark of ${\\sim}2{,}000$ human-verified pages from enterprise documents spanning insurance, finance, and government, organized around five capability dimensions: tables, charts, content faithfulness, semantic formatting, and visual grounding. Across 14 methods spanning vision-language models, specialized document parsers, and LlamaParse, the benchmark reveals a fragmented capability landscape: no method is consistently strong across all five dimensions. LlamaParse Agentic achieves the highest overall score at \\agenticoverall\\%, and the benchmark highlights the remaining capability gaps across current systems. Dataset and evaluation code are available on https://huggingface.co/datasets/llamaindex/ParseBench and https://github.com/run-llama/ParseBench.",
+      "authors": [
+        "Boyang Zhang",
+        "Sebastián G. Acosta",
+        "Preston Carlson",
+        "Sacha Bron",
+        "Pierre-Loïc Doulcet",
+        "Daniel B. Ospina",
+        "Simon Suo"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-09T17:59:36+00:00",
+      "link": "https://arxiv.org/pdf/2604.08538v2",
+      "tags": [
+        "keyword:BK LLM",
+        "keyword:LLMDEV",
+        "query:BK LLM",
+        "query:LLMDEV"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "document parsing benchmark for finance and enterprise documents",
+      "llm_evidence_cn": "金融与企业文档解析基准",
+      "llm_evidence": "金融与企业文档解析基准",
+      "canonical_evidence": "金融与企业文档解析基准",
+      "llm_tldr_en": "Introduces ParseBench for evaluating semantic correctness in parsing financial and enterprise documents.",
+      "llm_tldr_cn": "推出ParseBench，用于评估金融和企业文档解析中的语义准确性。",
+      "llm_tldr": "推出ParseBench，用于评估金融和企业文档解析中的语义准确性。",
+      "llm_tags": [
+        "query:bk-llm:composite"
+      ],
+      "matched_query_tag": "query:bk-llm:composite",
+      "matched_query_text": "Papers central to 银行流水解析、PDF解析、风控与LLM/RAG结合的论文检索, especially work that connects or combines: automated bank statement parsing and data extraction; deep learning for PDF table extraction and structure recognition; machine learning and LLM for financial risk management and control; application of large language models in financial document processing; document artificial intelligence for financial statement analysis; automated transaction analysis and anomaly detection in banking; LLM based bank statement parsing and risk assessment; RAG framework for financial document information extraction; PDF table parsing techniques for financial statements; Integrating LLMs with financial risk management systems.",
+      "matched_requirement_id": "req-composite-bk-llm",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2604.08649v1",
+      "source": "arxiv",
+      "title": "PRAGMA: Revolut Foundation Model",
+      "abstract": "Modern financial systems generate vast quantities of transactional and event-level data that encode rich economic signals. This paper presents PRAGMA, a family of foundation models for multi-source banking event sequences. Our approach pre-trains a Transformer-based architecture with masked modelling on a large-scale, heterogeneous banking event corpus using a self-supervised objective tailored to the discrete, variable-length nature of financial records. The resulting model supports a wide range of downstream tasks such as credit scoring, fraud detection, and lifetime value prediction: strong performance can be achieved by training a simple linear model on top of the extracted embeddings and can be further improved with lightweight fine-tuning. Through extensive evaluation on downstream tasks, we demonstrate that PRAGMA achieves superior performance across multiple domains directly from raw event sequences, providing a general-purpose representation layer for financial applications.",
+      "authors": [
+        "Maxim Ostroukhov",
+        "Ruslan Mikhailov",
+        "Vladimir Iashin",
+        "Artem Sokolov",
+        "Andrei Akshonov",
+        "Vitaly Protasov",
+        "Dmitrii Beloborodov",
+        "Vince Mullin",
+        "Roman Yokunda Enzmann",
+        "Georgios Kolovos",
+        "Jason Renders",
+        "Pavel Nesterov",
+        "Anton Repushko"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CE",
+        "cs.CL",
+        "cs.IR",
+        "q-fin.CP"
+      ],
+      "published": "2026-04-09T18:00:00+00:00",
+      "link": "https://arxiv.org/pdf/2604.08649v1",
+      "tags": [
+        "keyword:BK LLM",
+        "query:BK LLM"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "Foundation model for banking event sequences and fraud detection",
+      "llm_evidence_cn": "银行事件序列和欺诈检测的基础模型",
+      "llm_evidence": "银行事件序列和欺诈检测的基础模型",
+      "canonical_evidence": "银行事件序列和欺诈检测的基础模型",
+      "llm_tldr_en": "PRAGMA is a foundation model for banking data supporting credit scoring and fraud detection.",
+      "llm_tldr_cn": "PRAGMA是一个针对银行数据的基座模型，支持信用评分和欺诈检测等任务。",
+      "llm_tldr": "PRAGMA是一个针对银行数据的基座模型，支持信用评分和欺诈检测等任务。",
+      "llm_tags": [
+        "query:bk-llm"
+      ],
+      "matched_query_tag": "query:bk-llm",
+      "matched_query_text": "automated transaction analysis and anomaly detection in banking",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2604.09056v1",
+      "source": "arxiv",
+      "title": "Conversations Risk Detection LLMs in Financial Agents via Multi-Stage Generative Rollout",
+      "abstract": "With the rapid adoption of large language models (LLMs) in financial service scenarios, dialogue security detection under high regulatory risk presents significant challenges. Existing methods mainly rely on single-dimensional semantic judgments or fixed rules, making them inadequate for handling multi-turn semantic evolution and complex regulatory clauses; moreover, they lack models specifically designed for financial security detection. To address these issues, this paper proposes FinSec, a four-tier security detection framework for financial agent. FinSec enables structured, interpretable, and end-to-end identification of actual financial risks, incorporating suspicious behavior pattern analysis, delayed risk and adversarial inference, semantic security analysis, and integrated risk-based decision-making. Notably, FinSec significantly enhances the robustness of high-risk dialogue detection while maintaining model utility. Experimental results demonstrate FinSec's leading performance. In terms of overall detection capability, FinSec achieves an F1 score of 90.13%, improving upon baseline models by 6--14 percentage points; its ASR is reduced to 9.09%, markedly lowering the probability of unsafe outputs; and the AUPRC increases to 0.9189 -- an approximate 9.7% gain over general frameworks. Additionally, in balancing utility and safety, FinSec obtains a composite score of 0.9098, delivering robust and efficient protection for financial agent dialogues.",
+      "authors": [
+        "Xiaotong Jiang",
+        "Jun Wu"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR",
+        "cs.CE"
+      ],
+      "published": "2026-04-10T07:29:39+00:00",
+      "link": "https://arxiv.org/pdf/2604.09056v1",
+      "tags": [
+        "keyword:BK LLM",
+        "query:BK LLM"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "Financial risk detection and security framework for LLM agents",
+      "llm_evidence_cn": "针对LLM金融智能体的风险检测与安全框架",
+      "llm_evidence": "针对LLM金融智能体的风险检测与安全框架",
+      "canonical_evidence": "针对LLM金融智能体的风险检测与安全框架",
+      "llm_tldr_en": "FinSec is a four-tier framework for detecting financial risks and regulatory violations in LLM dialogues.",
+      "llm_tldr_cn": "FinSec是一个用于检测LLM对话中金融风险和监管违规的四层框架。",
+      "llm_tldr": "FinSec是一个用于检测LLM对话中金融风险和监管违规的四层框架。",
+      "llm_tags": [
+        "query:bk-llm"
+      ],
+      "matched_query_tag": "query:bk-llm",
+      "matched_query_text": "machine learning and LLM for financial risk management and control",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2604.11304v1",
+      "source": "arxiv",
+      "title": "BankerToolBench: Evaluating AI Agents in End-to-End Investment Banking Workflows",
+      "abstract": "Existing AI benchmarks lack the fidelity to assess economically meaningful progress on professional workflows. To evaluate frontier AI agents in a high-value, labor-intensive profession, we introduce BankerToolBench (BTB): an open-source benchmark of end-to-end analytical workflows routinely performed by junior investment bankers. To develop an ecologically valid benchmark grounded in representative work environments, we collaborated with 502 investment bankers from leading firms. BTB requires agents to execute senior banker requests by navigating data rooms, using industry tools (market data platform, SEC filings database), and generating multi-file deliverables--including Excel financial models, PowerPoint pitch decks, and PDF/Word reports. Completing a BTB task takes bankers up to 21 hours, underscoring the economic stakes of successfully delegating this work to AI. BTB enables automated evaluation of any LLM or agent, scoring deliverables against 100+ rubric criteria defined by veteran investment bankers to capture stakeholder utility. Testing 9 frontier models, we find that even the best-performing model (GPT-5.4) fails nearly half of the rubric criteria and bankers rate 0% of its outputs as client-ready. Our failure analysis reveals key obstacles (such as breakdowns in cross-artifact consistency) and improvement directions for agentic AI in high-stakes professional workflows.",
+      "authors": [
+        "Elaine Lau",
+        "Markus Dücker",
+        "Ronak Chaudhary",
+        "Hui Wen Goh",
+        "Rosemary Wei",
+        "Vaibhav Kumar",
+        "Saed Qunbar",
+        "Guram Gogia",
+        "Yi Liu",
+        "Scott Millslagle",
+        "Nasim Borazjanizadeh",
+        "Ulyana Tkachenko",
+        "Samuel Eshun Danquah",
+        "Collin Schweiker",
+        "Vijay Karumathil",
+        "Asrith Devalaraju",
+        "Varsha Sandadi",
+        "Haemi Nam",
+        "Punit Arani",
+        "Ray Epps",
+        "Abdullah Arif",
+        "Sahil Bhaiwala",
+        "Curtis Northcutt",
+        "Skyler Wang",
+        "Anish Athalye",
+        "Jonas Mueller",
+        "Francisco Guzmán"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-04-13T11:02:32+00:00",
+      "link": "https://arxiv.org/pdf/2604.11304v1",
+      "tags": [
+        "keyword:BK LLM",
+        "keyword:LLMDEV",
+        "query:BK LLM"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "Benchmark for investment banking workflows including SEC filings and financial models",
+      "llm_evidence_cn": "针对投资银行业务流程的基准测试，包括SEC文件和财务模型",
+      "llm_evidence": "针对投资银行业务流程的基准测试，包括SEC文件和财务模型",
+      "canonical_evidence": "针对投资银行业务流程的基准测试，包括SEC文件和财务模型",
+      "llm_tldr_en": "A benchmark evaluating AI agents on complex investment banking tasks like financial modeling and report generation.",
+      "llm_tldr_cn": "一个评估AI代理在财务建模和报告生成等复杂投行任务中表现的基准。",
+      "llm_tldr": "一个评估AI代理在财务建模和报告生成等复杂投行任务中表现的基准。",
+      "llm_tags": [
+        "query:bk-llm:composite"
+      ],
+      "matched_query_tag": "query:bk-llm:composite",
+      "matched_query_text": "Papers central to 银行流水解析、PDF解析、风控与LLM/RAG结合的论文检索, especially work that connects or combines: automated bank statement parsing and data extraction; deep learning for PDF table extraction and structure recognition; machine learning and LLM for financial risk management and control; application of large language models in financial document processing; document artificial intelligence for financial statement analysis; automated transaction analysis and anomaly detection in banking; LLM based bank statement parsing and risk assessment; RAG framework for financial document information extraction; PDF table parsing techniques for financial statements; Integrating LLMs with financial risk management systems.",
+      "matched_requirement_id": "req-composite-bk-llm",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2604.12047v1",
+      "source": "arxiv",
+      "title": "Empirical Evaluation of PDF Parsing and Chunking for Financial Question Answering with RAG",
+      "abstract": "PDF files are primarily intended for human reading rather than automated processing. In addition, the heterogeneous content of PDFs, such as text, tables, and images, poses significant challenges for parsing and information extraction. To address these difficulties, both practitioners and researchers are increasingly developing new methods, including the promising Retrieval-Augmented Generation (RAG) systems to automated PDF processing. However, there is no comprehensive study investigating how different components and design choices affect the performance of a RAG system for understanding PDFs. In this paper, we propose such a study (1) by focusing on Question Answering, a specific language understanding task, and (2) by leveraging two benchmarks from the financial domain, including TableQuest, our newly generated, publicly available benchmark. We systematically examine multiple PDF parsers and chunking strategies (with varied overlap), along with their potential synergies in preserving document structure and ensuring answer correctness. Overall, our results offer practical guidelines for building robust RAG pipelines for PDF understanding.",
+      "authors": [
+        "Omar El Bachyr",
+        "Yewei Song",
+        "Saad Ezzini",
+        "Jacques Klein",
+        "Tegawendé F. Bissyandé",
+        "Anas Zilali",
+        "Ulrick Ble",
+        "Anne Goujon"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.IR"
+      ],
+      "published": "2026-04-13T20:39:43+00:00",
+      "link": "https://arxiv.org/pdf/2604.12047v1",
+      "tags": [
+        "keyword:BK LLM",
+        "keyword:LLMDEV",
+        "query:BK LLM"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "evaluation of PDF parsing and RAG for financial question answering",
+      "llm_evidence_cn": "针对金融问答的 PDF 解析和 RAG 评估",
+      "llm_evidence": "针对金融问答的 PDF 解析和 RAG 评估",
+      "canonical_evidence": "针对金融问答的 PDF 解析和 RAG 评估",
+      "llm_tldr_en": "Studies PDF parsing and chunking strategies for financial RAG systems.",
+      "llm_tldr_cn": "研究了用于金融 RAG 系统的 PDF 解析和分块策略。",
+      "llm_tldr": "研究了用于金融 RAG 系统的 PDF 解析和分块策略。",
+      "llm_tags": [
+        "query:bk-llm:composite"
+      ],
+      "matched_query_tag": "query:bk-llm:composite",
+      "matched_query_text": "Papers central to 银行流水解析、PDF解析、风控与LLM/RAG结合的论文检索, especially work that connects or combines: automated bank statement parsing and data extraction; deep learning for PDF table extraction and structure recognition; machine learning and LLM for financial risk management and control; application of large language models in financial document processing; document artificial intelligence for financial statement analysis; automated transaction analysis and anomaly detection in banking; LLM based bank statement parsing and risk assessment; RAG framework for financial document information extraction; PDF table parsing techniques for financial statements; Integrating LLMs with financial risk management systems.",
+      "matched_requirement_id": "req-composite-bk-llm",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2604.05135v1",
+      "source": "arxiv",
+      "title": "SenseAI: A Human-in-the-Loop Dataset for RLHF-Aligned Financial Sentiment Reasoning",
+      "abstract": "We introduce SenseAI, a human-in-the-loop (HITL) validated financial sentiment dataset designed to capture not only model outputs but the full reasoning process behind them. Unlike existing resources, SenseAI incorporates reasoning chains, confidence scores, human correction signals, and real-world market outcomes, providing a structure aligned with Reinforcement Learning from Human Feedback (RLHF) paradigms.   The dataset consists of 1,439 labelled data points across 40 US-listed equities and 13 financial data categories, enabling direct integration into modern LLM fine-tuning pipelines. Through analysis, we identify several systematic patterns in model behavior, including a novel failure mode we term Latent Reasoning Drift, where models introduce information not grounded in the input, as well as consistent confidence miscalibration and forward projection tendencies.   These findings suggest that LLM errors in financial reasoning are not random but occur within a predictable and correctable regime, supporting the use of structured HITL data for targeted model improvement. We discuss implications for financial AI systems and highlight opportunities for applying SenseAI in model evaluation and alignment.",
+      "authors": [
+        "Berny Kabalisa"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.CE"
+      ],
+      "published": "2026-04-06T19:55:35+00:00",
+      "link": "https://arxiv.org/pdf/2604.05135v1",
+      "tags": [
+        "keyword:BK LLM",
+        "query:BK LLM"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Financial sentiment reasoning dataset for RLHF-aligned LLM fine-tuning",
+      "llm_evidence_cn": "用于RLHF对齐的大模型微调金融情感推理数据集",
+      "llm_evidence": "用于RLHF对齐的大模型微调金融情感推理数据集",
+      "canonical_evidence": "用于RLHF对齐的大模型微调金融情感推理数据集",
+      "llm_tldr_en": "Provides a human-validated financial sentiment dataset with reasoning chains for LLM risk management tasks.",
+      "llm_tldr_cn": "提供了一个经过人工验证、包含推理链的金融情感数据集，助力金融风险管理模型微调。",
+      "llm_tldr": "提供了一个经过人工验证、包含推理链的金融情感数据集，助力金融风险管理模型微调。",
+      "llm_tags": [
+        "query:bk-llm"
+      ],
+      "matched_query_tag": "query:bk-llm",
+      "matched_query_text": "machine learning and LLM for financial risk management and control",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2604.05387v1",
+      "source": "arxiv",
+      "title": "Data-Driven Function Calling Improvements in Large Language Model for Online Financial QA",
+      "abstract": "Large language models (LLMs) have been incorporated into numerous industrial applications. Meanwhile, a vast array of API assets is scattered across various functions in the financial domain. An online financial question-answering system can leverage both LLMs and private APIs to provide timely financial analysis and information. The key is equipping the LLM model with function calling capability tailored to a financial scenario. However, a generic LLM requires customized financial APIs to call and struggles to adapt to the financial domain. Additionally, online user queries are diverse and contain out-of-distribution parameters compared with the required function input parameters, which makes it more difficult for a generic LLM to serve online users. In this paper, we propose a data-driven pipeline to enhance function calling in LLM for our online, deployed financial QA, comprising dataset construction, data augmentation, and model training. Specifically, we construct a dataset based on a previous study and update it periodically, incorporating queries and an augmentation method named AugFC. The addition of user query-related samples will \\textit{exploit} our financial toolset in a data-driven manner, and AugFC explores the possible parameter values to enhance the diversity of our updated dataset. Then, we train an LLM with a two-step method, which enables the use of our financial functions. Extensive experiments on existing offline datasets, as well as the deployment of an online scenario, illustrate the superiority of our pipeline. The related pipeline has been adopted in the financial QA of YuanBao\\footnote{https://yuanbao.tencent.com/chat/}, one of the largest chat platforms in China.",
+      "authors": [
+        "Xing Tang",
+        "Hao Chen",
+        "Shiwei Li",
+        "Fuyuan Lyu",
+        "Weijie Shi",
+        "Lingjie Li",
+        "Dugang Liu",
+        "Weihong Luo",
+        "Xiku Du",
+        "Xiuqiang He"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR",
+        "cs.CL"
+      ],
+      "published": "2026-04-07T03:35:06+00:00",
+      "link": "https://arxiv.org/pdf/2604.05387v1",
+      "tags": [
+        "keyword:BK LLM",
+        "query:BK LLM"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "function calling in LLM for online financial QA",
+      "llm_evidence_cn": "大模型在在线金融问答中的函数调用",
+      "llm_evidence": "大模型在在线金融问答中的函数调用",
+      "canonical_evidence": "大模型在在线金融问答中的函数调用",
+      "llm_tldr_en": "Improves LLM function calling for financial APIs to provide timely analysis and information.",
+      "llm_tldr_cn": "改进大模型在金融API上的函数调用能力，以提供及时的金融分析。",
+      "llm_tldr": "改进大模型在金融API上的函数调用能力，以提供及时的金融分析。",
+      "llm_tags": [
+        "query:bk-llm"
+      ],
+      "matched_query_tag": "query:bk-llm",
+      "matched_query_text": "Integrating LLMs with financial risk management systems",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2604.05912v1",
+      "source": "arxiv",
+      "title": "FrontierFinance: A Long-Horizon Computer-Use Benchmark of Real-World Financial Tasks",
+      "abstract": "As concerns surrounding AI-driven labor displacement intensify in knowledge-intensive sectors, existing benchmarks fail to measure performance on tasks that define practical professional expertise. Finance, in particular, has been identified as a domain with high AI exposure risk, yet lacks robust benchmarks to track real-world developments. This gap is compounded by the absence of clear accountability mechanisms in current Large Language Model (LLM) deployments. To address this, we introduce FrontierFinance, a long-horizon benchmark of 25 complex financial modeling tasks across five core finance models, requiring an average of over 18 hours of skilled human labor per task to complete. Developed with financial professionals, the benchmark reflects industry-standard financial modeling workflows and is paired with detailed rubrics for structured evaluation. We engage human experts to define the tasks, create rubrics, grade LLMs, and perform the tasks themselves as human baselines. We demonstrate that our human experts both receive higher scores on average, and are more likely to provide client-ready outputs than current state-of-the-art systems.",
+      "authors": [
+        "Michael Krumdick",
+        "Varshini Reddy",
+        "Shivani Chaudhary",
+        "William Day",
+        "Maarij Ahmed",
+        "Hayan Haqqi",
+        "Muhammad Ahsen Fahim",
+        "Hanzallah Amjad",
+        "Ahmad Orakzai",
+        "Aqsa Gul",
+        "Chris Tanner"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-04-07T14:15:45+00:00",
+      "link": "https://arxiv.org/pdf/2604.05912v1",
+      "tags": [
+        "keyword:BK LLM",
+        "query:BK LLM"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Benchmark for complex financial modeling and real-world financial tasks",
+      "llm_evidence_cn": "复杂财务建模和真实世界财务任务的基准",
+      "llm_evidence": "复杂财务建模和真实世界财务任务的基准",
+      "canonical_evidence": "复杂财务建模和真实世界财务任务的基准",
+      "llm_tldr_en": "Introduces FrontierFinance, a benchmark for evaluating LLMs on long-horizon, expert-level financial tasks.",
+      "llm_tldr_cn": "引入FrontierFinance，一个用于评估LLM在长程专家级金融任务中表现的基准。",
+      "llm_tldr": "引入FrontierFinance，一个用于评估LLM在长程专家级金融任务中表现的基准。",
+      "llm_tags": [
+        "query:bk-llm:composite"
+      ],
+      "matched_query_tag": "query:bk-llm:composite",
+      "matched_query_text": "Papers central to 银行流水解析、PDF解析、风控与LLM/RAG结合的论文检索, especially work that connects or combines: automated bank statement parsing and data extraction; deep learning for PDF table extraction and structure recognition; machine learning and LLM for financial risk management and control; application of large language models in financial document processing; document artificial intelligence for financial statement analysis; automated transaction analysis and anomaly detection in banking; LLM based bank statement parsing and risk assessment; RAG framework for financial document information extraction; PDF table parsing techniques for financial statements; Integrating LLMs with financial risk management systems.",
+      "matched_requirement_id": "req-composite-bk-llm",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2604.06742v1",
+      "source": "arxiv",
+      "title": "Evaluating LLM-Based 0-to-1 Software Generation in End-to-End CLI Tool Scenarios",
+      "abstract": "Large Language Models (LLMs) are driving a shift towards intent-driven development, where agents build complete software from scratch. However, existing benchmarks fail to assess this 0-to-1 generation capability due to two limitations: reliance on predefined scaffolds that ignore repository structure planning, and rigid white-box unit testing that lacks end-to-end behavioral validation. To bridge this gap, we introduce CLI-Tool-Bench, a structure-agnostic benchmark for evaluating the ground-up generation of Command-Line Interface (CLI) tools. It features 100 diverse real-world repositories evaluated via a black-box differential testing framework. Agent-generated software is executed in sandboxes, comparing system side effects and terminal outputs against human-written oracles using multi-tiered equivalence metrics. Evaluating seven state-of-the-art LLMs, we reveal that top models achieve under 43% success, highlighting the ongoing challenge of 0-to-1 generation. Furthermore, higher token consumption does not guarantee better performance, and agents tend to generate monolithic code.",
+      "authors": [
+        "Ruida Hu",
+        "Xinchen Wang",
+        "Chao Peng",
+        "Cuiyun Gao",
+        "David Lo"
+      ],
+      "primary_category": "cs.SE",
+      "categories": [
+        "cs.SE",
+        "cs.AI"
+      ],
+      "published": "2026-04-08T07:09:10+00:00",
+      "link": "https://arxiv.org/pdf/2604.06742v1",
+      "tags": [
+        "keyword:LLMDEV",
+        "query:BK LLM",
+        "query:LLMDEV"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "evaluating LLM agents for ground-up software generation and repository planning",
+      "llm_evidence_cn": "评估LLM智能体从零开始生成软件和仓库规划的能力",
+      "llm_evidence": "评估LLM智能体从零开始生成软件和仓库规划的能力",
+      "canonical_evidence": "评估LLM智能体从零开始生成软件和仓库规划的能力",
+      "llm_tldr_en": "Introduces a benchmark to evaluate the ability of LLM agents to build complete software tools from scratch.",
+      "llm_tldr_cn": "引入了一个基准测试，用于评估LLM智能体从零开始构建完整软件工具的能力。",
+      "llm_tldr": "引入了一个基准测试，用于评估LLM智能体从零开始构建完整软件工具的能力。",
+      "llm_tags": [
+        "query:llmdev"
+      ],
+      "matched_query_tag": "query:llmdev",
+      "matched_query_text": "The rise and current state of autonomous LLM agents and workflows",
+      "matched_requirement_id": "req-16",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2604.08046v1",
+      "source": "arxiv",
+      "title": "Guaranteeing Knowledge Integration with Joint Decoding for Retrieval-Augmented Generation",
+      "abstract": "Retrieval-Augmented Generation (RAG) significantly enhances Large Language Models (LLMs) by providing access to external knowledge. However, current research primarily focuses on retrieval quality, often overlooking the critical ''integration bottleneck'': even when relevant documents are retrieved, LLMs frequently fail to utilize them effectively due to conflicts with their internal parametric knowledge. In this paper, we argue that implicitly resolving this conflict in a single generation pass is suboptimal. We introduce GuarantRAG, a framework that explicitly decouples reasoning from evidence integration. First, we generate an ''Inner-Answer'' based solely on parametric knowledge to capture the model's reasoning flow. Second, to guarantee faithful evidence extraction, we generate a ''Refer-Answer'' using a novel Contrastive DPO objective. This objective treats the parametric Inner-Answer as a negative constraint and the retrieved documents as positive ground truth, forcing the model to suppress internal hallucinations in favor of external evidence during this phase. Finally, rather than naive concatenation or using the DPO trained model directly, we propose a joint decoding mechanism that dynamically fuses the logical coherence of the Inner-Answer with the factual precision of the Refer-Answer at the token level. Experiments on five QA benchmarks demonstrate that GuarantRAG improves accuracy by up to 12.1% and reduces hallucinations by 16.3% compared to standard and dynamic RAG baselines.",
+      "authors": [
+        "Zhengyi Zhao",
+        "Shubo Zhang",
+        "Zezhong Wang",
+        "Yuxi Zhang",
+        "Huimin Wang",
+        "Yutian Zhao",
+        "Yefeng Zheng",
+        "Binyang Li",
+        "Kam-Fai Wong",
+        "Xian Wu"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-04-09T09:52:21+00:00",
+      "link": "https://arxiv.org/pdf/2604.08046v1",
+      "tags": [
+        "keyword:BK LLM",
+        "keyword:LLMDEV",
+        "query:BK LLM",
+        "query:LLMDEV"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "framework for explicit evidence integration in Retrieval-Augmented Generation",
+      "llm_evidence_cn": "检索增强生成中显式证据整合的框架",
+      "llm_evidence": "检索增强生成中显式证据整合的框架",
+      "canonical_evidence": "检索增强生成中显式证据整合的框架",
+      "llm_tldr_en": "Introduces GuarantRAG to resolve conflicts between parametric knowledge and retrieved evidence.",
+      "llm_tldr_cn": "引入 GuarantRAG 框架，解决大模型内部知识与检索证据之间的冲突。",
+      "llm_tldr": "引入 GuarantRAG 框架，解决大模型内部知识与检索证据之间的冲突。",
+      "llm_tags": [
+        "query:llmdev"
+      ],
+      "matched_query_tag": "query:llmdev",
+      "matched_query_text": "Retrieval-Augmented Generation development and current implementation",
+      "matched_requirement_id": "req-15",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2604.08115v1",
+      "source": "arxiv",
+      "title": "Revise: A Framework for Revising OCRed text in Practical Information Systems with Data Contamination Strategy",
+      "abstract": "Recent advances in Large Language Models (LLMs) have significantly improved the field of Document AI, demonstrating remarkable performance on document understanding tasks such as question answering. However, existing approaches primarily focus on solving specific tasks, lacking the capability to structurally organize and manage document information. To address this limitation, we propose Revise, a framework that systematically corrects errors introduced by OCR at the character, word, and structural levels. Specifically, Revise employs a comprehensive hierarchical taxonomy of common OCR errors and a synthetic data generation strategy that realistically simulates such errors to train an effective correction model. Experimental results demonstrate that Revise effectively corrects OCR outputs, enabling more structured representation and systematic management of document contents. Consequently, our method significantly enhances downstream performance in document retrieval and question answering tasks, highlighting the potential to overcome the structural management limitations of existing Document AI frameworks.",
+      "authors": [
+        "Gyuho Shim",
+        "Seongtae Hong",
+        "Heuiseok Lim"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-04-09T11:35:19+00:00",
+      "link": "https://arxiv.org/pdf/2604.08115v1",
+      "tags": [
+        "keyword:BK LLM",
+        "keyword:LLMDEV",
+        "query:BK LLM",
+        "query:LLMDEV"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Framework for revising OCRed text in Document AI",
+      "llm_evidence_cn": "文档AI中修正OCR文本的框架",
+      "llm_evidence": "文档AI中修正OCR文本的框架",
+      "canonical_evidence": "文档AI中修正OCR文本的框架",
+      "llm_tldr_en": "Proposes Revise to systematically correct OCR errors at character and structural levels in documents.",
+      "llm_tldr_cn": "提出Revise框架，系统性地纠正文档中字符和结构层面的OCR错误。",
+      "llm_tldr": "提出Revise框架，系统性地纠正文档中字符和结构层面的OCR错误。",
+      "llm_tags": [
+        "query:bk-llm"
+      ],
+      "matched_query_tag": "query:bk-llm",
+      "matched_query_text": "document artificial intelligence for financial statement analysis",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2604.08224v1",
+      "source": "arxiv",
+      "title": "Externalization in LLM Agents: A Unified Review of Memory, Skills, Protocols and Harness Engineering",
+      "abstract": "Large language model (LLM) agents are increasingly built less by changing model weights than by reorganizing the runtime around them. Capabilities that earlier systems expected the model to recover internally are now externalized into memory stores, reusable skills, interaction protocols, and the surrounding harness that makes these modules reliable in practice. This paper reviews that shift through the lens of externalization. Drawing on the idea of cognitive artifacts, we argue that agent infrastructure matters not merely because it adds auxiliary components, but because it transforms hard cognitive burdens into forms that the model can solve more reliably. Under this view, memory externalizes state across time, skills externalize procedural expertise, protocols externalize interaction structure, and harness engineering serves as the unification layer that coordinates them into governed execution. We trace a historical progression from weights to context to harness, analyze memory, skills, and protocols as three distinct but coupled forms of externalization, and examine how they interact inside a larger agent system. We further discuss the trade-off between parametric and externalized capability, identify emerging directions such as self-evolving harnesses and shared agent infrastructure, and discuss open challenges in evaluation, governance, and the long-term co-evolution of models and external infrastructure. The result is a systems-level framework for explaining why practical agent progress increasingly depends not only on stronger models, but on better external cognitive infrastructure.",
+      "authors": [
+        "Chenyu Zhou",
+        "Huacan Chai",
+        "Wenteng Chen",
+        "Zihan Guo",
+        "Rong Shan",
+        "Yuanyi Song",
+        "Tianyi Xu",
+        "Yingxuan Yang",
+        "Aofan Yu",
+        "Weiming Zhang",
+        "Congming Zheng",
+        "Jiachen Zhu",
+        "Zeyu Zheng",
+        "Zhuosheng Zhang",
+        "Xingyu Lou",
+        "Changwang Zhang",
+        "Zhihui Fu",
+        "Jun Wang",
+        "Weiwen Liu",
+        "Jianghao Lin",
+        "Weinan Zhang"
+      ],
+      "primary_category": "cs.SE",
+      "categories": [
+        "cs.SE",
+        "cs.MA"
+      ],
+      "published": "2026-04-09T13:19:41+00:00",
+      "link": "https://arxiv.org/pdf/2604.08224v1",
+      "tags": [
+        "keyword:LLMDEV",
+        "query:LLMDEV"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "review of LLM agents, memory, skills, and harness engineering",
+      "llm_evidence_cn": "大模型智能体、记忆、技能和治理工程的综述",
+      "llm_evidence": "大模型智能体、记忆、技能和治理工程的综述",
+      "canonical_evidence": "大模型智能体、记忆、技能和治理工程的综述",
+      "llm_tldr_en": "A unified review of how LLM agent capabilities are externalized into memory, skills, and interaction protocols.",
+      "llm_tldr_cn": "对大模型智能体如何将能力外部化为记忆、技能和交互协议的统一综述。",
+      "llm_tldr": "对大模型智能体如何将能力外部化为记忆、技能和交互协议的统一综述。",
+      "llm_tags": [
+        "query:llmdev"
+      ],
+      "matched_query_tag": "query:llmdev",
+      "matched_query_text": "The rise and current state of autonomous LLM agents and workflows",
+      "matched_requirement_id": "req-16",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2604.08304v1",
+      "source": "arxiv",
+      "title": "Securing Retrieval-Augmented Generation: A Taxonomy of Attacks, Defenses, and Future Directions",
+      "abstract": "Retrieval-augmented generation (RAG) significantly enhances large language models (LLMs) but introduces novel security risks through external knowledge access. While existing studies cover various RAG vulnerabilities, they often conflate inherent LLM risks with those specifically introduced by RAG. In this paper, we propose that secure RAG is fundamentally about the security of the external knowledge-access pipeline. We establish an operational boundary to separate inherent LLM flaws from RAG-introduced or RAG-amplified threats. Guided by this perspective, we abstract the RAG workflow into six stages and organize the literature around three trust boundaries and four primary security surfaces, including pre-retrieval knowledge corruption, retrieval-time access manipulation, downstream context exploitation, and knowledge exfiltration. By systematically reviewing the corresponding attacks, defenses, remediation mechanisms, and evaluation benchmarks, we reveal that current defenses remain largely reactive and fragmented. Finally, we discuss these gaps and highlight future directions toward layered, boundary-aware protection across the entire knowledge-access lifecycle.",
+      "authors": [
+        "Yuming Xu",
+        "Mingtao Zhang",
+        "Zhuohan Ge",
+        "Haoyang Li",
+        "Nicole Hu",
+        "Jason Chen Zhang",
+        "Qing Li",
+        "Lei Chen"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR",
+        "cs.AI"
+      ],
+      "published": "2026-04-09T14:38:18+00:00",
+      "link": "https://arxiv.org/pdf/2604.08304v1",
+      "tags": [
+        "keyword:BK LLM",
+        "keyword:LLMDEV",
+        "query:BK LLM",
+        "query:LLMDEV"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "security taxonomy and defense for Retrieval-Augmented Generation (RAG)",
+      "llm_evidence_cn": "检索增强生成（RAG）的安全分类与防御",
+      "llm_evidence": "检索增强生成（RAG）的安全分类与防御",
+      "canonical_evidence": "检索增强生成（RAG）的安全分类与防御",
+      "llm_tldr_en": "Provides a comprehensive security taxonomy for RAG pipelines, covering attacks and defenses.",
+      "llm_tldr_cn": "为RAG流水线提供全面的安全分类法，涵盖了潜在攻击与防御方向。",
+      "llm_tldr": "为RAG流水线提供全面的安全分类法，涵盖了潜在攻击与防御方向。",
+      "llm_tags": [
+        "query:llmdev"
+      ],
+      "matched_query_tag": "query:llmdev",
+      "matched_query_text": "Retrieval-Augmented Generation development and current implementation",
+      "matched_requirement_id": "req-15",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2604.08538v1",
+      "source": "arxiv",
+      "title": "ParseBench: A Document Parsing Benchmark for AI Agents",
+      "abstract": "AI agents are changing the requirements for document parsing. What matters is \\emph{semantic correctness}: parsed output must preserve the structure and meaning needed for autonomous decisions, including correct table structure, precise chart data, semantically meaningful formatting, and visual grounding. Existing benchmarks do not fully capture this setting for enterprise automation, relying on narrow document distributions and text-similarity metrics that miss agent-critical failures. We introduce \\textbf{ParseBench}, a benchmark of ${\\sim}2{,}000$ human-verified pages from enterprise documents spanning insurance, finance, and government, organized around five capability dimensions: tables, charts, content faithfulness, semantic formatting, and visual grounding. Across 14 methods spanning vision-language models, specialized document parsers, and LlamaParse, the benchmark reveals a fragmented capability landscape: no method is consistently strong across all five dimensions. LlamaParse Agentic achieves the highest overall score at \\agenticoverall\\%, and the benchmark highlights the remaining capability gaps across current systems. Dataset and evaluation code are available on \\href{https://huggingface.co/datasets/llamaindex/ParseBench}{HuggingFace} and \\href{https://github.com/run-llama/ParseBench}{GitHub}.",
+      "authors": [
+        "Boyang Zhang",
+        "Sebastián G. Acosta",
+        "Preston Carlson",
+        "Sacha Bron",
+        "Pierre-Loïc Doulcet",
+        "Simon Suo"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-09T17:59:36+00:00",
+      "link": "https://arxiv.org/pdf/2604.08538v1",
+      "tags": [
+        "keyword:BK LLM",
+        "keyword:LLMDEV",
+        "query:BK LLM",
+        "query:LLMDEV"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "benchmark for enterprise document parsing including finance and tables",
+      "llm_evidence_cn": "包含金融和表格的企业文档解析基准",
+      "llm_evidence": "包含金融和表格的企业文档解析基准",
+      "canonical_evidence": "包含金融和表格的企业文档解析基准",
+      "llm_tldr_en": "Introduces ParseBench for evaluating semantic correctness in parsing enterprise documents like financial reports.",
+      "llm_tldr_cn": "引入ParseBench基准，用于评估金融报告等企业文档解析的语义准确性。",
+      "llm_tldr": "引入ParseBench基准，用于评估金融报告等企业文档解析的语义准确性。",
+      "llm_tags": [
+        "query:bk-llm:composite"
+      ],
+      "matched_query_tag": "query:bk-llm:composite",
+      "matched_query_text": "Papers central to 银行流水解析、PDF解析、风控与LLM/RAG结合的论文检索, especially work that connects or combines: automated bank statement parsing and data extraction; deep learning for PDF table extraction and structure recognition; machine learning and LLM for financial risk management and control; application of large language models in financial document processing; document artificial intelligence for financial statement analysis; automated transaction analysis and anomaly detection in banking; LLM based bank statement parsing and risk assessment; RAG framework for financial document information extraction; PDF table parsing techniques for financial statements; Integrating LLMs with financial risk management systems.",
+      "matched_requirement_id": "req-composite-bk-llm",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2604.08538v3",
+      "source": "arxiv",
+      "title": "ParseBench: A Document Parsing Benchmark for AI Agents",
+      "abstract": "AI agents are changing the requirements for document parsing. What matters is semantic correctness: parsed output must preserve the structure and meaning needed for autonomous decisions, including correct table structure, precise chart data, semantically meaningful formatting, and visual grounding. Existing benchmarks do not fully capture this setting for enterprise automation, relying on narrow document distributions and text-similarity metrics that miss agent-critical failures. We introduce ParseBench, a benchmark of ${\\sim}2{,}000$ human-verified pages from enterprise documents spanning insurance, finance, and government, organized around five capability dimensions: tables, charts, content faithfulness, semantic formatting, and visual grounding. Across 14 methods spanning vision-language models, specialized document parsers, and LlamaParse, the benchmark reveals a fragmented capability landscape: no method is consistently strong across all five dimensions. LlamaParse Agentic achieves the highest overall score at 84.9%, and the benchmark highlights the remaining capability gaps across current systems. Dataset and evaluation code are available on https://huggingface.co/datasets/llamaindex/ParseBench and https://github.com/run-llama/ParseBench.",
+      "authors": [
+        "Boyang Zhang",
+        "Sebastián G. Acosta",
+        "Preston Carlson",
+        "Sacha Bron",
+        "Pierre-Loïc Doulcet",
+        "Daniel B. Ospina",
+        "Simon Suo"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-04-09T17:59:36+00:00",
+      "link": "https://arxiv.org/pdf/2604.08538v3",
+      "tags": [
+        "keyword:BK LLM",
+        "keyword:LLMDEV",
+        "query:BK LLM",
+        "query:LLMDEV"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Document parsing benchmark for enterprise documents including finance",
+      "llm_evidence_cn": "包含金融在内的企业文档解析基准",
+      "llm_evidence": "包含金融在内的企业文档解析基准",
+      "canonical_evidence": "包含金融在内的企业文档解析基准",
+      "llm_tldr_en": "Introduces ParseBench for evaluating semantic correctness in parsing enterprise tables and charts.",
+      "llm_tldr_cn": "引入ParseBench，用于评估企业文档中表格和图表解析的语义准确性。",
+      "llm_tldr": "引入ParseBench，用于评估企业文档中表格和图表解析的语义准确性。",
+      "llm_tags": [
+        "query:bk-llm:composite"
+      ],
+      "matched_query_tag": "query:bk-llm:composite",
+      "matched_query_text": "Papers central to 银行流水解析、PDF解析、风控与LLM/RAG结合的论文检索, especially work that connects or combines: automated bank statement parsing and data extraction; deep learning for PDF table extraction and structure recognition; machine learning and LLM for financial risk management and control; application of large language models in financial document processing; document artificial intelligence for financial statement analysis; automated transaction analysis and anomaly detection in banking; LLM based bank statement parsing and risk assessment; RAG framework for financial document information extraction; PDF table parsing techniques for financial statements; Integrating LLMs with financial risk management systems.",
+      "matched_requirement_id": "req-composite-bk-llm",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2604.08801v1",
+      "source": "arxiv",
+      "title": "$p1$: Better Prompt Optimization with Fewer Prompts",
+      "abstract": "Prompt optimization improves language models without updating their weights by searching for a better system prompt, but its effectiveness varies widely across tasks. We study what makes a task amenable to prompt optimization. We show that the reward variance across different system prompts can be decomposed into two components: variance among responses, which captures generation stochasticity, and variance among system prompts, which captures differences in system prompt quality. Prompt optimization succeeds when variance among system prompts is sufficiently large, but fails when variance among responses dominates the variance of the system prompts. Surprisingly, we further show that scaling to more user prompts can hurt optimization by reducing variance among system prompts, especially on heterogeneous datasets where different user prompts favor different system prompts. Motivated by this insight, we propose $p1$, a simple user prompt filtering method that selects a small subset of user prompts with high variance across candidate system prompts. This subset of user prompts allows one to distinguish a good system prompt from a bad one, making system optimization easier. Experiments on reasoning benchmarks show that $p1$ substantially improves prompt optimization over training on the full dataset and outperforms strong baselines such as GEPA. Notably, training on only two prompts from AIME 24 yields a system prompt that generalizes well to other reasoning benchmarks.",
+      "authors": [
+        "Zhaolin Gao",
+        "Yu",
+        "Wang",
+        "Bo Liu",
+        "Thorsten Joachims",
+        "Kianté Brantley",
+        "Wen Sun"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CL"
+      ],
+      "published": "2026-04-09T22:31:15+00:00",
+      "link": "https://arxiv.org/pdf/2604.08801v1",
+      "tags": [
+        "keyword:BK LLM",
+        "keyword:LLMDEV",
+        "query:LLMDEV"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "prompt optimization and system prompt quality",
+      "llm_evidence_cn": "提示词优化与系统提示词质量研究",
+      "llm_evidence": "提示词优化与系统提示词质量研究",
+      "canonical_evidence": "提示词优化与系统提示词质量研究",
+      "llm_tldr_en": "Analyzes factors affecting prompt optimization success and proposes methods to improve system prompts with fewer samples.",
+      "llm_tldr_cn": "研究了影响提示词优化效果的因素，并提出了用更少样本实现更好提示词优化的方法。",
+      "llm_tldr": "研究了影响提示词优化效果的因素，并提出了用更少样本实现更好提示词优化的方法。",
+      "llm_tags": [
+        "query:llmdev"
+      ],
+      "matched_query_tag": "query:llmdev",
+      "matched_query_text": "Evolution and techniques of prompt engineering for LLM applications",
+      "matched_requirement_id": "req-14",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2604.08999v1",
+      "source": "arxiv",
+      "title": "ASTRA: Adaptive Semantic Tree Reasoning Architecture for Complex Table Question Answering",
+      "abstract": "Table serialization remains a critical bottleneck for Large Language Models (LLMs) in complex table question answering, hindered by challenges such as structural neglect, representation gaps, and reasoning opacity. Existing serialization methods fail to capture explicit hierarchies and lack schema flexibility, while current tree-based approaches suffer from limited semantic adaptability. To address these limitations, we propose ASTRA (Adaptive Semantic Tree Reasoning Architecture) including two main modules, AdaSTR and DuTR. First, we introduce AdaSTR, which leverages the global semantic awareness of LLMs to reconstruct tables into Logical Semantic Trees. This serialization explicitly models hierarchical dependencies and employs an adaptive mechanism to optimize construction strategies based on table scale. Second, building on this structure, we present DuTR, a dual-mode reasoning framework that integrates tree-search-based textual navigation for linguistic alignment and symbolic code execution for precise verification. Experiments on complex table benchmarks demonstrate that our method achieves state-of-the-art (SOTA) performance.",
+      "authors": [
+        "Xiaoke Guo",
+        "Songze Li",
+        "Zhiqiang Liu",
+        "Zhaoyan Gong",
+        "Yuanxiang Liu",
+        "Huajun Chen",
+        "Wen Zhang"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-04-10T06:09:41+00:00",
+      "link": "https://arxiv.org/pdf/2604.08999v1",
+      "tags": [
+        "keyword:BK LLM",
+        "keyword:LLMDEV",
+        "query:BK LLM",
+        "query:LLMDEV"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "adaptive semantic tree reasoning for complex table question answering and structural modeling",
+      "llm_evidence_cn": "用于复杂表格问答和结构建模的自适应语义树推理",
+      "llm_evidence": "用于复杂表格问答和结构建模的自适应语义树推理",
+      "canonical_evidence": "用于复杂表格问答和结构建模的自适应语义树推理",
+      "llm_tldr_en": "ASTRA reconstructs complex tables into logical semantic trees to improve LLM reasoning and data extraction.",
+      "llm_tldr_cn": "ASTRA 架构通过将复杂表格重构为逻辑语义树，解决了大模型在表格解析中的结构忽视问题。",
+      "llm_tldr": "ASTRA 架构通过将复杂表格重构为逻辑语义树，解决了大模型在表格解析中的结构忽视问题。",
+      "llm_tags": [
+        "query:bk-llm"
+      ],
+      "matched_query_tag": "query:bk-llm",
+      "matched_query_text": "PDF table parsing techniques for financial statements",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2604.10015v1",
+      "source": "arxiv",
+      "title": "FinTrace: Holistic Trajectory-Level Evaluation of LLM Tool Calling for Long-Horizon Financial Tasks",
+      "abstract": "Recent studies demonstrate that tool-calling capability enables large language models (LLMs) to interact with external environments for long-horizon financial tasks. While existing benchmarks have begun evaluating financial tool calling, they focus on limited scenarios and rely on call-level metrics that fail to capture trajectory-level reasoning quality. To address this gap, we introduce FinTrace, a benchmark comprising 800 expert-annotated trajectories spanning 34 real-world financial task categories across multiple difficulty levels. FinTrace employs a rubric-based evaluation protocol with nine metrics organized along four axes -- action correctness, execution efficiency, process quality, and output quality -- enabling fine-grained assessment of LLM tool-calling behavior. Our evaluation of 13 LLMs reveals that while frontier models achieve strong tool selection, all models struggle with information utilization and final answer quality, exposing a critical gap between invoking the right tools and reasoning effectively over their outputs. To move beyond diagnosis, we construct FinTrace-Training, the first trajectory-level preference dataset for financial tool-calling, containing 8,196 curated trajectories with tool-augmented contexts and preference pairs. We fine-tune Qwen-3.5-9B using supervised fine-tuning followed by direct preference optimization (DPO) and show that training on FinTrace-Training consistently improves intermediate reasoning metrics, with DPO more effectively suppressing failure modes. However, end-to-end answer quality remains a bottleneck, indicating that trajectory-level improvements do not yet fully propagate to final output quality.",
+      "authors": [
+        "Yupeng Cao",
+        "Haohang Li",
+        "Weijin Liu",
+        "Wenbo Cao",
+        "Anke Xu",
+        "Lingfei Qian",
+        "Xueqing Peng",
+        "Minxue Tang",
+        "Zhiyuan Yao",
+        "Jimin Huang",
+        "K. P. Subbalakshmi",
+        "Zining Zhu",
+        "Jordan W. Suchow",
+        "Yangyang Yu"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CE",
+        "cs.CL",
+        "cs.MM"
+      ],
+      "published": "2026-04-11T03:58:39+00:00",
+      "link": "https://arxiv.org/pdf/2604.10015v1",
+      "tags": [
+        "keyword:BK LLM",
+        "query:BK LLM"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Evaluation of LLM tool calling for long-horizon financial tasks",
+      "llm_evidence_cn": "评估LLM在长程金融任务中的工具调用能力",
+      "llm_evidence": "评估LLM在长程金融任务中的工具调用能力",
+      "canonical_evidence": "评估LLM在长程金融任务中的工具调用能力",
+      "llm_tldr_en": "Presents FinTrace, a benchmark for evaluating trajectory-level reasoning in LLM financial tool calling.",
+      "llm_tldr_cn": "提出FinTrace，一个用于评估LLM金融工具调用中轨迹级推理能力的基准。",
+      "llm_tldr": "提出FinTrace，一个用于评估LLM金融工具调用中轨迹级推理能力的基准。",
+      "llm_tags": [
+        "query:bk-llm:composite"
+      ],
+      "matched_query_tag": "query:bk-llm:composite",
+      "matched_query_text": "Papers central to 银行流水解析、PDF解析、风控与LLM/RAG结合的论文检索, especially work that connects or combines: automated bank statement parsing and data extraction; deep learning for PDF table extraction and structure recognition; machine learning and LLM for financial risk management and control; application of large language models in financial document processing; document artificial intelligence for financial statement analysis; automated transaction analysis and anomaly detection in banking; LLM based bank statement parsing and risk assessment; RAG framework for financial document information extraction; PDF table parsing techniques for financial statements; Integrating LLMs with financial risk management systems.",
+      "matched_requirement_id": "req-composite-bk-llm",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2604.10212v1",
+      "source": "arxiv",
+      "title": "Relational Probing: LM-to-Graph Adaptation for Financial Prediction",
+      "abstract": "Language models can be used to identify relationships between financial entities in text. However, while structured output mechanisms exist, prompting-based pipelines still incur autoregressive decoding costs and decouple graph construction from downstream optimization. We propose \\emph{Relational Probing}, which replaces the standard language-model head with a relation head that induces a relational graph directly from language-model hidden states and is trained jointly with the downstream task model for stock-trend prediction. This approach both learns semantic representations and preserves the strict structure of the induced relational graph. It enables language-model outputs to go beyond text, allowing them to be reshaped into task-specific formats for downstream models. To enhance reproducibility, we provide an operational definition of small language models (SLMs): models that can be fine-tuned end-to-end on a single 24GB GPU under specified batch-size and sequence-length settings. Experiments use Qwen3 backbones (0.6B/1.7B/4B) as upstream SLMs and compare against a co-occurrence baseline. Relational Probing yields consistent performance improvements at competitive inference cost.",
+      "authors": [
+        "Yingjie Niu",
+        "Changhong Jin",
+        "Rian Dolphin",
+        "Ruihai Dong"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-04-11T13:43:56+00:00",
+      "link": "https://arxiv.org/pdf/2604.10212v1",
+      "tags": [
+        "keyword:BK LLM",
+        "keyword:LLMDEV",
+        "query:BK LLM",
+        "query:LLMDEV"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "LM-to-graph adaptation for financial prediction and stock-trend prediction",
+      "llm_evidence_cn": "用于金融预测和股票趋势预测的大模型到图的适配",
+      "llm_evidence": "用于金融预测和股票趋势预测的大模型到图的适配",
+      "canonical_evidence": "用于金融预测和股票趋势预测的大模型到图的适配",
+      "llm_tldr_en": "Proposes Relational Probing to induce relational graphs from LMs for improved financial entity relationship analysis.",
+      "llm_tldr_cn": "提出关系探测方法，直接从大模型状态诱导关系图，以优化金融实体关系识别和股价预测。",
+      "llm_tldr": "提出关系探测方法，直接从大模型状态诱导关系图，以优化金融实体关系识别和股价预测。",
+      "llm_tags": [
+        "query:bk-llm"
+      ],
+      "matched_query_tag": "query:bk-llm",
+      "matched_query_text": "machine learning and LLM for financial risk management and control",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2604.10996v1",
+      "source": "arxiv",
+      "title": "When Valid Signals Fail: Regime Boundaries Between LLM Features and RL Trading Policies",
+      "abstract": "Can large language models (LLMs) generate continuous numerical features that improve reinforcement learning (RL) trading agents? We build a modular pipeline where a frozen LLM serves as a stateless feature extractor, transforming unstructured daily news and filings into a fixed-dimensional vector consumed by a downstream PPO agent. We introduce an automated prompt-optimization loop that treats the extraction prompt as a discrete hyperparameter and tunes it directly against the Information Coefficient - the Spearman rank correlation between predicted and realized returns - rather than NLP losses. The optimized prompt discovers genuinely predictive features (IC above 0.15 on held-out data). However, these valid intermediate representations do not automatically translate into downstream task performance: during a distribution shift caused by a macroeconomic shock, LLM-derived features add noise, and the augmented agent under-performs a price-only baseline. In a calmer test regime the agent recovers, yet macroeconomic state variables remain the most robust driver of policy improvement. Our findings highlight a gap between feature-level validity and policy-level robustness that parallels known challenges in transfer learning under distribution shift.",
+      "authors": [
+        "Zhengzhe Yang"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI",
+        "cs.CE"
+      ],
+      "published": "2026-04-13T04:53:06+00:00",
+      "link": "https://arxiv.org/pdf/2604.10996v1",
+      "tags": [
+        "keyword:BK LLM",
+        "keyword:LLMDEV",
+        "query:BK LLM"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "LLM features for reinforcement learning trading policies",
+      "llm_evidence_cn": "用于强化学习交易策略的大模型特征提取",
+      "llm_evidence": "用于强化学习交易策略的大模型特征提取",
+      "canonical_evidence": "用于强化学习交易策略的大模型特征提取",
+      "llm_tldr_en": "Explores using LLMs to extract predictive features from financial news and filings for RL trading.",
+      "llm_tldr_cn": "探讨利用大模型从财经新闻和公告中提取特征，以优化强化学习交易策略。",
+      "llm_tldr": "探讨利用大模型从财经新闻和公告中提取特征，以优化强化学习交易策略。",
+      "llm_tags": [
+        "query:bk-llm"
+      ],
+      "matched_query_tag": "query:bk-llm",
+      "matched_query_text": "machine learning and LLM for financial risk management and control",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2604.12241v1",
+      "source": "arxiv",
+      "title": "BlazingAML: High-Throughput Anti-Money Laundering (AML) via Multi-Stage Graph Mining",
+      "abstract": "Money laundering detection faces challenges due to excessive false positives and inadequate adaptation to sophisticated multi-stage schemes that exploit modern financial networks. Graph analytics and AI are promising tools, but they struggle with the fuzziness of laundering patterns, which exhibit structural and temporal variations. Conventional data mining techniques require the detailed enumeration of pattern variants, which not only complicates the analyst's task to specify them, but also leads to large run-time overheads and difficulty training accurate AI models. The paper presents BlazingAML, a scalable AML system design that introduces: 1. A novel multi-stage framework for expressing fuzzy money laundering patterns 2. A domain-specific compiler that transforms high-level pattern descriptions into high-performance code for CPU and GPU back-ends The multi-stage abstraction decomposes complex laundering schemes into logical stages connected by graph operations, enabling diverse patterns to be expressed using unified primitives while capturing structural and temporal fuzziness. The compiler applies sophisticated optimizations, eliminating manual parallel programming requirements for financial analysts. Evaluation on IBM AML datasets shows BlazingAML achieves the same F1 score as state-of-the-art approaches while delivering 210x and 333x higher speedup on CPU and GPU respectively, with superior scalability.",
+      "authors": [
+        "Haojie Ye",
+        "Arjun Laxman",
+        "Yichao Yuan",
+        "Krisztian Flautner",
+        "Nishil Talati"
+      ],
+      "primary_category": "cs.DC",
+      "categories": [
+        "cs.DC"
+      ],
+      "published": "2026-04-14T03:34:44+00:00",
+      "link": "https://arxiv.org/pdf/2604.12241v1",
+      "tags": [
+        "keyword:BK LLM",
+        "query:BK LLM"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "High-throughput anti-money laundering via graph mining and AI",
+      "llm_evidence_cn": "通过图挖掘和人工智能实现高吞吐量反洗钱检测",
+      "llm_evidence": "通过图挖掘和人工智能实现高吞吐量反洗钱检测",
+      "canonical_evidence": "通过图挖掘和人工智能实现高吞吐量反洗钱检测",
+      "llm_tldr_en": "BlazingAML is a scalable system for detecting fuzzy money laundering patterns in financial networks.",
+      "llm_tldr_cn": "BlazingAML是一个可扩展的系统，用于检测金融网络中的模糊洗钱模式。",
+      "llm_tldr": "BlazingAML是一个可扩展的系统，用于检测金融网络中的模糊洗钱模式。",
+      "llm_tags": [
+        "query:bk-llm"
+      ],
+      "matched_query_tag": "query:bk-llm",
+      "matched_query_text": "automated transaction analysis and anomaly detection in banking",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2604.12282v1",
+      "source": "arxiv",
+      "title": "Towards Robust Real-World Spreadsheet Understanding with Multi-Agent Multi-Format Reasoning",
+      "abstract": "Spreadsheets are central to real-world applications such as enterprise reporting, auditing, and scientific data management. Despite their ubiquity, existing large language model based approaches typically treat tables as plain text, overlooking critical layout cues and visual semantics. Moreover, real-world spreadsheets are often massive in scale, exceeding the input length that LLMs can efficiently process. To address these challenges, we propose SpreadsheetAgent, a two-stage multi-agent framework for spreadsheet understanding that adopts a step-by-step reading and reasoning paradigm. Instead of loading the entire spreadsheet at once, SpreadsheetAgent incrementally interprets localized regions through multiple modalities, including code execution results, images, and LaTeX tables. The method first constructs a structural sketch and row/column summaries, and then performs task-driven reasoning over this intermediate representation in the Solving Stage. To further enhance reliability, we design a verification module that validates extracted structures via targeted inspections, reducing error propagation and ensuring trustworthy inputs for downstream reasoning. Extensive experiments on two spreadsheet datasets demonstrate the effectiveness of our approach. With GPT-OSS-120B, SpreadsheetAgent achieves 38.16% on Spreadsheet Bench, outperforming the ChatGPT Agent baseline (35.27%) by 2.89 absolute points. These results highlight the potential of SpreadsheetAgent to advance robust and scalable spreadsheet understanding in real-world applications. Code is available at https://github.com/renhouxing/SpreadsheetAgent.git.",
+      "authors": [
+        "Houxing Ren",
+        "Mingjie Zhan",
+        "Zimu Lu",
+        "Ke Wang",
+        "Yunqiao Yang",
+        "Haotian Hou",
+        "Hongsheng Li"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-04-14T04:47:21+00:00",
+      "link": "https://arxiv.org/pdf/2604.12282v1",
+      "tags": [
+        "keyword:BK LLM",
+        "keyword:LLMDEV",
+        "query:BK LLM",
+        "query:LLMDEV"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Multi-agent framework for spreadsheet understanding and financial reporting",
+      "llm_evidence_cn": "用于电子表格理解和财务报告的多代理框架",
+      "llm_evidence": "用于电子表格理解和财务报告的多代理框架",
+      "canonical_evidence": "用于电子表格理解和财务报告的多代理框架",
+      "llm_tldr_en": "A multi-agent framework for robust spreadsheet understanding, addressing layout cues and large-scale data.",
+      "llm_tldr_cn": "一种用于稳健电子表格理解的多代理框架，解决了布局线索和大规模数据处理问题。",
+      "llm_tldr": "一种用于稳健电子表格理解的多代理框架，解决了布局线索和大规模数据处理问题。",
+      "llm_tags": [
+        "query:bk-llm:composite"
+      ],
+      "matched_query_tag": "query:bk-llm:composite",
+      "matched_query_text": "Papers central to 银行流水解析、PDF解析、风控与LLM/RAG结合的论文检索, especially work that connects or combines: automated bank statement parsing and data extraction; deep learning for PDF table extraction and structure recognition; machine learning and LLM for financial risk management and control; application of large language models in financial document processing; document artificial intelligence for financial statement analysis; automated transaction analysis and anomaly detection in banking; LLM based bank statement parsing and risk assessment; RAG framework for financial document information extraction; PDF table parsing techniques for financial statements; Integrating LLMs with financial risk management systems.",
+      "matched_requirement_id": "req-composite-bk-llm",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2604.12329v1",
+      "source": "arxiv",
+      "title": "UniDetect: LLM-Driven Universal Fraud Detection across Heterogeneous Blockchains",
+      "abstract": "As cross-chain interoperability advances, decentralized finance (DeFi) protocols enable illicit funds to be reorganized into uniform liquid assets that flow throughout the cryptocurrency market. Such operations can bypass monitoring targeted at individual blockchains and thereby weaken current regulatory frameworks. Motivated by these, we introduce UniDetect, a multi-chain cryptocurrency fraud account detection method based on large language models (LLMs). Specifically, we use domain knowledge to guide the LLM to generate general transaction summary texts applicable to heterogeneous blockchain accounts, which serve as evidence for fraud account detection. Furthermore, we introduce a two-stage alternating training strategy to continuously and dynamically enhance the multimodal joint reasoning for detecting fraudulent accounts based on both the textual evidence and the transaction graph patterns. Experiments on multiple blockchains show that UniDetect outperforms existing methods 5.57% to 7.58% in Kolmogorov-Smirnov (KS). For cross-chain zero-shot detection, UniDetect identifies over 94.58% of fraudulent accounts. It also generalizes well to non-blockchain data, delivering a 6.06% improvement in F1 over existing methods. The dataset and source code are available at https://github.com/msy0513/UniDetect.",
+      "authors": [
+        "Shuyi Miao",
+        "Wangjie Qiu",
+        "Shengda Zhuo",
+        "Fei Shen",
+        "Dan Lin",
+        "Xingtong Yu",
+        "Chua Tat-Seng",
+        "Zhiming Zheng"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR",
+        "cs.SI"
+      ],
+      "published": "2026-04-14T06:04:37+00:00",
+      "link": "https://arxiv.org/pdf/2604.12329v1",
+      "tags": [
+        "keyword:BK LLM",
+        "query:BK LLM"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "LLM-driven fraud detection and transaction summary for financial accounts",
+      "llm_evidence_cn": "LLM驱动的金融账户欺诈检测与交易摘要",
+      "llm_evidence": "LLM驱动的金融账户欺诈检测与交易摘要",
+      "canonical_evidence": "LLM驱动的金融账户欺诈检测与交易摘要",
+      "llm_tldr_en": "Introduces UniDetect, an LLM-based method for universal fraud detection across heterogeneous blockchains.",
+      "llm_tldr_cn": "介绍了UniDetect，一种基于LLM的跨异构区块链通用欺诈检测方法。",
+      "llm_tldr": "介绍了UniDetect，一种基于LLM的跨异构区块链通用欺诈检测方法。",
+      "llm_tags": [
+        "query:bk-llm"
+      ],
+      "matched_query_tag": "query:bk-llm",
+      "matched_query_text": "automated transaction analysis and anomaly detection in banking",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2604.12352v1",
+      "source": "arxiv",
+      "title": "MultiDocFusion: Hierarchical and Multimodal Chunking Pipeline for Enhanced RAG on Long Industrial Documents",
+      "abstract": "RAG-based QA has emerged as a powerful method for processing long industrial documents. However, conventional text chunking approaches often neglect complex and long industrial document structures, causing information loss and reduced answer quality. To address this, we introduce MultiDocFusion, a multimodal chunking pipeline that integrates: (i) detection of document regions using vision-based document parsing, (ii) text extraction from these regions via OCR, (iii) reconstruction of document structure into a hierarchical tree using large language model (LLM)-based document section hierarchical parsing (DSHP-LLM), and (iv) construction of hierarchical chunks through DFS-based grouping. Extensive experiments across industrial benchmarks demonstrate that MultiDocFusion improves retrieval precision by 8-15% and ANLS QA scores by 2-3% compared to baselines, emphasizing the critical role of explicitly leveraging document hierarchy for multimodal document-based QA. These significant performance gains underscore the necessity of structure-aware chunking in enhancing the fidelity of RAG-based QA systems.",
+      "authors": [
+        "Joongmin Shin",
+        "Chanjun Park",
+        "Jeongbae Park",
+        "Jaehyung Seo",
+        "Heuiseok Lim"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-04-14T06:40:22+00:00",
+      "link": "https://arxiv.org/pdf/2604.12352v1",
+      "tags": [
+        "keyword:BK LLM",
+        "keyword:LLMDEV",
+        "query:BK LLM",
+        "query:LLMDEV"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Multimodal chunking and vision-based parsing for RAG on long industrial documents",
+      "llm_evidence_cn": "针对长工业文档RAG的多模态分块和基于视觉的解析",
+      "llm_evidence": "针对长工业文档RAG的多模态分块和基于视觉的解析",
+      "canonical_evidence": "针对长工业文档RAG的多模态分块和基于视觉的解析",
+      "llm_tldr_en": "Integrates vision-based parsing and LLM-based hierarchy reconstruction for enhanced document extraction.",
+      "llm_tldr_cn": "结合视觉解析和LLM层级重建，增强长文档的信息提取与RAG效果。",
+      "llm_tldr": "结合视觉解析和LLM层级重建，增强长文档的信息提取与RAG效果。",
+      "llm_tags": [
+        "query:bk-llm:composite"
+      ],
+      "matched_query_tag": "query:bk-llm:composite",
+      "matched_query_text": "Papers central to 银行流水解析、PDF解析、风控与LLM/RAG结合的论文检索, especially work that connects or combines: automated bank statement parsing and data extraction; deep learning for PDF table extraction and structure recognition; machine learning and LLM for financial risk management and control; application of large language models in financial document processing; document artificial intelligence for financial statement analysis; automated transaction analysis and anomaly detection in banking; LLM based bank statement parsing and risk assessment; RAG framework for financial document information extraction; PDF table parsing techniques for financial statements; Integrating LLMs with financial risk management systems.",
+      "matched_requirement_id": "req-composite-bk-llm",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2604.12610v1",
+      "source": "arxiv",
+      "title": "Transforming External Knowledge into Triplets for Enhanced Retrieval in RAG of LLMs",
+      "abstract": "Retrieval-Augmented Generation (RAG) mitigates hallucination in large language models (LLMs) by incorporating external knowledge during generation. However, the effectiveness of RAG depends not only on the design of the retriever and the capacity of the underlying model, but also on how retrieved evidence is structured and aligned with the query. Existing RAG approaches typically retrieve and concatenate unstructured text fragments as context, which often introduces redundant or weakly relevant information. This practice leads to excessive context accumulation, reduced semantic alignment, and fragmented reasoning chains, thereby degrading generation quality while increasing token consumption. To address these challenges, we propose Tri-RAG, a structured triplet-based retrieval framework that improves retrieval efficiency through reasoning-aligned context construction. Tri-RAG automatically transforms external knowledge from natural language into standardized structured triplets consisting of Condition, Proof, and Conclusion, explicitly capturing logical relations among knowledge fragments using lightweight prompt-based adaptation with frozen model parameters. Building on this representation, the triplet head Condition is treated as an explicit semantic anchor for retrieval and matching, enabling precise identification of query-relevant knowledge units without directly concatenating lengthy raw texts. As a result, Tri-RAG achieves a favorable balance between retrieval accuracy and context token efficiency. Experimental results across multiple benchmark datasets demonstrate that Tri-RAG significantly improves retrieval quality and reasoning efficiency, while producing more stable generation behavior and more efficient resource utilization in complex reasoning scenarios.",
+      "authors": [
+        "Xudong Wang",
+        "Chaoning Zhang",
+        "Qigan Sun",
+        "Zhenzhen Huang",
+        "Chang Lu",
+        "Sheng Zheng",
+        "Zeyu Ma",
+        "Caiyan Qin",
+        "Yang Yang",
+        "Hengtao Shen"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-04-14T11:36:29+00:00",
+      "link": "https://arxiv.org/pdf/2604.12610v1",
+      "tags": [
+        "keyword:BK LLM",
+        "keyword:LLMDEV",
+        "query:BK LLM",
+        "query:LLMDEV"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Transforming external knowledge into triplets for enhanced retrieval in RAG",
+      "llm_evidence_cn": "将外部知识转化为三元组以增强RAG中的检索效果",
+      "llm_evidence": "将外部知识转化为三元组以增强RAG中的检索效果",
+      "canonical_evidence": "将外部知识转化为三元组以增强RAG中的检索效果",
+      "llm_tldr_en": "Proposes Tri-RAG to improve retrieval quality by structuring external knowledge into triplets.",
+      "llm_tldr_cn": "提出Tri-RAG框架，通过将外部知识结构化为三元组来提升检索增强生成的质量。",
+      "llm_tldr": "提出Tri-RAG框架，通过将外部知识结构化为三元组来提升检索增强生成的质量。",
+      "llm_tags": [
+        "query:llmdev"
+      ],
+      "matched_query_tag": "query:llmdev",
+      "matched_query_text": "Retrieval-Augmented Generation development and current implementation",
+      "matched_requirement_id": "req-15",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2604.05137v1",
+      "source": "arxiv",
+      "title": "EffiPair: Improving the Efficiency of LLM-generated Code with Relative Contrastive Feedback",
+      "abstract": "Large language models (LLMs) often generate code that is functionally correct but inefficient in runtime and memory. Prior approaches to improving code efficiency typically rely on absolute execution feedback, such as profiling a single program's runtime or memory usage, which is costly and provides weak guidance for refinement. We propose Relative Contrastive Feedback (RCF), an inference-time feedback mechanism that requires no model fine-tuning or parameter updates. RCF compares two structurally similar programs for the same task and highlights the differences associated with better efficiency. Building on this idea, we introduce EffiPair, an inference-time iterative refinement framework that operates entirely at test time by generating multiple candidate solutions, identifying informative program pairs with large efficiency gaps, summarizing their execution differences into lightweight feedback, and using this signal to produce more efficient solutions. By replacing isolated scalar feedback with pairwise contrastive comparisons, EffiPair provides more direct guidance while reducing profiling and prompting overhead. Experiments on code-efficiency benchmarks show that EffiPair consistently improves efficiency while preserving correctness. For instance, with DeepSeek-Chat V3.2, EffiPair achieves up to 1.5x speedup over generation without performance feedback, while reducing token usage by more than 90% compared to prior work.",
+      "authors": [
+        "Samira Hajizadeh",
+        "Suman Jana"
+      ],
+      "primary_category": "cs.PL",
+      "categories": [
+        "cs.PL",
+        "cs.AI",
+        "cs.CL",
+        "cs.LG",
+        "cs.SE"
+      ],
+      "published": "2026-04-06T19:56:26+00:00",
+      "link": "https://arxiv.org/pdf/2604.05137v1",
+      "tags": [
+        "keyword:BK LLM",
+        "keyword:LLMDEV",
+        "query:BK LLM",
+        "query:LLMDEV"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "improving efficiency of LLM-generated code with relative contrastive feedback",
+      "llm_evidence_cn": "通过相对对比反馈提高大模型生成代码的效率",
+      "llm_evidence": "通过相对对比反馈提高大模型生成代码的效率",
+      "canonical_evidence": "通过相对对比反馈提高大模型生成代码的效率",
+      "llm_tldr_en": "Presents EffiPair, a framework to refine LLM-generated code efficiency at inference time.",
+      "llm_tldr_cn": "提出 EffiPair 框架，在推理阶段优化大模型生成代码的运行效率。",
+      "llm_tldr": "提出 EffiPair 框架，在推理阶段优化大模型生成代码的运行效率。",
+      "llm_tags": [
+        "query:llmdev"
+      ],
+      "matched_query_tag": "query:llmdev",
+      "matched_query_text": "Current trends in LLM based software engineering and code automation",
+      "matched_requirement_id": "req-19",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2604.05159v1",
+      "source": "arxiv",
+      "title": "Planning to Explore: Curiosity-Driven Planning for LLM Test Generation",
+      "abstract": "The use of LLMs for code generation has naturally extended to code testing and evaluation. As codebases grow in size and complexity, so does the need for automated test generation. Current approaches for LLM-based test generation rely on strategies that maximize immediate coverage gain, a greedy approach that plateaus on code where reaching deep branches requires setup steps that individually yield zero new coverage. Drawing on principles of Bayesian exploration, we treat the program's branch structure as an unknown environment, and an evolving coverage map as a proxy probabilistic posterior representing what the LLM has discovered so far. Our method, CovQValue, feeds the coverage map back to the LLM, generates diverse candidate plans in parallel, and selects the most informative plan by LLM-estimated Q-values, seeking actions that balance immediate branch discovery with future reachability. Our method outperforms greedy selection on TestGenEval Lite, achieving 51-77% higher branch coverage across three popular LLMs and winning on 77-84% of targets. In addition, we build a benchmark for iterative test generation, RepoExploreBench, where they achieve 40-74%. These results show the potential of curiosity-driven planning methods for LLM-based exploration, enabling more effective discovery of program behavior through sequential interaction",
+      "authors": [
+        "Alfonso Amayuelas",
+        "Firas Laakom",
+        "Piotr Piękos",
+        "Wenyi Wang",
+        "Yifan Xu",
+        "Yuhui Wang",
+        "Jürgen Schmidhuber",
+        "William Wang"
+      ],
+      "primary_category": "cs.SE",
+      "categories": [
+        "cs.SE",
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-04-06T20:40:29+00:00",
+      "link": "https://arxiv.org/pdf/2604.05159v1",
+      "tags": [
+        "keyword:BK LLM",
+        "keyword:LLMDEV",
+        "query:BK LLM",
+        "query:LLMDEV"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "LLM-based automated test generation and code automation",
+      "llm_evidence_cn": "基于大模型的自动化测试生成与代码自动化",
+      "llm_evidence": "基于大模型的自动化测试生成与代码自动化",
+      "canonical_evidence": "基于大模型的自动化测试生成与代码自动化",
+      "llm_tldr_en": "CovQValue uses curiosity-driven planning to improve LLM-based automated code test generation.",
+      "llm_tldr_cn": "CovQValue利用好奇心驱动的规划，提升了基于大模型的自动化代码测试生成效果。",
+      "llm_tldr": "CovQValue利用好奇心驱动的规划，提升了基于大模型的自动化代码测试生成效果。",
+      "llm_tags": [
+        "query:llmdev"
+      ],
+      "matched_query_tag": "query:llmdev",
+      "matched_query_text": "Current trends in LLM based software engineering and code automation",
+      "matched_requirement_id": "req-19",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.05404v2",
+      "source": "arxiv",
+      "title": "Beyond Accuracy: Unveiling Inefficiency Patterns in Tool-Integrated Reasoning",
+      "abstract": "In real-world Tool-Integrated Reasoning (TIR) scenarios, where LLMs interleave reasoning with external tool calls, a major source of inefficiency is that the toolcalls create pauses between LLM requests and cause KV-Cache eviction, forcing recomputation. Also, the long, unfiltered response returned by external tools inflates the KV-Cache, so each decode step spends more time loading the growing cache and thus becomes steadily slower as context length increases. However, existing efficiency metrics like token counts and toolcall counts fail to capture the real model inference latency. To address this, we introduce PTE (Prefill Token Equivalents), a hardware-aware TIR-efficiency metric that unifies internal reasoning and external tool-use costs while explicitly accounting for non-reusable KV-Cache and long-tool-response scenarios. Validation in a high-concurrency industrial setting indicates that PTE aligns significantly better with wall-clock latency than standard token counts, while maintaining consistent efficiency rankings across diverse hardware profiles. We conduct extensive experiments across five TIR benchmarks, quantify their PTE costs, and identify four inefficiency patterns that appear in TIR. We also discover that trajectories with higher PTE costs tend to have lower reasoning correctness, indicating that simply using more tools does not improve the quality of the answer.",
+      "authors": [
+        "Qisheng Su",
+        "Shiting Huang",
+        "Zhen Fang",
+        "Ziyan Chen",
+        "Zehui Chen",
+        "Feng Zhao"
+      ],
+      "primary_category": "cs.PF",
+      "categories": [
+        "cs.PF",
+        "cs.SE"
+      ],
+      "published": "2026-04-07T03:55:29+00:00",
+      "link": "https://arxiv.org/pdf/2604.05404v2",
+      "tags": [
+        "keyword:BK LLM",
+        "keyword:LLMDEV",
+        "query:BK LLM",
+        "query:LLMDEV"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "efficiency metrics for tool-integrated LLM reasoning",
+      "llm_evidence_cn": "工具集成大模型推理的效率指标",
+      "llm_evidence": "工具集成大模型推理的效率指标",
+      "canonical_evidence": "工具集成大模型推理的效率指标",
+      "llm_tldr_en": "Introduces PTE, a hardware-aware metric to measure efficiency in tool-integrated LLM reasoning.",
+      "llm_tldr_cn": "引入PTE指标，用于衡量大模型在集成外部工具推理时的硬件感知效率。",
+      "llm_tldr": "引入PTE指标，用于衡量大模型在集成外部工具推理时的硬件感知效率。",
+      "llm_tags": [
+        "query:llmdev"
+      ],
+      "matched_query_tag": "query:llmdev",
+      "matched_query_text": "Development paradigms and frameworks for programming with LLMs",
+      "matched_requirement_id": "req-13",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.05150v1",
+      "source": "arxiv",
+      "title": "Compiled AI: Deterministic Code Generation for LLM-Based Workflow Automation",
+      "abstract": "We study compiled AI, a paradigm in which large language models generate executable code artifacts during a compilation phase, after which workflows execute deterministically without further model invocation. This paradigm has antecedents in prior work on declarative pipeline optimization (DSPy) and hybrid neural-symbolic planning (LLM+P); our contribution is a systems-oriented study of its application to high-stakes enterprise workflows, with particular emphasis on healthcare settings where reliability and auditability are critical.   By constraining generation to narrow business-logic functions embedded in validated templates, compiled AI trades runtime flexibility for predictability, auditability, cost efficiency, and reduced security exposure. We introduce (i) a system architecture for constrained LLM-based code generation, (ii) a four-stage generation-and-validation pipeline that converts probabilistic model output into production-ready code artifacts, and (iii) an evaluation framework measuring operational metrics including token amortization, determinism, reliability, security, and cost.   We evaluate on two task types: function-calling (BFCL, n=400) and document intelligence (DocILE, n=5,680 invoices). On function-calling, compiled AI achieves 96% task completion with zero execution tokens, breaking even with runtime inference at approximately 17 transactions and reducing token consumption by 57x at 1,000 transactions. On document intelligence, our Code Factory variant matches Direct LLM on key field extraction (KILE: 80.0%) while achieving the highest line item recognition accuracy (LIR: 80.4%). Security evaluation across 135 test cases demonstrates 96.7% accuracy on prompt injection detection and 87.5% on static code safety analysis with zero false positives.",
+      "authors": [
+        "Geert Trooskens",
+        "Aaron Karlsberg",
+        "Anmol Sharma",
+        "Lamara De Brouwer",
+        "Max Van Puyvelde",
+        "Matthew Young",
+        "John Thickstun",
+        "Gil Alterovitz",
+        "Walter A. De Brouwer"
+      ],
+      "primary_category": "cs.SE",
+      "categories": [
+        "cs.SE",
+        "cs.AI"
+      ],
+      "published": "2026-04-06T20:25:20+00:00",
+      "link": "https://arxiv.org/pdf/2604.05150v1",
+      "tags": [
+        "keyword:BK LLM",
+        "keyword:LLMDEV",
+        "query:BK LLM",
+        "query:LLMDEV"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "deterministic code generation for LLM-based workflow automation in enterprise",
+      "llm_evidence_cn": "企业级LLM工作流自动化的确定性代码生成",
+      "llm_evidence": "企业级LLM工作流自动化的确定性代码生成",
+      "canonical_evidence": "企业级LLM工作流自动化的确定性代码生成",
+      "llm_tldr_en": "Explores Compiled AI for reliable, deterministic LLM-based workflow automation in high-stakes settings.",
+      "llm_tldr_cn": "探讨了编译AI，旨在高风险环境下实现可靠且确定性的LLM工作流自动化。",
+      "llm_tldr": "探讨了编译AI，旨在高风险环境下实现可靠且确定性的LLM工作流自动化。",
+      "llm_tags": [
+        "query:llmdev"
+      ],
+      "matched_query_tag": "query:llmdev",
+      "matched_query_text": "Current trends in LLM based software engineering and code automation",
+      "matched_requirement_id": "req-19",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2604.05172v2",
+      "source": "arxiv",
+      "title": "ClawsBench: Evaluating Capability and Safety of LLM Productivity Agents in Simulated Workspaces",
+      "abstract": "Large language model (LLM) agents are increasingly deployed to automate productivity tasks (e.g., email, scheduling, document management), but evaluating them on live services is risky due to potentially irreversible changes. Existing benchmarks rely on simplified environments and fail to capture realistic, stateful, multi-service workflows. We introduce ClawsBench, a benchmark for evaluating and improving LLM agents in realistic productivity settings. It includes five high-fidelity mock services (Gmail, Slack, Google Calendar, Google Docs, Google Drive) with full state management and deterministic snapshot/restore, along with 44 structured tasks covering single-service, cross-service, and safety-critical scenarios. We decompose agent scaffolding into two independent levers (domain skills that inject API knowledge via progressive disclosure, and a meta prompt that coordinates behavior across services) and vary both to measure their separate and combined effects. Experiments across 6 models, 4 agent harnesses, and 33 conditions show that with full scaffolding, agents achieve task success rates of 39-64% but exhibit unsafe action rates of 7-33%. On OpenClaw, the top five models fall within a 10 percentage-point band on task success (53-63%), with unsafe action rates from 7% to 23% and no consistent ordering between the two metrics. We identify eight recurring patterns of unsafe behavior, including multi-step sandbox escalation and silent contract modification. We release the trajectories and future dataset at https://clawsbench.com.",
+      "authors": [
+        "Xiangyi Li",
+        "Kyoung Whan Choe",
+        "Yimin Liu",
+        "Xiaokun Chen",
+        "Chujun Tao",
+        "Bingran You",
+        "Wenbo Chen",
+        "Zonglin Di",
+        "Jiankai Sun",
+        "Shenghan Zheng",
+        "Jiajun Bao",
+        "Yuanli Wang",
+        "Weixiang Yan",
+        "Yiyuan Li",
+        "Han-chung Lee"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-04-06T21:09:06+00:00",
+      "link": "https://arxiv.org/pdf/2604.05172v2",
+      "tags": [
+        "keyword:BK LLM",
+        "keyword:LLMDEV",
+        "query:BK LLM",
+        "query:LLMDEV"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "evaluating LLM productivity agents in simulated workspaces",
+      "llm_evidence_cn": "在模拟工作空间中评估大模型生产力智能体",
+      "llm_evidence": "在模拟工作空间中评估大模型生产力智能体",
+      "canonical_evidence": "在模拟工作空间中评估大模型生产力智能体",
+      "llm_tldr_en": "Introduces ClawsBench for evaluating LLM agents in realistic, multi-service productivity environments.",
+      "llm_tldr_cn": "推出ClawsBench基准，在真实的多服务办公场景中评估大模型智能体。",
+      "llm_tldr": "推出ClawsBench基准，在真实的多服务办公场景中评估大模型智能体。",
+      "llm_tags": [
+        "query:llmdev"
+      ],
+      "matched_query_tag": "query:llmdev",
+      "matched_query_text": "The rise and current state of autonomous LLM agents and workflows",
+      "matched_requirement_id": "req-16",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.05418v2",
+      "source": "arxiv",
+      "title": "VideoStir: Understanding Long Videos via Spatio-Temporally Structured and Intent-Aware RAG",
+      "abstract": "Scaling multimodal large language models (MLLMs) to long videos is constrained by limited context windows. While retrieval-augmented generation (RAG) is a promising remedy by organizing query-relevant visual evidence into a compact context, most existing methods (i) flatten videos into independent segments, breaking their inherent spatio-temporal structure, and (ii) depend on explicit semantic matching, which can miss cues that are implicitly relevant to the query's intent. To overcome these limitations, we propose VideoStir, a structured and intent-aware long-video RAG framework. It firstly structures a video as a spatio-temporal graph at clip level, and then performs multi-hop retrieval to aggregate evidence across distant yet contextually related events. Furthermore, it introduces an MLLM-backed intent-relevance scorer that retrieves frames based on their alignment with the query's reasoning intent. To support this capability, we curate IR-600K, a large-scale dataset tailored for learning frame-query intent alignment. Experiments show that VideoStir is competitive with state-of-the-art baselines without relying on auxiliary information, highlighting the promise of shifting long-video RAG from flattened semantic matching to structured, intent-aware reasoning. Codes and checkpoints are available at Github.",
+      "authors": [
+        "Honghao Fu",
+        "Miao Xu",
+        "Yiwei Wang",
+        "Dailing Zhang",
+        "Liu Jun",
+        "Yujun Cai"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-04-07T04:26:59+00:00",
+      "link": "https://arxiv.org/pdf/2604.05418v2",
+      "tags": [
+        "keyword:BK LLM",
+        "keyword:LLMDEV",
+        "query:BK LLM",
+        "query:LLMDEV"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Spatio-temporally structured RAG framework for long video understanding",
+      "llm_evidence_cn": "用于长视频理解的时空结构化RAG框架",
+      "llm_evidence": "用于长视频理解的时空结构化RAG框架",
+      "canonical_evidence": "用于长视频理解的时空结构化RAG框架",
+      "llm_tldr_en": "Introduces VideoStir, a structured RAG framework for long video understanding using spatio-temporal graphs.",
+      "llm_tldr_cn": "介绍了VideoStir，一种利用时空图进行长视频理解的结构化RAG框架。",
+      "llm_tldr": "介绍了VideoStir，一种利用时空图进行长视频理解的结构化RAG框架。",
+      "llm_tags": [
+        "query:llmdev"
+      ],
+      "matched_query_tag": "query:llmdev",
+      "matched_query_text": "Retrieval-Augmented Generation development and current implementation",
+      "matched_requirement_id": "req-15",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.05172v1",
+      "source": "arxiv",
+      "title": "ClawsBench: Evaluating Capability and Safety of LLM Productivity Agents in Simulated Workspaces",
+      "abstract": "Large language model (LLM) agents are increasingly deployed to automate productivity tasks (e.g., email, scheduling, document management), but evaluating them on live services is risky due to potentially irreversible changes. Existing benchmarks rely on simplified environments and fail to capture realistic, stateful, multi-service workflows. We introduce ClawsBench, a benchmark for evaluating and improving LLM agents in realistic productivity settings. It includes five high-fidelity mock services (Gmail, Slack, Google Calendar, Google Docs, Google Drive) with full state management and deterministic snapshot/restore, along with 44 structured tasks covering single-service, cross-service, and safety-critical scenarios. We decompose agent scaffolding into two independent levers (domain skills that inject API knowledge via progressive disclosure, and a meta prompt that coordinates behavior across services) and vary both to measure their separate and combined effects. Experiments across 6 models, 4 agent harnesses, and 33 conditions show that with full scaffolding, agents achieve task success rates of 39-64% but exhibit unsafe action rates of 7-33%. On OpenClaw, the top five models fall within a 10 percentage-point band on task success (53-63%), with unsafe action rates from 7% to 23% and no consistent ordering between the two metrics. We identify eight recurring patterns of unsafe behavior, including multi-step sandbox escalation and silent contract modification.",
+      "authors": [
+        "Xiangyi Li",
+        "Kyoung Whan Choe",
+        "Yimin Liu",
+        "Xiaokun Chen",
+        "Chujun Tao",
+        "Bingran You",
+        "Wenbo Chen",
+        "Zonglin Di",
+        "Jiankai Sun",
+        "Shenghan Zheng",
+        "Jiajun Bao",
+        "Yuanli Wang",
+        "Weixiang Yan",
+        "Yiyuan Li",
+        "Han-chung Lee"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-04-06T21:09:06+00:00",
+      "link": "https://arxiv.org/pdf/2604.05172v1",
+      "tags": [
+        "keyword:BK LLM",
+        "keyword:LLMDEV",
+        "query:BK LLM",
+        "query:LLMDEV"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Evaluating LLM productivity agents in simulated workspaces",
+      "llm_evidence_cn": "在模拟工作空间中评估LLM生产力智能体",
+      "llm_evidence": "在模拟工作空间中评估LLM生产力智能体",
+      "canonical_evidence": "在模拟工作空间中评估LLM生产力智能体",
+      "llm_tldr_en": "Introduces ClawsBench to evaluate LLM agents on realistic, multi-service productivity workflows.",
+      "llm_tldr_cn": "引入ClawsBench，在真实的多服务生产力工作流中评估LLM智能体。",
+      "llm_tldr": "引入ClawsBench，在真实的多服务生产力工作流中评估LLM智能体。",
+      "llm_tags": [
+        "query:llmdev"
+      ],
+      "matched_query_tag": "query:llmdev",
+      "matched_query_text": "The rise and current state of autonomous LLM agents and workflows",
+      "matched_requirement_id": "req-16",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2604.05289v1",
+      "source": "arxiv",
+      "title": "FLARE: Agentic Coverage-Guided Fuzzing for LLM-Based Multi-Agent Systems",
+      "abstract": "Multi-Agent LLM Systems (MAS) have been adopted to automate complex human workflows by breaking down tasks into subtasks. However, due to the non-deterministic behavior of LLM agents and the intricate interactions between agents, MAS applications frequently encounter failures, including infinite loops and failed tool invocations. Traditional software testing techniques are ineffective in detecting such failures due to the lack of LLM agent specification, the large behavioral space of MAS, and semantic-based correctness judgment.   This paper presents FLARE, a novel testing framework tailored for MAS. FLARE takes the source code of MAS as input and extracts specifications and behavioral spaces from agent definitions. Based on these specifications, FLARE builds test oracles and conducts coverage-guided fuzzing to expose failures. It then analyzes execution logs to judge whether each test has passed and generates failure reports. Our evaluation on 16 diverse open-source applications demonstrates that FLARE achieves 96.9% inter-agent coverage and 91.1% intra-agent coverage, outperforming baselines by 9.5% and 1.0%. FLARE also uncovers 56 previously unknown failures unique to MAS.",
+      "authors": [
+        "Mingxuan Hui",
+        "Xinyue Li",
+        "Lu Wang",
+        "Chengcheng Wan",
+        "Yifan Wang",
+        "Yimian Wang",
+        "Feiyue Song",
+        "Beining Shi",
+        "Yixi Li",
+        "Yaxiao Li"
+      ],
+      "primary_category": "cs.SE",
+      "categories": [
+        "cs.SE"
+      ],
+      "published": "2026-04-07T00:47:37+00:00",
+      "link": "https://arxiv.org/pdf/2604.05289v1",
+      "tags": [
+        "keyword:LLMDEV",
+        "query:BK LLM",
+        "query:LLMDEV"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "testing framework for LLM-based multi-agent systems and workflows",
+      "llm_evidence_cn": "基于LLM的多智能体系统和工作流的测试框架",
+      "llm_evidence": "基于LLM的多智能体系统和工作流的测试框架",
+      "canonical_evidence": "基于LLM的多智能体系统和工作流的测试框架",
+      "llm_tldr_en": "Develops FLARE, a coverage-guided fuzzing framework for testing multi-agent LLM systems.",
+      "llm_tldr_cn": "开发了FLARE，一种用于测试多智能体LLM系统的覆盖引导模糊测试框架。",
+      "llm_tldr": "开发了FLARE，一种用于测试多智能体LLM系统的覆盖引导模糊测试框架。",
+      "llm_tags": [
+        "query:llmdev"
+      ],
+      "matched_query_tag": "query:llmdev",
+      "matched_query_text": "The rise and current state of autonomous LLM agents and workflows",
+      "matched_requirement_id": "req-16",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.05432v1",
+      "source": "arxiv",
+      "title": "Your LLM Agent Can Leak Your Data: Data Exfiltration via Backdoored Tool Use",
+      "abstract": "Tool-use large language model (LLM) agents are increasingly deployed to support sensitive workflows, relying on tool calls for retrieval, external API access, and session memory management. While prior research has examined various threats, the risk of systematic data exfiltration by backdoored agents remains underexplored. In this work, we present Back-Reveal, a data exfiltration attack that embeds semantic triggers into fine-tuned LLM agents. When triggered, the backdoored agent invokes memory-access tool calls to retrieve stored user context and exfiltrates it via disguised retrieval tool calls. We further demonstrate that multi-turn interaction amplifies the impact of data exfiltration, as attacker-controlled retrieval responses can subtly steer subsequent agent behavior and user interactions, enabling sustained and cumulative information leakage over time. Our experimental results expose a critical vulnerability in LLM agents with tool access and highlight the need for defenses against exfiltration-oriented backdoors.",
+      "authors": [
+        "Wuyang Zhang",
+        "Shichao Pei"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR",
+        "cs.AI"
+      ],
+      "published": "2026-04-07T04:58:01+00:00",
+      "link": "https://arxiv.org/pdf/2604.05432v1",
+      "tags": [
+        "keyword:BK LLM",
+        "keyword:LLMDEV",
+        "query:BK LLM",
+        "query:LLMDEV"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "data exfiltration risks in tool-use LLM agents",
+      "llm_evidence_cn": "工具使用型大模型智能体的数据泄露风险",
+      "llm_evidence": "工具使用型大模型智能体的数据泄露风险",
+      "canonical_evidence": "工具使用型大模型智能体的数据泄露风险",
+      "llm_tldr_en": "Explores data exfiltration vulnerabilities in fine-tuned LLM agents using backdoored tools.",
+      "llm_tldr_cn": "探讨了微调后的大模型智能体在使用带有后门的工具时可能面临的数据泄露风险。",
+      "llm_tldr": "探讨了微调后的大模型智能体在使用带有后门的工具时可能面临的数据泄露风险。",
+      "llm_tags": [
+        "query:llmdev"
+      ],
+      "matched_query_tag": "query:llmdev",
+      "matched_query_text": "The rise and current state of autonomous LLM agents and workflows",
+      "matched_requirement_id": "req-16",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2604.05407v1",
+      "source": "arxiv",
+      "title": "CODESTRUCT: Code Agents over Structured Action Spaces",
+      "abstract": "LLM-based code agents treat repositories as unstructured text, applying edits through brittle string matching that frequently fails due to formatting drift or ambiguous patterns. We propose reframing the codebase as a structured action space where agents operate on named AST entities rather than text spans. Our framework, CODESTRUCT, provides readCode for retrieving complete syntactic units and editCode for applying syntax-validated transformations to semantic program elements. Evaluated on SWE-Bench Verified across six LLMs, CODESTRUCT improves Pass@1 accuracy by 1.2-5.0% while reducing token consumption by 12-38% for most models. Models that frequently fail to produce valid patches under text-based interfaces benefit most: GPT-5-nano improves by 20.8% as empty-patch failures drop from 46.6% to 7.2%. On CodeAssistBench, we observe consistent accuracy gains (+0.8-4.4%) with cost reductions up to 33%. Our results show that structure-aware interfaces offer a more reliable foundation for code agents.",
+      "authors": [
+        "Myeongsoo Kim",
+        "Joe Hsu",
+        "Dingmin Wang",
+        "Shweta Garg",
+        "Varun Kumar",
+        "Murali Krishna Ramanathan"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.SE"
+      ],
+      "published": "2026-04-07T03:58:10+00:00",
+      "link": "https://arxiv.org/pdf/2604.05407v1",
+      "tags": [
+        "keyword:BK LLM",
+        "keyword:LLMDEV",
+        "query:BK LLM",
+        "query:LLMDEV"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Code agents operating on structured AST entities for software engineering",
+      "llm_evidence_cn": "在结构化AST实体上运行的代码智能体用于软件工程",
+      "llm_evidence": "在结构化AST实体上运行的代码智能体用于软件工程",
+      "canonical_evidence": "在结构化AST实体上运行的代码智能体用于软件工程",
+      "llm_tldr_en": "CODESTRUCT improves code agents by reframing codebases as structured action spaces using ASTs.",
+      "llm_tldr_cn": "CODESTRUCT通过将代码库重构为基于AST的结构化动作空间来提升代码智能体性能。",
+      "llm_tldr": "CODESTRUCT通过将代码库重构为基于AST的结构化动作空间来提升代码智能体性能。",
+      "llm_tags": [
+        "query:llmdev"
+      ],
+      "matched_query_tag": "query:llmdev",
+      "matched_query_text": "Current trends in LLM based software engineering and code automation",
+      "matched_requirement_id": "req-19",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2604.05400v1",
+      "source": "arxiv",
+      "title": "HYVE: Hybrid Views for LLM Context Engineering over Machine Data",
+      "abstract": "Machine data is central to observability and diagnosis in modern computing systems, appearing in logs, metrics, telemetry traces, and configuration snapshots. When provided to large language models (LLMs), this data typically arrives as a mixture of natural language and structured payloads such as JSON or Python/AST literals. Yet LLMs remain brittle on such inputs, particularly when they are long, deeply nested, and dominated by repetitive structure.   We present HYVE (HYbrid ViEw), a framework for LLM context engineering for inputs containing large machine-data payloads, inspired by database management principles. HYVE surrounds model invocation with coordinated preprocessing and postprocessing, centered on a request-scoped datastore augmented with schema information. During preprocessing, HYVE detects repetitive structure in raw inputs, materializes it in the datastore, transforms it into hybrid columnar and row-oriented views, and selectively exposes only the most relevant representation to the LLM. During postprocessing, HYVE either returns the model output directly, queries the datastore to recover omitted information, or performs a bounded additional LLM call for SQL-augmented semantic synthesis.   We evaluate HYVE on diverse real-world workloads spanning knowledge QA, chart generation, anomaly detection, and multi-step network troubleshooting. Across these benchmarks, HYVE reduces token usage by 50-90% while maintaining or improving output quality. On structured generation tasks, it improves chart-generation accuracy by up to 132% and reduces latency by up to 83%. Overall, HYVE offers a practical approximation to an effectively unbounded context window for prompts dominated by large machine-data payloads.",
+      "authors": [
+        "Jian Tan",
+        "Fan Bu",
+        "Yuqing Gao",
+        "Dev Khanolkar",
+        "Jason Mackay",
+        "Boris Sobolev",
+        "Lei Jin",
+        "Li Zhang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-04-07T03:50:12+00:00",
+      "link": "https://arxiv.org/pdf/2604.05400v1",
+      "tags": [
+        "keyword:BK LLM",
+        "keyword:LLMDEV",
+        "query:BK LLM",
+        "query:LLMDEV"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Context engineering for structured machine data like JSON and AST literals",
+      "llm_evidence_cn": "针对JSON和AST字面量等结构化机器数据的上下文工程",
+      "llm_evidence": "针对JSON和AST字面量等结构化机器数据的上下文工程",
+      "canonical_evidence": "针对JSON和AST字面量等结构化机器数据的上下文工程",
+      "llm_tldr_en": "Presents HYVE, a framework for processing large, structured machine data payloads for LLM consumption.",
+      "llm_tldr_cn": "提出了HYVE框架，用于处理供LLM使用的大型结构化机器数据负载。",
+      "llm_tldr": "提出了HYVE框架，用于处理供LLM使用的大型结构化机器数据负载。",
+      "llm_tags": [
+        "query:bk-llm:composite"
+      ],
+      "matched_query_tag": "query:bk-llm:composite",
+      "matched_query_text": "Papers central to 银行流水解析、PDF解析、风控与LLM/RAG结合的论文检索, especially work that connects or combines: automated bank statement parsing and data extraction; deep learning for PDF table extraction and structure recognition; machine learning and LLM for financial risk management and control; application of large language models in financial document processing; document artificial intelligence for financial statement analysis; automated transaction analysis and anomaly detection in banking; LLM based bank statement parsing and risk assessment; RAG framework for financial document information extraction; PDF table parsing techniques for financial statements; Integrating LLMs with financial risk management systems.",
+      "matched_requirement_id": "req-composite-bk-llm",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2604.05469v1",
+      "source": "arxiv",
+      "title": "Task Ecologies and the Evolution of World-Tracking Representations in Large Language Models",
+      "abstract": "We study language models as evolving model organisms and ask when autoregressive next-token learning selects for world-tracking representations. For any encoding of latent world states, the Bayes-optimal next-token cross-entropy decomposes into the irreducible conditional entropy plus a Jensen--Shannon excess term. That excess vanishes if and only if the encoding preserves the training ecology's equivalence classes. This yields a precise notion of ecological veridicality for language models and identifies the minimum-complexity zero-excess solution as the quotient partition by training equivalence. We then determine when this fixed-encoding analysis applies to transformer families: frozen dense and frozen Mixture-of-Experts transformers satisfy it, in-context learning does not enlarge the model's separation set, and per-task adaptation breaks the premise. The framework predicts two characteristic failure modes: simplicity pressure preferentially removes low-gain distinctions, and training-optimal models can still incur positive excess on deployment ecologies that refine the training ecology. A conditional dynamic extension shows how inter-model selection and post-training can recover such gap distinctions under explicit heredity, variation, and selection assumptions. Exact finite-ecology checks and controlled microgpt experiments validate the static decomposition, split-merge threshold, off-ecology failure pattern, and two-ecology rescue mechanism in a regime where the relevant quantities are directly observable. The goal is not to model frontier systems at scale, but to use small language models as laboratory organisms for theory about representational selection.",
+      "authors": [
+        "Giulio Valentino Dalla Riva"
+      ],
+      "primary_category": "stat.ME",
+      "categories": [
+        "stat.ME",
+        "cs.LG",
+        "stat.ML"
+      ],
+      "published": "2026-04-07T06:06:49+00:00",
+      "link": "https://arxiv.org/pdf/2604.05469v1",
+      "tags": [
+        "keyword:LLMDEV",
+        "query:LLMDEV"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "study of language models as evolving model organisms and world-tracking representations",
+      "llm_evidence_cn": "将语言模型作为进化模型生物及世界追踪表征的研究",
+      "llm_evidence": "将语言模型作为进化模型生物及世界追踪表征的研究",
+      "canonical_evidence": "将语言模型作为进化模型生物及世界追踪表征的研究",
+      "llm_tldr_en": "Analyzes how next-token learning selects for world-tracking representations in evolving LLMs.",
+      "llm_tldr_cn": "分析了自回归学习如何促使进化中的语言模型选择世界追踪表征。",
+      "llm_tldr": "分析了自回归学习如何促使进化中的语言模型选择世界追踪表征。",
+      "llm_tags": [
+        "query:llmdev"
+      ],
+      "matched_query_tag": "query:llmdev",
+      "matched_query_text": "History and evolution of large language models from early stages to present",
+      "matched_requirement_id": "req-11",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

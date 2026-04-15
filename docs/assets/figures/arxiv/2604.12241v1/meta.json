@@ -1,0 +1,62 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2604.12241v1/fig-001.webp",
+      "caption": "Figure 1: Overview and contributions of BlazingAML.",
+      "page": 1,
+      "index": 1,
+      "width": 491,
+      "height": 375
+    },
+    {
+      "url": "assets/figures/arxiv/2604.12241v1/fig-002.webp",
+      "caption": "Figure 10: Scalability study of BlazingAML Scatter-Gather pattern mining throughput normalized to GFP [4] on Trovares [30] 10K – 100M edge dataset.",
+      "page": 11,
+      "index": 2,
+      "width": 986,
+      "height": 194
+    },
+    {
+      "url": "assets/figures/arxiv/2604.12241v1/fig-003.webp",
+      "caption": "Figure 8: BlazingAML Fan-in and Fan-out pattern mining combined end-to-end throughput normalized to GFP [4].",
+      "page": 10,
+      "index": 3,
+      "width": 986,
+      "height": 198
+    },
+    {
+      "url": "assets/figures/arxiv/2604.12241v1/fig-004.webp",
+      "caption": "Figure 6: BlazingAML Scatter-Gather pattern mining end-to-end throughput normalized to GFP [4].",
+      "page": 10,
+      "index": 4,
+      "width": 982,
+      "height": 194
+    },
+    {
+      "url": "assets/figures/arxiv/2604.12241v1/fig-005.webp",
+      "caption": "Figure 7: BlazingAML Cycle pattern mining end-to-end throughput normalized to GFP [4].",
+      "page": 10,
+      "index": 5,
+      "width": 987,
+      "height": 196
+    },
+    {
+      "url": "assets/figures/arxiv/2604.12241v1/fig-006.webp",
+      "caption": "Figure 9: BlazingAML Stack pattern mining end-to-end throughput normalized to single-thread CPU.",
+      "page": 10,
+      "index": 6,
+      "width": 970,
+      "height": 194
+    },
+    {
+      "url": "assets/figures/arxiv/2604.12241v1/fig-007.webp",
+      "caption": "Figure 5: Compiler-generated pseudo-code for scatter-gather and 4-cycle pattern mining.",
+      "page": 9,
+      "index": 7,
+      "width": 1026,
+      "height": 222
+    }
+  ]
+}

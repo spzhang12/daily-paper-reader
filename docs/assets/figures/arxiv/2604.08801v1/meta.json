@@ -1,0 +1,62 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2604.08801v1/fig-001.webp",
+      "caption": "Figure 5: Variance among responses and among system prompts for AIME and IFBench. The first row shows results with varying K while fixing M = 128. The second row shows results with varying both K and M while keeping KM = 128 fixed. The last column reports the ratio of the variance among system prompts to the variance among responses. Note that each line is plotted with its own y-axis scale.",
+      "page": 6,
+      "index": 1,
+      "width": 813,
+      "height": 271
+    },
+    {
+      "url": "assets/figures/arxiv/2604.08801v1/fig-002.webp",
+      "caption": "Table 4: Input Prompts",
+      "page": 14,
+      "index": 2,
+      "width": 822,
+      "height": 206
+    },
+    {
+      "url": "assets/figures/arxiv/2604.08801v1/fig-003.webp",
+      "caption": "Table 1: Performance on AIME and HMMT under different methods and selected subsets S. The subset S is a set of indices (within []) or the number of prompts used for training. For GEPA, S shows the (training prompts / validation prompts) split. The best performing method is highlighted in bold and the second best is underlined.",
+      "page": 8,
+      "index": 3,
+      "width": 826,
+      "height": 542
+    },
+    {
+      "url": "assets/figures/arxiv/2604.08801v1/fig-004.webp",
+      "caption": "Table 2: Performance on IFBench under different methods, subset S and M.",
+      "page": 8,
+      "index": 4,
+      "width": 402,
+      "height": 367
+    },
+    {
+      "url": "assets/figures/arxiv/2604.08801v1/fig-005.webp",
+      "caption": "Figure 2: Training reward and evaluation accuracy on IFBench and AIME with M ∈ {1, 2}.",
+      "page": 4,
+      "index": 5,
+      "width": 826,
+      "height": 289
+    },
+    {
+      "url": "assets/figures/arxiv/2604.08801v1/fig-006.webp",
+      "caption": "Figure 6: Examples of learned system prompts from p1 and GEPA on AIME 24 with Qwen34B-Instruct-2507. p1 produces a more general reasoning-oriented prompt, while GEPA produces a more task-specific prompt that appears to memorize training-set patterns.",
+      "page": 9,
+      "index": 6,
+      "width": 818,
+      "height": 323
+    },
+    {
+      "url": "assets/figures/arxiv/2604.08801v1/fig-007.webp",
+      "caption": "Figure 3: Variances across responses and system prompts for IFBench training set and AIME 24. On IFBench, the variance in reward across system prompts is substantially larger than the variance across sampled responses. In contrast, on AIME, the variance across system prompts is smaller than the variance across responses. The visualizations provide an intuitive illustration of this distinction. On IFBench, different system prompts are more clearly separated, making it easier to identify which system prompt is better, whereas on AIME, the small variance makes such distinctions much harder to detect.",
+      "page": 5,
+      "index": 7,
+      "width": 760,
+      "height": 235
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "version": 2,
+  "extractor": "pdffigures2",
+  "figures": [
+    {
+      "url": "assets/figures/arxiv/2604.05432v1/fig-001.webp",
+      "caption": "Table 12: Bucketed top-5 reranking success rate (%) for Leak+Rewrite (Back-Reveal) by query-response similarity and domain. “Trained rerankers” denotes the average across the seven rerankers used during rewriter training (Section 4.1).",
+      "page": 23,
+      "index": 1,
+      "width": 717,
+      "height": 186
+    },
+    {
+      "url": "assets/figures/arxiv/2604.05432v1/fig-002.webp",
+      "caption": "Table 11: Hyperparameter configuration for rewriter training. The high weight on reranker robustness (α3 = 0.4) reflects its importance for successful delivery of suggestive prompts through RAG pipelines.",
+      "page": 17,
+      "index": 2,
+      "width": 327,
+      "height": 462
+    },
+    {
+      "url": "assets/figures/arxiv/2604.05432v1/fig-003.webp",
+      "caption": "Table 10: Response variant comparison. Leak contains only relevant information. Leak+Naive Append adds explicit steering (bolded). Leak+Rewrite embeds the same intent implicitly within natural informational content.",
+      "page": 17,
+      "index": 3,
+      "width": 891,
+      "height": 292
+    }
+  ]
+}
